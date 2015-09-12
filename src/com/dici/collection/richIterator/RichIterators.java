@@ -29,6 +29,8 @@ public class RichIterators {
 		return GroupedRichIterator.create(new ArrayRichIterator<>(arr).map(col -> new ArrayRichIterator<>(col))); 
 	}
 	
+	public static RichIterator<Character> characters(String s) { return wrap(s.chars().mapToObj(i -> (char) i).iterator()); }
+	
 	public static RichIterator<String> fromLines(File f) {
 		BufferedReader br = null;
 		try {

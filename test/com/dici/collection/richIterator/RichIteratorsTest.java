@@ -79,4 +79,9 @@ public class RichIteratorsTest {
 	public void testConcatenation_prependEmptyIterator() {
 		assertIteratorsAreEqual(prepend(4, RichIterators.of(5)), RichIterators.of(4, 5));
 	}
+	
+	@Test
+	public void testStringRichIterator() {
+		assertIteratorsAreEqual(RichIterators.characters("hello"), RichIterators.of('h', 'e', 'l', 'l', 'o'));
+	}
 }
