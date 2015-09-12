@@ -1,11 +1,9 @@
 package com.dici.collection.richIterator;
 
-import static com.dici.collection.CollectionUtils.listOf;
-import static com.dici.collection.richIterator.RichIteratorTestUtils.assertIteratorsAreEqual;
+import static com.dici.collection.richIterator.RichIteratorMatcher.iteratorEqualTo;
 import static com.dici.collection.richIterator.RichIterators.concatIterators;
 import static com.dici.collection.richIterator.RichIterators.emptyIterator;
 import static com.dici.collection.richIterator.RichIterators.prepend;
-import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -55,33 +53,33 @@ public class RichIteratorsTest {
 	@Test
 	public void testArray2DIterator() {
 		Integer[][] arr = { { 1,2 },{ 3,4 } };
-		assertThat(RichIterators.from2DArray(arr).flatMap(RichIterator::toList).toList(), equalTo(listOf(1,2,3,4)));
+		assertThat(RichIterators.from2DArray(arr).flatMap(RichIterator::toList), iteratorEqualTo(RichIterators.of(1,2,3,4)));
 	}
 	
 	@Test 
 	public void testConcatenation_emptyIterator() {
-		assertIteratorsAreEqual(
+		assertThat(
 			concatIterators(RichIterators.of(1, 2, 3), emptyIterator(), RichIterators.of(4, 5)),
-			RichIterators.of(1, 2, 3, 4, 5));
+			iteratorEqualTo(RichIterators.of(1, 2, 3, 4, 5)));
 	}
 	
 	@Test 
 	public void testConcatenation_emptyIterators() {
-		assertIteratorsAreEqual(concatIterators(emptyIterator(), emptyIterator()), emptyIterator());
+		assertThat(concatIterators(emptyIterator(), emptyIterator()), iteratorEqualTo(emptyIterator()));
 	}
 
 	@Test 
 	public void testConcatenation_prepend() {
-		assertIteratorsAreEqual(prepend(4, RichIterators.of(5)), RichIterators.of(4, 5));
+		assertThat(prepend(4, RichIterators.of(5)), iteratorEqualTo(RichIterators.of(4, 5)));
 	}
 	
 	@Test 
 	public void testConcatenation_prependEmptyIterator() {
-		assertIteratorsAreEqual(prepend(4, RichIterators.of(5)), RichIterators.of(4, 5));
+		assertThat(prepend(4, RichIterators.of(5)), iteratorEqualTo(RichIterators.of(4, 5)));
 	}
 	
 	@Test
 	public void testStringRichIterator() {
-		assertIteratorsAreEqual(RichIterators.characters("hello"), RichIterators.of('h', 'e', 'l', 'l', 'o'));
+		assertThat(RichIterators.characters("hello"), iteratorEqualTo(RichIterators.of('h', 'e', 'l', 'l', 'o')));
 	}
 }

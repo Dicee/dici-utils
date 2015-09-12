@@ -11,10 +11,6 @@ import com.dici.collection.richIterator.RichIteratorDecorator;
 import com.dici.collection.richIterator.RichIterators;
 
 public class RichIteratorTestUtils {
-	public static void assertIteratorsAreEqual(Iterator<?> actual, Iterator<?> expected) {
-		assertThat(RichIterators.wrap(actual).toList(), equalTo(RichIterators.wrap(expected).toList()));
-	}
-	
 	public static <X> ObservableRichIterator<X> observable(RichIterator<X> it) { return new ObservableRichIterator<>(it); } 
 
 	public static class ObservableRichIterator<X> extends RichIteratorDecorator<X, X, RichIterator<X>> {
