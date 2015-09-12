@@ -19,7 +19,7 @@ public abstract class NullableRichIterator<X> extends RichIterator<X> {
 	}
 	
 	@Override
-	protected boolean hasNextInternal() throws Exception {
+	protected final boolean hasNextInternal() throws Exception {
 		if (peeked != null) return true;
 		try {
 			peeked = nextOrNull();
