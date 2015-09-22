@@ -17,6 +17,8 @@ import java.util.Iterator;
 
 import org.junit.Test;
 
+import com.dici.util.TestUtils;
+
 public class RichIteratorsTest {
 	@Test
 	public void testDeserializerIterator() throws IOException {
@@ -82,4 +84,10 @@ public class RichIteratorsTest {
 	public void testStringRichIterator() {
 		assertThat(RichIterators.characters("hello"), iteratorEqualTo(RichIterators.of('h', 'e', 'l', 'l', 'o')));
 	}
+	
+	@Test
+    public void testTokenIterator() throws IOException {
+	    File tmp = TestUtils.tempFileWithContent("hello;;my;;dear;;friends;how;;are;;you;;?");
+        assertThat(RichIterators.tokens(tmp, ";;"), iteratorEqualTo(RichIterators.of("hello", "my", "dear", "friends;how", "are", "you")));
+    }
 }
