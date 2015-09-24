@@ -44,5 +44,5 @@ public class CollectionUtils {
 		return Collections.unmodifiableList(Arrays.asList(elts));
 	}
 
-	public static <T> Collector<T, List<T>, List<T>> collectList() { return Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList); }
+	public static <T> Collector<T, ?, List<T>> collectList() { return Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList); }
 }
