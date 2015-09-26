@@ -1,5 +1,7 @@
 package com.dici.javafx.components;
 
+import static com.dici.check.Check.notNull;
+
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
@@ -12,6 +14,7 @@ import javafx.scene.control.TreeView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Pair;
+
 import com.dici.javafx.actions.ActionManager;
 
 public abstract class ControlledTreeView<T> extends TreeView<T> {
@@ -29,10 +32,10 @@ public abstract class ControlledTreeView<T> extends TreeView<T> {
 
 	public ControlledTreeView(TreeItem<T> root, ActionManager actionManager, Function<T,TreeItem<T>> factory) {
 		super(root);
-		this.treeRoot      = root;
-		this.actionManager = actionManager;
-		this.currentNode   = root;
-		this.factory       = factory;
+		this.treeRoot      = notNull(root);
+		this.actionManager = notNull(actionManager);
+		this.currentNode   = notNull(root);
+		this.factory       = notNull(factory);
 		
 		setOnMouseClicked(this::handleMouseClickOnTree);
 		getSelectionModel().selectedItemProperty().addListener((ov,formerItem,newItem) -> currentNode = newItem);
