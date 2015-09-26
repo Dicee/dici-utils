@@ -48,7 +48,7 @@ public class RichIterators {
 		}
 	}
 
-	public static RichIterator<String> tokens(File file, String token) { return new TokenParser(characters(file), token); }
+	public static RichIterator<String> tokens(File file, String token) { return TokenParser.parse(file, token); }
 	
 	public static RichIterator<Character> characters(File file) {
 	    Reader reader = null;

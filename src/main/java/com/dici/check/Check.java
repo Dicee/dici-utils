@@ -1,5 +1,7 @@
 package com.dici.check;
 
+import java.util.Collection;
+
 public final class Check {
 	private static final String	SHOULD_BE_TRUE				= "This expression should be true";
 	private static final String	SHOULD_BE_FALSE				= "This expression should be false";
@@ -18,6 +20,8 @@ public final class Check {
 	
 	public static <T> T[] notEmpty(T[] arr) { return notEmpty(arr,SHOULD_NOT_BE_EMPTY); }
 	public static <T> T[] notEmpty(T[] arr, String msg) { check(arr.length != 0,msg); return arr; }
+	public static <T, C extends Collection<T>> C notEmpty(C collection, String msg) { check(notNull(collection).size() != 0, msg); return collection; 	}
+	public static <T, C extends Collection<T>> C notEmpty(C collection) { return notEmpty(collection, SHOULD_NOT_BE_EMPTY); 	}
 	
 	public static <T> void isNull(T t) { isNull(SHOULD_BE_NULL); }
 	public static <T> void isNull(T t, String msg) { check(t == null,msg); }
@@ -67,7 +71,5 @@ public final class Check {
 		return s;
 	}
 
-	private static void check(boolean test, String msg) {
-		if (!test) throw new IllegalArgumentException(msg);
-	}
+	private static void check(boolean test, String msg) { if (!test) throw new IllegalArgumentException(msg); }
 }
