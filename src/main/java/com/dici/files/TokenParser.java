@@ -17,6 +17,7 @@ import com.dici.collection.richIterator.RichIterators;
 public class TokenParser {
     public static final TokenIterator parse(File f, String token) { return new TokenParser(token).parse(f); }
     public static final TokenIterator parse(String s, String token) { return new TokenParser(token).parse(s); }
+    public static final TokenIterator parse(Iterator<Character> source, String token) { return new TokenParser(token).parse(source); }
     
 	private List<Character> token;
 
@@ -26,6 +27,7 @@ public class TokenParser {
 	
 	public TokenIterator parse(String s) { return new TokenIterator(RichIterators.characters(s), token); }
 	public TokenIterator parse(File f) { return new TokenIterator(RichIterators.characters(f), token); }
+	public TokenIterator parse(Iterator<Character> source) { return new TokenIterator(source, token); }
 	
 	public static class TokenIterator extends NullableRichIterator<String> {
 	    private List<Character> token;
