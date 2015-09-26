@@ -25,7 +25,8 @@ lazy val commonSettings = Seq(
 			Files.copy(assemblyFile.toPath, Paths.get(consumer + "/lib/" + assemblyFile.getName), REPLACE_EXISTING)
 
 	},
-	assemblyExcludedJars in assembly := (fullClasspath in assembly).value.filter(_.data.getName.toLowerCase.contains("scala"))
+	assemblyExcludedJars in assembly := (fullClasspath in assembly).value.filter(_.data.getName.toLowerCase.contains("scala")),
+	libraryDependencies += "junit" % "junit" % "4.11" % "test"
 )
 
 lazy val root = 
