@@ -14,7 +14,7 @@ import javafx.scene.control.TreeView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Pair;
-
+ 
 import com.dici.javafx.actions.ActionManager;
 
 public abstract class ControlledTreeView<T> extends TreeView<T> {
@@ -29,8 +29,24 @@ public abstract class ControlledTreeView<T> extends TreeView<T> {
 
 	protected ContextMenu				addMenu		= new ContextMenu();
 	protected Function<T,TreeItem<T>>	factory;
+	
+	public static <T> TreeItem<T> treeFromFlatList(TreeItem<T> root, List<Pair<Integer, T>> elts, Function<T, TreeItem<T>> factory) {
+	    if (!elts.isEmpty()) {
+            Deque<Pair<Integer,TreeItem<T>>> stack = new LinkedList<>();
+            stack.push(new Pair<>(elts.get(0).getKey(), root));
 
-	public ControlledTreeView(TreeItem<T> root, ActionManager actionManager, Function<T,TreeItem<T>> factory) {
+            for (Pair<Integer,T> elt : elts.subList(1,elts.size())) {
+                TreeItem<T> node = factory.apply(elt.getValue());
+
+                while (stack.peek().getKey() >= elt.getKey()) stack.pop();
+                stack.peek().getValue().getChildren().add(node);
+                stack.push(new Pair<>(elt.getKey(), node));
+            }
+        }
+	    return root;
+	}
+
+	public ControlledTreeView(TreeItem<T> root, ActionManager actionManager, Function<T, TreeItem<T>> factory) {
 		super(root);
 		this.treeRoot      = notNull(root);
 		this.actionManager = notNull(actionManager);
@@ -57,25 +73,9 @@ public abstract class ControlledTreeView<T> extends TreeView<T> {
 	public abstract void copySelectedNode();
 	public abstract void pasteFromClipboardToSelectedNode();
 	
-	public void setElements(TreeItem<T> root, List<Pair<Integer,T>> elts) {
+	public void setElements(TreeItem<T> root, List<Pair<Integer, T>> elts) {
 		getSelectionModel().clearSelection();
-		treeRoot = root;
-
-		if (!elts.isEmpty()) {
-			Deque<Pair<Integer,TreeItem<T>>> stack = new LinkedList<>();
-			stack.push(new Pair<>(elts.get(0).getKey(),treeRoot));
-
-			for (Pair<Integer,T> elt : elts.subList(1,elts.size())) {
-				TreeItem<T> node = factory.apply(elt.getValue());
-
-				while (stack.peek().getKey() >= elt.getKey())
-					stack.pop();
-				stack.peek().getValue().getChildren().add(node);
-				stack.push(new Pair<>(elt.getKey(),node));
-			}
-		}
-
-		setRoot(treeRoot);
+		setRoot(treeRoot = treeFromFlatList(root, elts, factory));
 		treeRoot.setExpanded(true);
 		getSelectionModel().select(treeRoot);
 	}
