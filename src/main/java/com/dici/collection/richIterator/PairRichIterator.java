@@ -14,7 +14,7 @@ import com.dici.exceptions.ExceptionUtils.ThrowingFunction;
 public class PairRichIterator<K,V> extends RichIterator<Pair<K,V>> {
 	private final RichIterator<Pair<K,V>> it;
 
-	static <X,K,V> PairRichIterator<K,V> create(RichIterator<X> it, ThrowingFunction<X,K> keyFunction, ThrowingFunction<X,V> valueFunction) {
+	public static <X,K,V> PairRichIterator<K,V> create(RichIterator<X> it, ThrowingFunction<X,K> keyFunction, ThrowingFunction<X,V> valueFunction) {
 		notNull(keyFunction);
 		notNull(valueFunction);
 		return new PairRichIterator<>(it.map(x -> new Pair<>(keyFunction.apply(x),valueFunction.apply(x))));
