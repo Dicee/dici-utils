@@ -19,10 +19,16 @@ lazy val commonSettings = Seq(
 		import java.nio.file.Paths
 		import java.nio.file.StandardCopyOption.REPLACE_EXISTING
 		
+		def copyFileToConsumer(file: File, consumerPath: String) = Files.copy(file.toPath, Paths.get(consumerPath + "/lib/" + file.getName), REPLACE_EXISTING)
+
 		val assemblyFile = assembly.value
+		val sourcesFile  = (Keys.packageSrc in Compile).value
 		
-		for (consumer <- CONSUMERS) 
-			Files.copy(assemblyFile.toPath, Paths.get(consumer + "/lib/" + assemblyFile.getName), REPLACE_EXISTING)
+		for (consumer <- CONSUMERS) {
+			copyFileToConsumer(assemblyFile, consumer)
+			copyFileToConsumer(sourcesFile , consumer)
+		}
+
 
 	},
 	assemblyExcludedJars in assembly := (fullClasspath in assembly).value.filter(_.data.getName.toLowerCase.contains("scala")),
