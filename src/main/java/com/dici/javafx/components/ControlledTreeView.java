@@ -31,17 +31,14 @@ public abstract class ControlledTreeView<T> extends TreeView<T> {
 	protected Function<T,TreeItem<T>>	factory;
 	
 	public static <T> TreeItem<T> treeFromFlatList(TreeItem<T> root, List<Pair<Integer, T>> elts, Function<T, TreeItem<T>> factory) {
-	    if (!elts.isEmpty()) {
-            Deque<Pair<Integer,TreeItem<T>>> stack = new LinkedList<>();
-            stack.push(new Pair<>(elts.get(0).getKey(), root));
+	    Deque<Pair<Integer,TreeItem<T>>> stack = new LinkedList<>();
+	    stack.push(new Pair<>(-1, root));
+        for (Pair<Integer,T> elt : elts) {
+            TreeItem<T> node = factory.apply(elt.getValue());
 
-            for (Pair<Integer,T> elt : elts.subList(1,elts.size())) {
-                TreeItem<T> node = factory.apply(elt.getValue());
-
-                while (stack.peek().getKey() >= elt.getKey()) stack.pop();
-                stack.peek().getValue().getChildren().add(node);
-                stack.push(new Pair<>(elt.getKey(), node));
-            }
+            while (stack.peek().getKey() >= elt.getKey()) stack.pop();
+            stack.peek().getValue().getChildren().add(node);
+            stack.push(new Pair<>(elt.getKey(), node));
         }
 	    return root;
 	}
