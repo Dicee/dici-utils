@@ -124,7 +124,7 @@ public abstract class RichIterator<X> implements Iterator<X>, Iterable<X>, Close
 	
 	public final <K,V> PairRichIterator<K,V> mapToPair(ThrowingFunction<X,K> keyFunction, ThrowingFunction<X,V> valueFunction) {
 		ensureValidState();
-		return PairRichIterator.create(this,keyFunction,valueFunction);
+		return PairRichIterator.pairIterator(this,keyFunction,valueFunction);
 	}
 	
 	public final <Y> PairRichIterator<X,Y> zip(RichIterator<Y> that) {
