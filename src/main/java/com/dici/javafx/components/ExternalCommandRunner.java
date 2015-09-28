@@ -32,20 +32,27 @@ public class ExternalCommandRunner extends VBox {
 
     public synchronized void run(ProcessBuilder processBuilder) throws IOException, InterruptedException {
         setActive();
-        this.runningProcess = processBuilder.start();
-        
-        StreamPrinter  inputStream    = new StreamPrinter(runningProcess.getInputStream(), this::handleLog);
-        StreamPrinter  errorStream    = new StreamPrinter(runningProcess.getErrorStream(), this::handleLog);
-        outputTextArea.clear();
-        
-        new Thread(inputStream).start();
-        new Thread(errorStream).start();
-        runningProcess.waitFor();
-        setInactive();
+        try {
+            this.runningProcess = processBuilder.start();
+            
+            StreamPrinter  inputStream    = new StreamPrinter(runningProcess.getInputStream(), this::handleLog);
+            StreamPrinter  errorStream    = new StreamPrinter(runningProcess.getErrorStream(), this::handleLog);
+            outputTextArea.clear();
+            
+            new Thread(inputStream).start();
+            new Thread(errorStream).start();
+            runningProcess.waitFor();
+        } finally {
+            stop.fire();
+            setInactive();
+        }
     }
     
-    private void handleLog  (String line)     { Platform.runLater(() -> outputTextArea.appendText(line + "\n")); }
-    private void setActive  ()                { setState(STOP_ACTIVE_ICON  )                                     ; }
-    private void setInactive()                { setState(STOP_INACTIVE_ICON)                                     ; }
-    private void setState   (String iconPath) { stop.setGraphic(imageViewFromResource(iconPath, Resources.class)); }
+    private void handleLog  (String line) { Platform.runLater(() -> outputTextArea.appendText(line + "\n")); }
+    private void setActive  ()            { setState(STOP_ACTIVE_ICON  , false)                            ; }
+    private void setInactive()            { setState(STOP_INACTIVE_ICON, true)                             ; }
+    private void setState   (String iconPath, boolean disableButton) { 
+        stop.setGraphic(imageViewFromResource(iconPath, Resources.class));
+        stop.setDisable(disableButton); 
+    }
 }
