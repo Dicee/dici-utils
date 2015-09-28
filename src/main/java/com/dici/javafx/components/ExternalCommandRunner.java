@@ -7,6 +7,7 @@ import static com.dici.javafx.components.Resources.STOP_INACTIVE_ICON;
 import java.io.IOException;
 
 import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.ToolBar;
@@ -28,24 +29,33 @@ public class ExternalCommandRunner extends VBox {
         super.getChildren().addAll(new ToolBar(stop), outputTextArea);
     }
     
-    public TextArea getOutputTextArea() { return outputTextArea; }
+    public synchronized TextArea getOutputTextArea() { return outputTextArea; }
 
     public synchronized void run(ProcessBuilder processBuilder) throws IOException, InterruptedException {
-        setActive();
-        try {
-            this.runningProcess = processBuilder.start();
-            
-            StreamPrinter  inputStream    = new StreamPrinter(runningProcess.getInputStream(), this::handleLog);
-            StreamPrinter  errorStream    = new StreamPrinter(runningProcess.getErrorStream(), this::handleLog);
-            outputTextArea.clear();
-            
-            new Thread(inputStream).start();
-            new Thread(errorStream).start();
-            runningProcess.waitFor();
-        } finally {
-            stop.fire();
-            setInactive();
-        }
+        ExternalCommandRunner self = this;
+        Thread taskThread = new Thread(new Task<Void>() {
+            @Override
+            public Void call() throws Exception {
+                setActive();
+                try {
+                    runningProcess = processBuilder.start();
+                    
+                    StreamPrinter  inputStream    = new StreamPrinter(runningProcess.getInputStream(), self::handleLog);
+                    StreamPrinter  errorStream    = new StreamPrinter(runningProcess.getErrorStream(), self::handleLog);
+                    outputTextArea.clear();
+                    
+                    new Thread(inputStream).start();
+                    new Thread(errorStream).start();
+                    runningProcess.waitFor();
+                    return null;
+                } finally {
+                    stop.fire();
+                    setInactive();
+                }
+            }
+        });
+        taskThread.start();
+        taskThread.join();
     }
     
     private void handleLog  (String line) { Platform.runLater(() -> outputTextArea.appendText(line + "\n")); }
