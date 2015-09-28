@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 
+import com.dici.collection.richIterator.RichIterators;
 import com.dici.system.SystemProperties;
 
 public final class FileUtils {
@@ -52,21 +53,24 @@ public final class FileUtils {
 	}
 	
 	public static boolean hasExtension(File file, List<String> extensions) {
-		return extensions.stream().filter(file.getName()::endsWith).findAny().isPresent();
+	    return RichIterators.fromCollection(extensions).map(FileUtils::formatExtension).exists(file.getName()::endsWith);
 	}
 	
 	public static File toExtension(String path, String extension) {
-		return toExtension(new File(path),extension);
+		return toExtension(new File(path), extension);
 	}
 	
 	public static File toExtension(File file, String extension) {
+	    extension = formatExtension(extension);
 		if (hasExtension(file,Arrays.asList(extension))) return file;
-		
-		if (!extension.startsWith(".")) extension = "." + extension;
 		
 		String path = file.getAbsolutePath();
 		int lastDot = path.lastIndexOf('.');
 		return new File((lastDot < 0 ? path : path.substring(0,lastDot)) + extension);
+	}
+		
+	private static String formatExtension(String extension) {
+	    return !extension.startsWith(".") ? "." + extension : extension;
 	}
 	
 	public static String readAllFile(String path) throws IOException {
