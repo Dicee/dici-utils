@@ -1,4 +1,5 @@
-val CONSUMERS = Set("C:/JavaWork/Scala/algorithmicProblems", "C:/JavaWork/Scala/LateX Editor 4.0")
+val CONSUMERS = Set("C:/JavaWork/Scala/algorithmicProblems", "C:/JavaWork/Scala/LateX Editor 4.0", 
+	"C:/Users/Dici/Documents/Github/latexEditor", "C:/Users/Dici/Documents/Github/algorithmicProblems")
 
 lazy val distribute = taskKey[Unit]("Produces (if needed) Distributes the assembly jar and distributes it to all the consumers of the library")
 
@@ -25,6 +26,7 @@ lazy val commonSettings = Seq(
 		val sourcesFile  = (Keys.packageSrc in Compile).value
 		
 		for (consumer <- CONSUMERS) {
+			println(s"Distribute to ${consumer}") 
 			copyFileToConsumer(assemblyFile, consumer)
 			copyFileToConsumer(sourcesFile , consumer)
 		}
