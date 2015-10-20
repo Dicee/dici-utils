@@ -49,7 +49,4 @@ class GroupByComparatorRichIterator<X> extends ClassicRichIteratorDecorator<X, R
 		previous = eof ? null : current;
 		return buffer;
 	}
-	
-	@Override
-	protected void closeInternal() throws IOException { it.close(); }
 }

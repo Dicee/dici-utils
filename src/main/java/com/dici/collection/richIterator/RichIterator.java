@@ -21,11 +21,13 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiFunction;
+import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javafx.util.Pair;
+
 import com.dici.collection.StreamUtils;
 import com.dici.exceptions.ExceptionUtils.ThrowingBinaryOperator;
 import com.dici.exceptions.ExceptionUtils.ThrowingConsumer;
@@ -56,11 +58,12 @@ public abstract class RichIterator<X> implements Iterator<X>, Iterable<X>, Close
 			}
 		});
 	}
-	
-	private boolean			closed	= false;
-	private boolean			used	= false;
-	private long			count	= 0;
-	private ThrowingConsumer<Long>	onClose;
+
+    private boolean                closed            = false;
+    private boolean                used              = false;
+    private boolean                releasedResources = false;
+    private long                   count             = 0;
+    private ThrowingConsumer<Long> onClose;
 	
 	public Iterator<X> iterator() {
 		ensureValidState();
@@ -76,7 +79,7 @@ public abstract class RichIterator<X> implements Iterator<X>, Iterable<X>, Close
 		ensureNotClosed();
 		if (!hasNext()) throw new NoSuchElementException();
 		X next = uncheckExceptionsAndGet(this::nextInternal);
-		if (!hasNext()) uncheckExceptions(this::close);
+		if (!hasNext()) uncheckExceptions(this::releaseResources);
 		count++;
 		return next;
 	}
@@ -85,7 +88,7 @@ public abstract class RichIterator<X> implements Iterator<X>, Iterable<X>, Close
 	public final void close() throws IOException {
 		if (closed) return;
 		try {
-			closeInternal();
+			releaseResources();
 		} catch (Exception e) {
 			throw new IOException(e);
 		} finally {
@@ -98,8 +101,19 @@ public abstract class RichIterator<X> implements Iterator<X>, Iterable<X>, Close
 		}
 	}
 	
+	protected final void releaseResources() throws IOException {
+	    if (releasedResources) return;
+	    releasedResources = true;
+	    closeInternal();
+	}
+	
 	protected abstract boolean hasNextInternal() throws Exception;
 	protected abstract X nextInternal() throws Exception;
+	
+	/**
+	 * Should not be called explicitly by a subclass. Use releaseResources instead.
+	 * @throws IOException
+	 */
 	protected void closeInternal() throws IOException { }
 	
 	public final RichIterator<X> onClose(ThrowingConsumer<Long> onClose) {
@@ -170,6 +184,21 @@ public abstract class RichIterator<X> implements Iterator<X>, Iterable<X>, Close
 	public final RichIterator<X> takeUntil(ThrowingPredicate<X> predicate) {
 		ensureValidState();
 		return new UntilRichIterator<>(this,predicate);
+	}
+	
+	public final RichIterator<X> drop(int n) {
+	    ensureValidState();
+	    return DropRichIterator.drop(this, n);
+	}
+
+	public final RichIterator<X> dropWhile(Predicate<X> drop) {
+	    ensureValidState();
+	    return DropRichIterator.dropWhile(this, drop);
+	}
+	
+	public final RichIterator<X> dropUntil(Predicate<X> drop) {
+	    ensureValidState();
+	    return DropRichIterator.dropUntil(this, drop);
 	}
 
 	public final RichIterator<X> distinct() {

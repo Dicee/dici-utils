@@ -29,7 +29,7 @@ class ConcatenatedRichIterators<X> extends RichIterator<X> {
 	@Override
 	protected X nextInternal() throws Exception {
 		X res = iterators.peek().next();
-		if (!iterators.peek().hasNext()) { iterators.pop().close(); }
+		if (!iterators.peek().hasNext()) { iterators.pop().releaseResources(); }
 		return res;
 	}
 }

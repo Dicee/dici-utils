@@ -2,7 +2,6 @@ package com.dici.collection.richIterator;
 
 import static com.dici.check.Check.isGreaterThan;
 
-import java.io.IOException;
 import java.util.Deque;
 import java.util.LinkedList;
 
@@ -24,7 +23,4 @@ public class UniformBatchRichIterator<X> extends ClassicRichIteratorDecorator<X,
 	
 	@Override
 	protected boolean hasNextInternal() throws Exception { return it.hasNext(); }
-	
-	@Override
-	protected void closeInternal() throws IOException { it.close(); }
 }

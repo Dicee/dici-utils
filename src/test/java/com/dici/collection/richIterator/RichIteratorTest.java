@@ -23,7 +23,7 @@ import org.junit.Test;
 import com.dici.collection.richIterator.RichIteratorTestUtils.ObservableRichIterator;
 
 public class RichIteratorTest {
-	private RichIterator<Integer> it;
+	protected RichIterator<Integer> it;
 
 	@Before
 	public void setUp() {
