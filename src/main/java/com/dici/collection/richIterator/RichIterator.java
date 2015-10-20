@@ -21,7 +21,6 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiFunction;
-import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -36,10 +35,8 @@ import com.dici.exceptions.ExceptionUtils.ThrowingPredicate;
 import com.dici.exceptions.ExceptionUtils.ThrowingUnaryOperator;
 /**
  * - sliding
- * - grouped
  * - max, min
  * - lastIndexWhere
- * - drop, dropWhile, dropUntil
  */
 public abstract class RichIterator<X> implements Iterator<X>, Iterable<X>, Closeable, AutoCloseable {
 	public static <X> RichIterator<X> iterate(X seed, ThrowingUnaryOperator<X> throwingOp) {
@@ -173,17 +170,17 @@ public abstract class RichIterator<X> implements Iterator<X>, Iterable<X>, Close
 	
 	public final RichIterator<X> take(int n) {
 		ensureValidState();
-		return new LimitedIterator<>(this,n);
+		return TakeRichIterator.take(this,n);
 	}
 	
 	public final RichIterator<X> takeWhile(ThrowingPredicate<X> predicate) {
 		ensureValidState();
-		return new WhileRichIterator<>(this,predicate);
+		return TakeRichIterator.takeWhile(this, predicate);
 	}
 	
 	public final RichIterator<X> takeUntil(ThrowingPredicate<X> predicate) {
 		ensureValidState();
-		return new UntilRichIterator<>(this,predicate);
+		return TakeRichIterator.takeUntil(this, predicate);
 	}
 	
 	public final RichIterator<X> drop(int n) {
@@ -191,12 +188,12 @@ public abstract class RichIterator<X> implements Iterator<X>, Iterable<X>, Close
 	    return DropRichIterator.drop(this, n);
 	}
 
-	public final RichIterator<X> dropWhile(Predicate<X> drop) {
+	public final RichIterator<X> dropWhile(ThrowingPredicate<X> drop) {
 	    ensureValidState();
 	    return DropRichIterator.dropWhile(this, drop);
 	}
 	
-	public final RichIterator<X> dropUntil(Predicate<X> drop) {
+	public final RichIterator<X> dropUntil(ThrowingPredicate<X> drop) {
 	    ensureValidState();
 	    return DropRichIterator.dropUntil(this, drop);
 	}
