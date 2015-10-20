@@ -49,4 +49,5 @@ public class PairRichIterator<K,V> extends RichIterator<Pair<K,V>> {
 	}
 	
 	public Map<K,V> toMap() { return stream().collect(Collectors.toMap(Pair::getKey, Pair::getValue)); }
+	@Override protected void setUsed() { it.setUsed(); super.setUsed(); }
 }

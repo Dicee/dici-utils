@@ -3,7 +3,6 @@ package com.dici.collection.richIterator;
 import static com.dici.check.Check.notNull;
 import static com.dici.collection.richIterator.RichIterators.singleton;
 
-import java.io.IOException;
 import java.util.Comparator;
 import java.util.Deque;
 import java.util.LinkedList;

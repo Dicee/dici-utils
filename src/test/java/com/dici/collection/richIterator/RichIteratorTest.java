@@ -42,8 +42,8 @@ public class RichIteratorTest {
 	
 	@Test(expected = IllegalStateException.class)
 	public void testIterableOnce() {
-		assertThat(it.filter(x -> x % 2 == 0),iteratorEqualTo(RichIterators.of(8,6)));
-		assertThat(it.filter(x -> x % 2 == 0 || x % 5 == 0),iteratorEqualTo(RichIterators.of(8,5,6,15)));
+		System.out.println(it.filter(x -> x % 2 == 0).toList());
+		System.out.println(it.filter(x -> x % 2 == 0).toList());
 	}
 	
 	@Test

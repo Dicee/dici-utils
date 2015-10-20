@@ -23,7 +23,7 @@ public abstract class NullableRichIterator<X> extends RichIterator<X> {
 		if (peeked != null) return true;
 		try {
 			peeked = nextOrNull();
-			if (peeked != null) releaseResources();
+			if (peeked == null) releaseResources();
 			return peeked != null;
 		} catch (NoSuchElementException e) {
 			return false;

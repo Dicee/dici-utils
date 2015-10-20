@@ -1,12 +1,12 @@
 package com.dici.collection.richIterator;
 
-import static java.util.stream.Collectors.joining;
 import static com.dici.collection.CollectionUtils.listOf;
 import static com.dici.exceptions.ExceptionUtils.uncheckExceptions;
 import static com.dici.exceptions.ExceptionUtils.uncheckExceptionsAndGet;
 import static com.dici.exceptions.ExceptionUtils.uncheckedBinaryOperator;
 import static com.dici.exceptions.ExceptionUtils.uncheckedConsumer;
 import static com.dici.exceptions.ExceptionUtils.uncheckedUnaryOperator;
+import static java.util.stream.Collectors.joining;
 
 import java.io.BufferedWriter;
 import java.io.Closeable;
@@ -64,15 +64,15 @@ public abstract class RichIterator<X> implements Iterator<X>, Iterable<X>, Close
     private boolean                releasedResources = false;
     private long                   count             = 0;
     private ThrowingConsumer<Long> onClose;
-	
+
 	public Iterator<X> iterator() {
 		ensureValidState();
-		used = true;
+		setUsed();
 		return this;
 	}
 
 	@Override
-	public final boolean hasNext() { return !closed && uncheckExceptionsAndGet(this::hasNextInternal); }
+	public final boolean hasNext() { return !closed && !releasedResources && uncheckExceptionsAndGet(this::hasNextInternal); }
 
 	@Override
 	public final X next() {
@@ -94,9 +94,9 @@ public abstract class RichIterator<X> implements Iterator<X>, Iterable<X>, Close
 		} finally {
 			closed = true;
 			try {
-				if (onClose != null) onClose.accept(count);
+			    if (onClose != null) onClose.accept(count);
 			} catch (Exception e) {
-				throw new IOException(e);
+			    throw new IOException(e);
 			}
 		}
 	}
@@ -280,9 +280,9 @@ public abstract class RichIterator<X> implements Iterator<X>, Iterable<X>, Close
 	public final Set<X> toSet() { return stream().collect(Collectors.toSet()); }
 	public final <K,V> Map<K,V> toMap(ThrowingFunction<X,K> keyFunction, ThrowingFunction<X,V> valueFunction) { return mapToPair(keyFunction,valueFunction).toMap(); }
 	
-	public final Stream<X> stream() { 
+	public Stream<X> stream() { 
 		ensureValidState();
-		used = true;
+		setUsed();
 		return StreamUtils.iteratorToStream(this);
 	}
 
@@ -291,8 +291,11 @@ public abstract class RichIterator<X> implements Iterator<X>, Iterable<X>, Close
 		ensureNotAlreadyUsed();
 	}
 	
-	private void ensureNotClosed     () { if (closed) throw new IllegalStateException("This iterator is already closed"      ); }
-	private void ensureNotAlreadyUsed() { if (used  ) throw new IllegalStateException("This object can only be iterated once"); }
+	private void ensureNotClosed     () { if (isClosed()) throw new IllegalStateException("This iterator is already closed"      ); }
+	private void ensureNotAlreadyUsed() { if (isUsed  ()) throw new IllegalStateException("This object can only be iterated once"); }
 
 	public final boolean isClosed() { return closed; }
+	
+	protected void setUsed() {used = true; }
+	protected boolean isUsed() { return used; }
 }

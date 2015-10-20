@@ -2,6 +2,7 @@ package com.dici.collection.richIterator;
 
 import static com.dici.check.Check.notNull;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,4 +20,7 @@ class DistinctRichIterator<X> extends NullableRichIterator<X> {
 		}
 		return null;
 	}
+
+	@Override protected void closeInternal() throws IOException { it.releaseResources(); }
+	@Override protected void setUsed() { it.setUsed(); super.setUsed(); }
 }

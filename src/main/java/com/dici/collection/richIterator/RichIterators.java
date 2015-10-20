@@ -7,7 +7,6 @@ import java.io.BufferedReader;
 import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -89,7 +88,8 @@ public class RichIterators {
 				@Override
 				public T tryReadNext() throws EOFException, IOException { 
 					try {
-						return clazz.cast(source.readObject());
+					    T cast = clazz.cast(source.readObject());
+						return cast;
 					} catch (ClassNotFoundException e) {
 						throw new IOException(e);
 					} 

@@ -8,4 +8,5 @@ public abstract class RichIteratorDecorator<X, Y, ITERATOR extends RichIterator<
 	protected final ITERATOR it;
 	protected RichIteratorDecorator(ITERATOR it) { this.it = notNull(it); }
 	@Override protected void closeInternal() throws IOException { it.releaseResources(); }
+	@Override protected void setUsed() { it.setUsed(); super.setUsed(); }
 }
