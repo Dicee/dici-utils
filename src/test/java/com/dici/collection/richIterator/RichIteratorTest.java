@@ -256,4 +256,24 @@ public class RichIteratorTest {
     public void dropWhileTrue() {
         assertThat(it.dropWhile(i -> true), iteratorEqualTo(emptyIterator()));
     }
+    
+    @Test 
+    public void containsNull1() {
+        assertThat(RichIterators.of(1, null, 0).contains(null), is(true));
+    }
+    
+    @Test 
+    public void containsNull2() {
+        assertThat(RichIterators.of(1, 5, 0).contains(null), is(false));
+    }
+    
+    @Test 
+    public void containsNonNull1() {
+        assertThat(RichIterators.of(1, 3, 0).contains(8), is(false));
+    }
+    
+    @Test 
+    public void containsNonNull2() {
+        assertThat(RichIterators.of(1, 3, 0).contains(3), is(true));
+    }
 }

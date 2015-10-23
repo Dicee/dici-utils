@@ -33,6 +33,7 @@ import com.dici.exceptions.ExceptionUtils.ThrowingConsumer;
 import com.dici.exceptions.ExceptionUtils.ThrowingFunction;
 import com.dici.exceptions.ExceptionUtils.ThrowingPredicate;
 import com.dici.exceptions.ExceptionUtils.ThrowingUnaryOperator;
+import com.google.common.base.Objects;
 /**
  * - sliding
  */
@@ -220,6 +221,12 @@ public abstract class RichIterator<X> implements Iterator<X>, Iterable<X>, Close
 	public final RichIterator<X> buffered(int size) {
 		ensureValidState();
 		return new BufferedRichIterator<X>(this, size);
+	}
+	
+	public final boolean contains(Object o) {
+	    while (hasNext()) 
+	        if (Objects.equal(o, next())) return true;
+	    return false;
 	}
 	
 	public final Optional<X> reduce(ThrowingBinaryOperator<X> binaryOp) { return stream().reduce(uncheckedBinaryOperator(binaryOp)); }
