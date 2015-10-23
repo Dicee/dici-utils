@@ -35,8 +35,6 @@ import com.dici.exceptions.ExceptionUtils.ThrowingPredicate;
 import com.dici.exceptions.ExceptionUtils.ThrowingUnaryOperator;
 /**
  * - sliding
- * - max, min
- * - lastIndexWhere
  */
 public abstract class RichIterator<X> implements Iterator<X>, Iterable<X>, Closeable, AutoCloseable {
 	public static <X> RichIterator<X> iterate(X seed, ThrowingUnaryOperator<X> throwingOp) {
@@ -209,6 +207,9 @@ public abstract class RichIterator<X> implements Iterator<X>, Iterable<X>, Close
 	}
 	
 	public final RichIterator<X> sorted() { return sorted(null); }
+
+	public final Optional<X> max(Comparator<? super X> cmp) { return stream().max(cmp); }
+	public final Optional<X> min(Comparator<? super X> cmp) { return stream().min(cmp); }
 	
 	public final <Y> Y fold(Y initialValue, BiFunction<X,Y,Y> combiner) {
 		Y res = initialValue;
@@ -247,7 +248,17 @@ public abstract class RichIterator<X> implements Iterator<X>, Iterable<X>, Close
 			}
 		}
 	}
-
+	
+	public final X last() { return lastSafely().orElseThrow(NoSuchElementException::new); }
+	
+	public final Optional<X> lastSafely() {
+	    if (!hasNext()) return Optional.empty();
+	    while (true) {
+	        X x = next();
+	        if (!hasNext()) return Optional.of(x);
+	    }
+	}
+	
 	/**
 	 * Finds the first element of the RichIterator matching a predicate
 	 * @note Important : this is NOT a terminal operation in the general case. It will only close the RichIterator if all
@@ -268,6 +279,11 @@ public abstract class RichIterator<X> implements Iterator<X>, Iterable<X>, Close
 	public final int indexWhere(ThrowingPredicate<X> predicate) {
 		ensureValidState();
 		return zipWithIndex().findFirst(pair -> predicate.test(pair.getValue())).map(Pair::getKey).orElse(-1);
+	}
+	
+	public final int lastIndexWhere(ThrowingPredicate<X> predicate) {
+	    ensureValidState();
+	    return zipWithIndex().filter(pair -> predicate.test(pair.getValue())).last().getKey();
 	}
 	
 	public final boolean forall(ThrowingPredicate<X> predicate) { return !exists(predicate.negate())    ; }
