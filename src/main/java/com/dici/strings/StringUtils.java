@@ -26,11 +26,11 @@ public class StringUtils {
 	}
 	
 	public static <T> String join(String first, String sep, String last, Collection<T> collection) { 
-		return join(first,sep,last,Object::toString,collection);
+		return join(first, sep, last, Object::toString, collection);
 	}
 	
 	public static <T> String join(String first, String sep, String last, Function<T,String> toString, Collection<T> collection) { 
-		return collection.stream().map(toString).collect(joining(first,sep,last));
+		return collection.stream().map(toString).collect(joining(sep, first, last));
 	}
 	
 	@SafeVarargs
