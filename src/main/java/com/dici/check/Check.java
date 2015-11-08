@@ -37,18 +37,19 @@ public final class Check {
 	public static boolean isFalse(boolean b) { return isFalse(b,SHOULD_BE_FALSE); }
 	public static boolean isFalse(boolean b, String msg) { return isTrue(!b,msg); }
 
-	public static int isPositive(int n) { check(n >= 0,SHOULD_BE_POSITIVE); return n; } 
-	public static int isPositive(int n, String msg) { check(n >= 0,msg); return n; } 
+	public static int isPositive(int n) { check(n >= 0, SHOULD_BE_POSITIVE); return n; } 
+	public static int isPositive(int n, String msg) { check(n >= 0, msg); return n; } 
 	
 	public static void isGreaterThan(long a, long b) { isGreaterThan(a,b,SHOULD_BE_GREATER); }
-	public static void isGreaterThan(long a, long b, String msg) { check(a > b,msg); }
+	public static void isGreaterThan(long a, long b, String msg) { check(a > b, msg); }
 
-	public static void isGreaterOrEqual(long a, long b) { isGreaterOrEqual(a,b,SHOULD_BE_GREATER_OR_EQUAL); }
-	public static void isGreaterOrEqual(long a, long b, String msg) { check(a >= b,msg); }
+	public static void isGreaterOrEqual(long a, long b) { isGreaterOrEqual(a, b, SHOULD_BE_GREATER_OR_EQUAL); }
+	public static void isGreaterOrEqual(long a, long b, String msg) { check(a >= b, msg); }
 	public static void isGreaterOrEqual(int a, int b) { isGreaterOrEqual(a,b,SHOULD_BE_GREATER_OR_EQUAL); }
-	public static void isGreaterOrEqual(int a, int b, String msg) { check(a >= b,msg); }
-	public static void isGreaterOrEqual(byte a, byte b) { isGreaterOrEqual(a,b,SHOULD_BE_GREATER_OR_EQUAL); }
-	public static void isGreaterOrEqual(byte a, byte b, String msg) { check(a >= b,msg); }
+	public static void isGreaterOrEqual(int a, int b, String msg) { isGreaterOrEqual(a, b, defaultException(msg)); }
+	public static void isGreaterOrEqual(int a, int b, RuntimeException e) { check(a >= b, e); }
+	public static void isGreaterOrEqual(byte a, byte b) { isGreaterOrEqual(a, b, SHOULD_BE_GREATER_OR_EQUAL); }
+	public static void isGreaterOrEqual(byte a, byte b, String msg) { check(a >= b, msg); }
 	
 	public static void isBetween(int low, int mid, int high) { isBetween(low, mid, high, SHOULD_BE_BETWEEN(low, high)); }
 	public static void isBetween(int low, int mid, int high, String msg) { isBetween(low, mid, high, defaultException(msg)); }
