@@ -50,8 +50,9 @@ public final class Check {
 	public static void isGreaterOrEqual(byte a, byte b) { isGreaterOrEqual(a,b,SHOULD_BE_GREATER_OR_EQUAL); }
 	public static void isGreaterOrEqual(byte a, byte b, String msg) { check(a >= b,msg); }
 	
-	public static void isBetween(int low, int mid, int high) { isBetween(low,mid,high,SHOULD_BE_BETWEEN(low,high)); }
-	public static void isBetween(int low, int mid, int high, String msg) { check(low <= mid && mid < high,msg); }
+	public static void isBetween(int low, int mid, int high) { isBetween(low, mid, high, SHOULD_BE_BETWEEN(low, high)); }
+	public static void isBetween(int low, int mid, int high, String msg) { isBetween(low, mid, high, defaultException(msg)); }
+	public static void isBetween(int low, int mid, int high, RuntimeException e) { check(low <= mid && mid < high, e); }
 	
 	public static void areEqual(Object o1, Object o2) { areEqual(o1,o2,SHOULD_BE_EQUAL(o1,o2)); }
 	public static void areEqual(Object o1, Object o2, String msg) { check(o1.equals(o2),msg); }
@@ -71,5 +72,7 @@ public final class Check {
 		return s;
 	}
 
-	private static void check(boolean test, String msg) { if (!test) throw new IllegalArgumentException(msg); }
+	private static void check(boolean test, String msg) { check(test, defaultException(msg)); }
+	private static void check(boolean test, RuntimeException e) { if (!test) throw e; }
+	private static IllegalArgumentException defaultException(String msg) { return new IllegalArgumentException(msg); }
 }
