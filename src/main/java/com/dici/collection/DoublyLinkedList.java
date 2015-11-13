@@ -267,8 +267,8 @@ public class DoublyLinkedList<T> implements List<T> {
         return index == -1 ? -1 : size - 1 - index;
     }
 
-    @Override public ListIterator<T> listIterator(         ) { return listIterator(0)                               ; }
-    @Override public ListIterator<T> listIterator(int index) { return new Cursor<>(this, getNode(index), defaultWay); }
+    @Override public Cursor<T> listIterator(         ) { return listIterator(0)                               ; }
+    @Override public Cursor<T> listIterator(int index) { return new Cursor<>(this, getNode(index), defaultWay); }
 
     @Override
     public boolean remove(Object o) {
@@ -315,8 +315,10 @@ public class DoublyLinkedList<T> implements List<T> {
 
     @Override
     public T set(int index, T t) {
-        getNode(index).data = t;
-        return t;
+        Cursor<T> cursor = listIterator(index);
+        T data = cursor.current().data;
+        cursor.set(t);
+        return data;
     }
 
     @Override public int size() { return size; }

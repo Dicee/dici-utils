@@ -242,7 +242,24 @@ public class DoublyLinkedListTest {
     }
     
     @Test
-    public void dontForgetToTest_listIterator() {
-        assert(false);
+    public void removeFirst() {
+        assertThat(list.size(), is(3));
+        assertThat(list.remove(0), is(1));
+        assertThat(list, equalTo(listOf(2, 3)));
+        assertThat(list.first.data, is(2));
+        assertThat(list.size(), is(2));
     }
+    
+    @Test
+    public void removeLast() {
+        assertThat(list.remove(2), is(3));
+        assertThat(list, equalTo(listOf(1, 2)));
+        assertThat(list.last.data, is(2));
+        assertThat(list.size(), is(2));
+    }
+    
+//    @Test
+//    public void dontForgetToTest_listIterator() {
+//        assert(false);
+//    }
  }
