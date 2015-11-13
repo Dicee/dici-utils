@@ -289,6 +289,7 @@ public class DoublyLinkedList<T> implements List<T> {
         if (node == first) first = node.next;
         if (node == last ) last  = node.prev; 
         if (node.prev != null) biLinkNext(node.prev, node.next);
+        size--;
         return node.data;
     }
 
