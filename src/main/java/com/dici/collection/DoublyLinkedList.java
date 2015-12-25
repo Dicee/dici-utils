@@ -4,6 +4,8 @@ import static com.dici.check.Check.notNull;
 import static com.dici.collection.DoublyLinkedList.ListNode.biLinkNext;
 import static java.util.Collections.singletonList;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -70,74 +72,88 @@ public class DoublyLinkedList<T> implements List<T> {
     }
     
     public static class Cursor<T> implements ListIterator<T> {
+        private static <T> void checkInBounds(Integer index, DoublyLinkedList<T> list) { 
+            int size = list.size();
+            if (index == -1 && size == 0) return;
+            Check.isBetween(0, index, size, new IndexOutOfBoundsException("Index out of bounds: " + index + " (size = " + size + ")")); 
+        }
+
         private DoublyLinkedList<T> list;
-        private ListNode<T> first;
         private ListNode<T> current;
-        private ListNode<T> goal;
-        private final Way  way;
+        private final Way way;
         
         private int index;
-        private boolean hasBeenRemoved;
-        private boolean hasEof;
+        private boolean isRemovable;
         
-        public Cursor(DoublyLinkedList<T> list, ListNode<T> first, Way way) {
-            this.list    = notNull(list);
-            this.first   = first;
-            this.current = first;
-            this.goal    = goal(list, way);
-            this.way     = notNull(way);
+        public Cursor(DoublyLinkedList<T> list, Way way) { this(list, notNull(list).endIndex(notNull(way)), way); }
+        
+        public Cursor(DoublyLinkedList<T> list, int index, Way way) {
+            this.list        = notNull(list);
+            this.way         = notNull(way);
+            this.isRemovable = false;
+            initCurrent(list, index);
         }
         
-        private ListNode<T> goal(DoublyLinkedList<T> list, Way way) { return list.defaultWay == way ? list.last : list.first; }
-
+        private void initCurrent(DoublyLinkedList<T> list, int index) {
+            checkInBounds(index, list);
+            this.index   = index;
+            this.current = list.closestEnd(index);
+            Way way = this.current == list.first ? Way.FORWARD : Way.BACKWARD;
+            System.err.println(way + " " + list.closestIndex(index));
+            for (int i = list.closestIndex(index); i > 0; i--) current = next(way);
+            System.err.println("------------------- end " + current + "-----------------------------");
+        }
+        
         @Override
         public T next() {
-            hasBeenRemoved = false;
             if (!hasNext()) throw new NoSuchElementException();
-            hasEof  = current == goal; 
-            T data  = current.data;
-            if (hasNext()) current = successor();
+            isRemovable = true;
+            T data         = current.data;
+            current        = successor();
             index++;
             return data;
         }
-
-        @Override
-        public void remove() {
-            if (hasBeenRemoved) throw new IllegalStateException("Cannot call remove on an iterator twice in a row");
-            if (!hasNext()) throw new NoSuchElementException();
-            list.removeNode(current);
-            current = successor();
-            hasBeenRemoved = true;
-        }
-
-        private ListNode<T> successor() {
-            switch (way) {
-                case FORWARD : return current.next;
-                case BACKWARD: return current.prev;  
-                default      : throw new EnumConstantNotPresentException(Way.class, way.name());
-            }
-        }
-
-        @Override public boolean hasNext    () { return !hasEof; }
-        @Override public boolean hasPrevious() { return current != first && current.prev != null; }
         
         @Override
         public T previous() { 
             if (!hasPrevious()) throw new NoSuchElementException();
-            hasEof = false;
-            return current.prev.data; 
+            isRemovable = true;
+            if (hasNext()) current = predecessor();
+            index--;
+            return current.data; 
         }
 
-        public ListNode<T> current() { 
-            if (hasBeenRemoved) throw new IllegalStateException("The current element has been removed and should not "
-                    + "be accessed until next is called again");
-            return current; 
+        @Override
+        public void remove() {
+            if (!isRemovable) throw new IllegalStateException("Cannot call remove on an iterator twice in a row");
+            if (!hasPrevious()) throw new NoSuchElementException();
+            list.removeNode(predecessor());
+            isRemovable = false;
+            index--;
         }
 
-        @Override public int nextIndex    (   ) { return index + 1                        ; }
-        @Override public int previousIndex(   ) { return index - 1                        ; }
-        @Override public void set         (T t) { current.data = t                        ; }
-        @Override public void add         (T t) { new ListNode<>(t, current, current.next); }
+        private ListNode<T> successor  () { return notNull(next(way           )); }
+        private ListNode<T> predecessor() { return notNull(next(way.opposite())); }
+        private ListNode<T> next(Way way) {
+            switch (way) {
+                case FORWARD : return successorOrItself(current, current.next);
+                case BACKWARD: return successorOrItself(current, current.prev);  
+                default      : throw new EnumConstantNotPresentException(Way.class, way.name());
+            }
+        }
+
+        private ListNode<T> successorOrItself(ListNode<T> current, ListNode<T> successorOrNull) {
+            return successorOrNull == null ? current : successorOrNull;
+        }
+
+        @Override public boolean hasNext    () { return nextIndex() != -1 && nextIndex() < list.size(); }
+        @Override public boolean hasPrevious() { return previousIndex() >= 0; }
+
+        public ListNode<T>   currentNode  (   ) { return current            ; }
+        @Override public int nextIndex    (   ) { return index              ; }
+        @Override public int previousIndex(   ) { return index - 1          ; }
+        @Override public void set         (T t) { current.data = t          ; }
+        @Override public void add         (T t) { list.addToNode(current, t); }
     }
     
     public ListNode<T> first;
@@ -168,9 +184,20 @@ public class DoublyLinkedList<T> implements List<T> {
         this.size = collection.size();
     }
     
-    @Override public boolean add(T t) { return addAll(singletonList(t)); }
+    public int endIndex(Way way) { return isEmpty() ? -1 : defaultWay == way ? 0 : size() - 1; }
+    public int closestIndex(int index) { return index <= size()/2 ? index : size() - 1 - index; }
+    public ListNode<T> closestEnd(int index) { return index <= size()/2 ? first : last; }
+    
+    @Override public boolean add(T t) { return addToNode(last, t); }
     @Override public void add(int index, T t) { addAll(index, singletonList(t)); }
 
+    private boolean addToNode(ListNode<T> node, T t) {
+        ListNode<T> newNode = new ListNode<>(t, notNull(node), node.next);
+        if (node == last) last = newNode;
+        size++;
+        return true;
+    }
+    
     @Override
     public boolean addAll(Collection<? extends T> collection) { return addAll(last, collection); }
 
@@ -182,7 +209,9 @@ public class DoublyLinkedList<T> implements List<T> {
     
     private boolean addAll(ListNode<T> node, Collection<? extends T> collection) {
         if (collection.isEmpty()) return true;
-        
+
+        size += collection.size();
+
         DoublyLinkedList<T> newList = new DoublyLinkedList<T>(collection);
         if (size == 0) return copyList(newList);
         
@@ -230,20 +259,9 @@ public class DoublyLinkedList<T> implements List<T> {
     public T get(int index) { return getNode(index).data; }
     
     public ListNode<T> getNode(int index) {
-        checkInBounds(index);
-        Cursor<T> cursor = closestCursor(index);
-        for (int i = closestIndex(index); i > 0; i--) cursor.next();
-        return cursor.current();
+        return listIterator(index).currentNode();
     }
 
-    private void checkInBounds(int index) { Check.isBetween(0, index, size, new IndexOutOfBoundsException("Index out of bounds: " + index + " (size = " + size + ")")); }
-    
-    public Cursor<T> closestCursor(int index) {
-        return index <= size/2 ? new Cursor<>(this, first, defaultWay) : new Cursor<>(this, last, defaultWay.opposite()); 
-    }
-    
-    private int closestIndex(int index) { return index <= size/2 ? index : size - 1 - index; }
-    
     @Override
     public int indexOf(Object o) {
         int index = 0;
@@ -256,8 +274,8 @@ public class DoublyLinkedList<T> implements List<T> {
 
     @Override public boolean isEmpty() { return size == 0; }
     @Override public Iterator<T> iterator() { return forwardCursor(); }
-    public Cursor<T> forwardCursor() { return new Cursor<>(this, first, defaultWay); }
-    public Cursor<T> backwardCursor() { return new Cursor<>(this, last, defaultWay.opposite()); }
+    public Cursor<T> forwardCursor() { return new Cursor<>(this, defaultWay); }
+    public Cursor<T> backwardCursor() { return new Cursor<>(this, defaultWay.opposite()); }
 
     @Override
     public int lastIndexOf(Object o) {
@@ -267,15 +285,15 @@ public class DoublyLinkedList<T> implements List<T> {
         return index == -1 ? -1 : size - 1 - index;
     }
 
-    @Override public Cursor<T> listIterator(         ) { return listIterator(0)                               ; }
-    @Override public Cursor<T> listIterator(int index) { return new Cursor<>(this, getNode(index), defaultWay); }
+    @Override public Cursor<T> listIterator(         ) { return listIterator(0)                      ; }
+    @Override public Cursor<T> listIterator(int index) { return new Cursor<>(this, index, defaultWay); }
 
     @Override
     public boolean remove(Object o) {
         Cursor<T> cursor = forwardCursor();
         while (cursor.hasNext()) { 
-            if (Objects.equal(cursor.current().data, o)) {
-                removeNode(cursor.current());
+            if (Objects.equal(cursor.currentNode().data, o)) {
+                removeNode(cursor.currentNode());
                 return true;
             }
             cursor.next();
@@ -306,10 +324,9 @@ public class DoublyLinkedList<T> implements List<T> {
         
         Cursor<T> cursor = forwardCursor();
         while (cursor.hasNext()) {
-            boolean remove = !collection.contains(cursor.current().data);
+            boolean remove = !collection.contains(cursor.next());
             hasRemoved     = hasRemoved || remove;
             if (remove) cursor.remove();
-            cursor.next();
         }
         return hasRemoved;
     }
@@ -317,7 +334,7 @@ public class DoublyLinkedList<T> implements List<T> {
     @Override
     public T set(int index, T t) {
         Cursor<T> cursor = listIterator(index);
-        T data = cursor.current().data;
+        T data = cursor.currentNode().data;
         cursor.set(t);
         return data;
     }
@@ -361,4 +378,21 @@ public class DoublyLinkedList<T> implements List<T> {
     }
     
     @Override public String toString() { return StringUtils.join("[", ", ", "]", this); }
+    
+    public static void main(String[] args) {
+        ListIterator<Integer> listIterator = new ArrayList<>(Arrays.asList(1, 2, 3)).listIterator(0);
+       System.out.println(listIterator.next());
+       System.out.println(listIterator.previous());
+       System.out.println(listIterator.next());
+       System.out.println(listIterator.previous());
+       System.out.println(listIterator.next());
+       System.out.println(listIterator.previous());
+//        System.out.println(listIterator.nextIndex());
+//        listIterator.remove();
+//        System.out.println(listIterator.nextIndex());
+//        System.out.println(listIterator.previousIndex());
+//        listIterator.next();
+//        System.out.println(listIterator.previousIndex());
+//        System.out.println(listIterator.next());
+    }
 }
