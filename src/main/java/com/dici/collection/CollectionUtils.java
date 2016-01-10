@@ -2,6 +2,7 @@ package com.dici.collection;
 
 import static com.dici.check.Check.notNull;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -42,6 +43,13 @@ public class CollectionUtils {
 	public static <T> List<T> listOf(T... elts) {
 		notNull(elts,"This array should contain at least one element");
 		return Collections.unmodifiableList(Arrays.asList(elts));
+	}
+	
+	@SafeVarargs
+	public static <T> List<T> unionList(List<T>... lists) {
+	    List<T> union = new ArrayList<>();
+	    for (List<T> list : lists) union.addAll(list);
+	    return union;
 	}
 
 	public static <T> Collector<T, ?, List<T>> collectList() { return Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList); }
