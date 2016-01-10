@@ -3,18 +3,19 @@ package com.dici.check;
 import java.util.Collection;
 
 public final class Check {
-	private static final String	SHOULD_BE_TRUE				= "This expression should be true";
-	private static final String	SHOULD_BE_FALSE				= "This expression should be false";
-	private static final String	SHOULD_NOT_BE_NULL			= "This variable should not be null";
-	private static final String	SHOULD_BE_NULL				= "This variable should be null";
-	private static final String	SHOULD_NOT_BE_EQUAL			= "These objects should not be equal";
-	private static final String	SHOULD_NOT_BE_EMPTY			= "This array should not be empty";
-	private static final String	SHOULD_NOT_BE_BLANK			= "This string should not be blank";
-	private static final String	SHOULD_BE_GREATER			= "The first parameter should be greater than the second one";
-	private static final String	SHOULD_BE_GREATER_OR_EQUAL	= "The first parameter should be greater (or equal) than the second one";
-	private static final String SHOULD_BE_POSITIVE			= "This variable should be positive";
-	private static String SHOULD_BE_BETWEEN(int low, int high) { return String.format("This number should be between %d and %d",low,high); }
-	private static String SHOULD_BE_EQUAL(Object o1, Object o2) { return String.format("Expected : %s, got: %s",o1,o2); }
+	private static final String	SHOULD_BE_TRUE			= "This expression should be true";
+	private static final String	SHOULD_BE_FALSE			= "This expression should be false";
+	private static final String	SHOULD_NOT_BE_NULL		= "This variable should not be null";
+	private static final String	SHOULD_BE_NULL			= "This variable should be null";
+	private static final String	SHOULD_NOT_BE_EQUAL		= "These objects should not be equal";
+	private static final String	SHOULD_NOT_BE_EMPTY		= "This array should not be empty";
+	private static final String	SHOULD_NOT_BE_BLANK		= "This string should not be blank";
+	private static final String	SHOULD_BE_GREATER		= "The first parameter should be greater than the second one";
+	private static final String	SHOULD_BE_GREATER_OR_EQUAL      = "The first parameter should be greater (or equal) than the second one";
+	private static final String     SHOULD_BE_POSITIVE		= "This variable should be positive";
+	private static String SHOULD_BE_BETWEEN(int low, int high) { return String.format("This number should be between %d and %d", low, high); }
+	private static String SHOULD_BE_EQUAL(Object o1, Object o2) { return String.format("Expected : %s, got: %s", o1, o2); }
+	private static String SHOULD_BE_DIFFERENT(Object o1, Object o2) { return String.format("%s should be different from %s", o1, o2); }
 	
 	private Check() { }
 	
@@ -55,14 +56,17 @@ public final class Check {
 	public static void isBetween(int low, int mid, int high, String msg) { isBetween(low, mid, high, defaultException(msg)); }
 	public static void isBetween(int low, int mid, int high, RuntimeException e) { check(low <= mid && mid < high, e); }
 	
-	public static void areEqual(Object o1, Object o2) { areEqual(o1,o2,SHOULD_BE_EQUAL(o1,o2)); }
-	public static void areEqual(Object o1, Object o2, String msg) { check(o1.equals(o2),msg); }
-	public static void areEqual(long o1, long o2) { areEqual(o1,o2,SHOULD_BE_EQUAL(o1,o2)); }
-	public static void areEqual(long o1, long o2, String msg) { check(o1 == o2,msg); }
-	public static void areEqual(int o1, int o2) { areEqual(o1,o2,SHOULD_BE_EQUAL(o1,o2)); }
-	public static void areEqual(int o1, int o2, String msg) { check(o1 == o2,msg); }
-	public static void areEqual(byte o1, byte o2) { areEqual(o1,o2,SHOULD_BE_EQUAL(o1,o2)); }
-	public static void areEqual(byte o1, byte o2, String msg) { check(o1 == o2,msg); }
+	public static void areEqual(Object o1, Object o2) { areEqual(o1, o2, SHOULD_BE_EQUAL(o1, o2)); }
+	public static void areEqual(Object o1, Object o2, String msg) { check(o1.equals(o2), msg); }
+	public static void areEqual(long i, long j) { areEqual(i, j, SHOULD_BE_EQUAL(i, j)); }
+	public static void areEqual(long i, long j, String msg) { check(i == j, msg); }
+	public static void areEqual(int i, int j) { areEqual(i, j, SHOULD_BE_EQUAL(i, j)); }
+	public static void areEqual(int i, int j, String msg) { check(i == j, msg); }
+	public static void areEqual(byte b1, byte b2) { areEqual(b1, b2, SHOULD_BE_EQUAL(b1, b2)); }
+	public static void areEqual(byte b1, byte b2, String msg) { check(b1 == b2, msg); }
+	
+	public static void areDifferent(int i, int j) { areEqual(i, j, SHOULD_BE_DIFFERENT(i, j)); }
+	public static void areDifferent(int i, int j, String msg) { check(i == j, msg); }
 	
 	public static void notEqual(Object o1, Object o2) { notEqual(o1,o2,SHOULD_NOT_BE_EQUAL); }
 	public static void notEqual(Object o1, Object o2, String msg) { check(!o1.equals(o2),msg); }
