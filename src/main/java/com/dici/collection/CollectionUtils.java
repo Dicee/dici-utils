@@ -46,9 +46,9 @@ public class CollectionUtils {
 	}
 	
 	@SafeVarargs
-	public static <T> List<T> unionList(List<T>... lists) {
+	public static <T> List<T> unionList(List<? extends T>... lists) {
 	    List<T> union = new ArrayList<>();
-	    for (List<T> list : lists) union.addAll(list);
+	    for (List<? extends T> list : lists) union.addAll(list);
 	    return union;
 	}
 
