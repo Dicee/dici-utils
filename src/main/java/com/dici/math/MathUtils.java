@@ -141,4 +141,6 @@ public class MathUtils {
 	public static boolean isBetween(int low, int mid, int high) { return low <= mid && mid < high; }
 	public static boolean isBetweenClosed(int low, int mid, int high) { return low <= mid && mid <= high; }
 	public static boolean isZero(double x) { return epsilonCompare(x,0) == 0; }
+	
+	public static int rint(double d) { return (int) Math.rint(d); }
 }
