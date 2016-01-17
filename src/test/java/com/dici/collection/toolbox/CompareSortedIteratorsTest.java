@@ -1,7 +1,7 @@
 package com.dici.collection.toolbox;
 
-import static java.util.Arrays.asList;
 import static com.dici.strings.StringUtils.lastChar;
+import static java.util.Arrays.asList;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -9,16 +9,10 @@ import static org.junit.Assert.assertThat;
 import java.util.Iterator;
 import java.util.List;
 
-import com.dici.collection.richIterator.RichIterators;
-import com.dici.collection.toolbox.CompareSortedIterators;
-import com.dici.collection.toolbox.Diff;
-import com.dici.collection.toolbox.DiffReport;
-import com.dici.collection.toolbox.MissingElementDiff;
-import com.dici.collection.toolbox.NotEqualDiff;
-import com.dici.collection.toolbox.UnexpectedElementDiff;
-
 import org.junit.Before;
 import org.junit.Test;
+
+import com.dici.collection.richIterator.RichIterators;
 
 public class CompareSortedIteratorsTest {
 	private Iterator<String>	expected;
