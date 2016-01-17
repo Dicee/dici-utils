@@ -2,7 +2,7 @@ package com.dici.image;
 
 import static com.dici.check.Check.notNull;
 
-import com.dici.image.colorTransfomrations.ColorTransformation;
+import com.dici.image.colorTransformations.ColorTransformation;
 
 import javafx.scene.paint.Color;
 

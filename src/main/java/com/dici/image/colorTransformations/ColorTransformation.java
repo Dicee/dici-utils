@@ -1,4 +1,4 @@
-package com.dici.image.colorTransfomrations;
+package com.dici.image.colorTransformations;
 
 import java.util.function.Function;
 

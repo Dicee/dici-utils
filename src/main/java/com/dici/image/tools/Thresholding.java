@@ -1,6 +1,6 @@
 package com.dici.image.tools;
 
-import static com.dici.image.colorTransfomrations.ColorTransformation.identity;
+import static com.dici.image.colorTransformations.ColorTransformation.identity;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -18,7 +18,7 @@ import javax.imageio.ImageIO;
 
 import com.dici.image.BinaryThresholder;
 import com.dici.image.Thresholder;
-import com.dici.image.colorTransfomrations.TransparentTransformation;
+import com.dici.image.colorTransformations.TransparentTransformation;
 
 public class Thresholding {
     public static void main(String[] args) throws IOException {
