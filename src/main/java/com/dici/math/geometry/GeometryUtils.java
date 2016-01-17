@@ -1,7 +1,13 @@
 package com.dici.math.geometry;
 
 import static com.dici.math.MathUtils.isZero;
+import static java.lang.Math.pow;
 
+import java.util.stream.Stream;
+
+import javafx.util.Pair;
+
+import com.dici.math.geometry.geometry2D.ImmutablePoint;
 import com.dici.math.geometry.geometry3D.Vector3D;
 
 public final class GeometryUtils {
@@ -63,5 +69,19 @@ public final class GeometryUtils {
 	public static Vector3D baseTransfer(Vector3D p, Vector3D[] vects, Vector3D o) {		
 		Vector3D v = new Vector3D(o,p);
 		return new Vector3D(v.dot(vects[0]),v.dot(vects[1]),v.dot(vects[2]));
+	}
+
+	public static ImmutablePoint closestDiscretePoint(double x, double y) {
+	    // find the discrete point that corresponds (dx,dy) the best in the least square sense
+        return discreteNeighbours(x, y).map(p -> new Pair<>(p, pow(p.x - x, 2) + pow(p.y - y, 2)))
+                                       .min((pair1, pair2) -> Double.compare(pair1.getValue(), pair2.getValue()))
+                                       .get().getKey();
+	}
+	
+	public static Stream<ImmutablePoint> discreteNeighbours(double x, double y) {
+        int cx = (int) Math.ceil (x), cy = (int) Math.ceil (y);
+        int fx = (int) Math.floor(x), fy = (int) Math.floor(y);
+        return Stream.of(new ImmutablePoint(cx, cy), new ImmutablePoint(cx, fy), new ImmutablePoint(fx, cy), new ImmutablePoint(fx, fy))
+                     .distinct();
 	}
 }

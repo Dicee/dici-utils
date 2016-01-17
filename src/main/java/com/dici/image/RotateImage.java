@@ -1,23 +1,23 @@
 package com.dici.image;
 
+import static com.dici.math.MathUtils.isBetween;
 import static java.lang.Math.abs;
 import static java.lang.Math.cos;
 import static java.lang.Math.pow;
 import static java.lang.Math.sin;
-import static com.dici.math.MathUtils.isBetween;
 
-import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.stream.Stream;
 
 import javafx.util.Pair;
 
 import javax.imageio.ImageIO;
 
 import com.dici.files.FileUtils;
+import com.dici.math.geometry.GeometryUtils;
+import com.dici.math.geometry.geometry2D.ImmutablePoint;
 
 public class RotateImage {
 	private static final String OUTPUT_DIR = "src/" + FileUtils.getPathToPackage(RotateImage.class) + "data/";		
@@ -57,20 +57,15 @@ public class RotateImage {
 				double dx =  i*cos + j*sin + w/2;
 				double dy = -i*sin + j*cos + h/2;
 				
-				// find the discrete point that corresponds (dx,dy) the best in the least square sense
-				int cx = (int) Math.ceil (dx), cy = (int) Math.ceil (dy);
-				int fx = (int) Math.floor(dx), fy = (int) Math.floor(dy);
-				
-				int ii = i + W/2, jj = j + H/2;
-				Stream.of(new Point(cx,cy),new Point(cx,fy),new Point(fx,cy),new Point(fx,fy))
-					.distinct()
-					.filter(p -> isBetween(0,p.x,w) && isBetween(0,p.y,h))
-					.map(p -> new Pair<>(p,pow(p.x - dx,2) + pow(p.y - dy,2)))
-					.min((x,y) -> Double.compare(x.getValue(),y.getValue()))
-					.ifPresent(kv -> {
-						Point bestMatch = kv.getKey();
-						res.setRGB(ii,jj,im.getRGB(bestMatch.x,bestMatch.y));
-					});
+                int ii = i + W/2, jj = j + H/2;
+				GeometryUtils.discreteNeighbours(dx, dy)
+				             .filter(p -> isBetween(0,p.x,w) && isBetween(0,p.y,h))
+        					 .map(p -> new Pair<>(p,pow(p.x - dx,2) + pow(p.y - dy,2)))
+        					 .min((x,y) -> Double.compare(x.getValue(),y.getValue()))
+        					 .ifPresent(kv -> {
+        		   	 	 		 ImmutablePoint bestMatch = kv.getKey();
+        						 res.setRGB(ii, jj, im.getRGB(bestMatch.x,bestMatch.y));
+        					 });
 			}
 		return res;
 	}
