@@ -65,8 +65,8 @@ public final class Check {
 	public static void areEqual(byte b1, byte b2) { areEqual(b1, b2, SHOULD_BE_EQUAL(b1, b2)); }
 	public static void areEqual(byte b1, byte b2, String msg) { check(b1 == b2, msg); }
 	
-	public static void areDifferent(int i, int j) { areDifferent(i, j, SHOULD_BE_DIFFERENT(i, j)); }
-	public static void areDifferent(int i, int j, String msg) { check(i != j, msg); }
+	public static void notEqual(int i, int j) { notEqual(i, j, SHOULD_BE_DIFFERENT(i, j)); }
+	public static void notEqual(int i, int j, String msg) { check(i != j, msg); }
 	
 	public static void notEqual(Object o1, Object o2) { notEqual(o1,o2,SHOULD_NOT_BE_EQUAL); }
 	public static void notEqual(Object o1, Object o2, String msg) { check(!o1.equals(o2),msg); }
