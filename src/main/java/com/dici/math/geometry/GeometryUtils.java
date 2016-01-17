@@ -2,6 +2,8 @@ package com.dici.math.geometry;
 
 import static com.dici.math.MathUtils.isZero;
 
+import com.dici.math.geometry.geometry3D.Vector3D;
+
 public final class GeometryUtils {
 	public static Vector3D[] canonicBase = { new Vector3D(1,0,0),new Vector3D(0,1,0),new Vector3D(0,0,1) };
 	
