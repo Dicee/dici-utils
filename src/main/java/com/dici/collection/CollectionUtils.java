@@ -46,6 +46,13 @@ public class CollectionUtils {
 	}
 	
 	@SafeVarargs
+	public static <T> Set<T> union(Set<? extends T>... sets) {
+	    Set<T> union = new HashSet<>();
+	    for (Set<? extends T> set : sets) union.addAll(set);
+	    return union;
+	}
+	
+	@SafeVarargs
 	public static <T> List<T> unionList(List<? extends T>... lists) {
 	    List<T> union = new ArrayList<>();
 	    for (List<? extends T> list : lists) union.addAll(list);
