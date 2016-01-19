@@ -3,19 +3,20 @@ package com.dici.check;
 import java.util.Collection;
 
 public final class Check {
-	private static final String	SHOULD_BE_TRUE			= "This expression should be true";
-	private static final String	SHOULD_BE_FALSE			= "This expression should be false";
-	private static final String	SHOULD_NOT_BE_NULL		= "This variable should not be null";
-	private static final String	SHOULD_BE_NULL			= "This variable should be null";
-	private static final String	SHOULD_NOT_BE_EQUAL		= "These objects should not be equal";
-	private static final String	SHOULD_NOT_BE_EMPTY		= "This array should not be empty";
-	private static final String	SHOULD_NOT_BE_BLANK		= "This string should not be blank";
-	private static final String	SHOULD_BE_GREATER		= "The first parameter should be greater than the second one";
-	private static final String	SHOULD_BE_GREATER_OR_EQUAL      = "The first parameter should be greater (or equal) than the second one";
-	private static final String     SHOULD_BE_POSITIVE		= "This variable should be positive";
+	private static final String	SHOULD_BE_TRUE			    = "This expression should be true";
+	private static final String	SHOULD_BE_FALSE			    = "This expression should be false";
+	private static final String	SHOULD_NOT_BE_NULL		    = "This variable should not be null";
+	private static final String	SHOULD_BE_NULL			    = "This variable should be null";
+	private static final String	SHOULD_NOT_BE_EQUAL		    = "These objects should not be equal";
+	private static final String	SHOULD_NOT_BE_EMPTY		    = "This array should not be empty";
+	private static final String	SHOULD_NOT_BE_BLANK		    = "This string should not be blank";
+	private static final String	SHOULD_BE_GREATER		    = "The first parameter should be greater than the second one";
+	private static final String	SHOULD_BE_GREATER_OR_EQUAL  = "The first parameter should be greater (or equal) than the second one";
+	private static final String SHOULD_BE_POSITIVE		    = "This variable should be positive";
 	private static String SHOULD_BE_BETWEEN(int low, int high) { return String.format("This number should be between %d and %d", low, high); }
 	private static String SHOULD_BE_EQUAL(Object o1, Object o2) { return String.format("Expected : %s, got: %s", o1, o2); }
 	private static String SHOULD_BE_DIFFERENT(Object o1, Object o2) { return String.format("%s should be different from %s", o1, o2); }
+	private static String SHOULD_NOT_BE_NEGATIVE(long n) { return String.format("Expected strictly positive, got %d", n); }
 	
 	private Check() { }
 	
@@ -24,7 +25,7 @@ public final class Check {
 	public static <T, C extends Collection<T>> C notEmpty(C collection, String msg) { check(notNull(collection).size() != 0, msg); return collection; 	}
 	public static <T, C extends Collection<T>> C notEmpty(C collection) { return notEmpty(collection, SHOULD_NOT_BE_EMPTY); 	}
 	
-	public static <T> void isNull(T t) { isNull(SHOULD_BE_NULL); }
+	public static <T> void isNull(T t) { isNull(t, SHOULD_BE_NULL); }
 	public static <T> void isNull(T t, String msg) { check(t == null,msg); }
 	
 	public static <T> T notNull(T t) { return notNull(t,SHOULD_NOT_BE_NULL); }
@@ -38,9 +39,15 @@ public final class Check {
 	public static boolean isFalse(boolean b) { return isFalse(b,SHOULD_BE_FALSE); }
 	public static boolean isFalse(boolean b, String msg) { return isTrue(!b,msg); }
 
-	public static int isPositive(int n) { check(n >= 0, SHOULD_BE_POSITIVE); return n; } 
+	public static int isPositive(int n) { return isPositive(n, SHOULD_BE_POSITIVE); } 
 	public static int isPositive(int n, String msg) { check(n >= 0, msg); return n; } 
 	
+	public static int notNegative(int n) { return notNegative(n, SHOULD_NOT_BE_NEGATIVE(n)); } 
+    public static int notNegative(int n, String msg) { check(n < 0, msg); return n; } 
+	
+    public static long notNegative(long n) { return notNegative(n, SHOULD_NOT_BE_NEGATIVE(n)); } 
+    public static long notNegative(long n, String msg) { check(n < 0, msg); return n; } 
+    
 	public static void isGreaterThan(long a, long b) { isGreaterThan(a,b,SHOULD_BE_GREATER); }
 	public static void isGreaterThan(long a, long b, String msg) { check(a > b, msg); }
 
