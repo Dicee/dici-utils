@@ -296,6 +296,12 @@ public abstract class RichIterator<X> implements Iterator<X>, Iterable<X>, Close
 	public final boolean forall(ThrowingPredicate<X> predicate) { return !exists(predicate.negate())    ; }
 	public final boolean exists(ThrowingPredicate<X> predicate) { return  findAny(predicate).isPresent(); }
 	
+	/* Java does not have lower bounds except for wildcards nor variant types, which causes problems in expressions such as
+	 *     List<Move> moves = RichIntIterator.range(1, 3).map(VerticalMove::new).toList()
+	 * because it will be typed as List<VerticalMove>. As a fix, we propose to write 
+	 *     List<Move> moves = RichIntIterator.range(1, 3).map(VerticalMove::new).asType(Move.class).toList()
+	 * This is a shame, but as for now that's the way it is.
+	 */
 	public final <Y> RichIterator<Y> asType(Class<Y> clazz) {
 	    ensureValidState();
 	    return map(clazz::cast);
