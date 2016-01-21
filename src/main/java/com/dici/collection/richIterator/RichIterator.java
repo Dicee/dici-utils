@@ -213,6 +213,9 @@ public abstract class RichIterator<X> implements Iterator<X>, Iterable<X>, Close
 	public final Optional<X> min(Comparator<? super X> cmp) { return stream().min(cmp); }
 	
 	public final <Y> Y fold(Y initialValue, BiFunction<X,Y,Y> combiner) {
+		ensureValidState();
+		setUsed();
+		
 		Y res = initialValue;
 		while (hasNext()) res = combiner.apply(next(),res);
 		return res;
@@ -224,8 +227,12 @@ public abstract class RichIterator<X> implements Iterator<X>, Iterable<X>, Close
 	}
 	
 	public final boolean contains(Object o) {
+	    ensureValidState();	
+	    setUsed();
+	    
 	    while (hasNext()) 
 	        if (Objects.equal(o, next())) return true;
+	        
 	    return false;
 	}
 	
@@ -259,6 +266,9 @@ public abstract class RichIterator<X> implements Iterator<X>, Iterable<X>, Close
 	public final X last() { return lastSafely().orElseThrow(NoSuchElementException::new); }
 	
 	public final Optional<X> lastSafely() {
+	    ensureValidState();	
+	    setUsed();
+	    
 	    if (!hasNext()) return Optional.empty();
 	    while (true) {
 	        X x = next();
