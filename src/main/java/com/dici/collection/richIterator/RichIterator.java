@@ -296,6 +296,11 @@ public abstract class RichIterator<X> implements Iterator<X>, Iterable<X>, Close
 	public final boolean forall(ThrowingPredicate<X> predicate) { return !exists(predicate.negate())    ; }
 	public final boolean exists(ThrowingPredicate<X> predicate) { return  findAny(predicate).isPresent(); }
 	
+	public final <Y> RichIterator<Y> asType(Class<Y> clazz) {
+	    ensureValidState();
+	    return map(clazz::cast);
+	}
+	
 	public final List<X> toList() { return stream().collect(Collectors.toList()); }
 	public final Set<X> toSet() { return stream().collect(Collectors.toSet()); }
 	public final <K,V> Map<K,V> toMap(ThrowingFunction<X,K> keyFunction, ThrowingFunction<X,V> valueFunction) { return mapToPair(keyFunction,valueFunction).toMap(); }
