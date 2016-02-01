@@ -1,0 +1,8 @@
+#!/bin/bash
+if [ $# -eq 0 ] 
+then
+    echo "Missing argument: need a stash id"
+else
+    echo "git stash drop stash@{$1}"
+    git stash drop stash@{$1}
+fi
