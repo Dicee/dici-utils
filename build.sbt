@@ -1,5 +1,4 @@
-val CONSUMERS = Set("C:/JavaWork/Scala/algorithmicProblems", "C:/JavaWork/Scala/LateX Editor 4.0", 
-	"C:/Users/Dici/Documents/Github/latexEditor", "C:/Users/Dici/Documents/Github/algorithmicProblems", "C:/Users/Dici/Documents/Github/chessGame")
+val CONSUMERS = scala.io.Source.fromFile("consumers.txt").getLines.toSet
 
 lazy val distribute = taskKey[Unit]("Produces (if needed) Distributes the assembly jar and distributes it to all the consumers of the library")
 
