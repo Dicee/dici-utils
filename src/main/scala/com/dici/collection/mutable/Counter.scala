@@ -32,5 +32,7 @@ class Counter[T] extends Iterable[T] {
             current.get
         }
         override def hasNext = wrapped.hasNext || counter > 0
-    } 
+    }
+
+    def toMap = map.toMap
 }
