@@ -22,10 +22,10 @@ class Counter[T] extends Iterable[T] {
         var wrapped = Counter.this.map.iterator
         var current: Option[T] = None
         
-        override def next = {
+        override def next() = {
             if (counter > 0) counter -= 1
             else { 
-                var (next, count) = wrapped.next
+                val (next, count) = wrapped.next()
                 current           = Some(next)
                 counter           = count - 1
             }
