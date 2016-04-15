@@ -40,10 +40,10 @@ public final class Check {
 	public static boolean isFalse(boolean b, String msg) { return isTrue(!b,msg); }
 
 	public static int isPositive(int n) { return isPositive(n, SHOULD_BE_POSITIVE); } 
-	public static int isPositive(int n, String msg) { check(n >= 0, msg); return n; } 
+	public static int isPositive(int n, String msg) { check(n > 0, msg); return n; } 
 	
 	public static int notNegative(int n) { return notNegative(n, SHOULD_NOT_BE_NEGATIVE(n)); } 
-    public static int notNegative(int n, String msg) { check(n < 0, msg); return n; } 
+    public static int notNegative(int n, String msg) { check(n >= 0, msg); return n; } 
 	
     public static long notNegative(long n) { return notNegative(n, SHOULD_NOT_BE_NEGATIVE(n)); } 
     public static long notNegative(long n, String msg) { check(n < 0, msg); return n; } 
@@ -51,13 +51,13 @@ public final class Check {
 	public static void isGreaterThan(long a, long b) { isGreaterThan(a,b,SHOULD_BE_GREATER); }
 	public static void isGreaterThan(long a, long b, String msg) { check(a > b, msg); }
 
-	public static void isGreaterOrEqual(long a, long b) { isGreaterOrEqual(a, b, SHOULD_BE_GREATER_OR_EQUAL); }
-	public static void isGreaterOrEqual(long a, long b, String msg) { check(a >= b, msg); }
-	public static void isGreaterOrEqual(int a, int b) { isGreaterOrEqual(a,b,SHOULD_BE_GREATER_OR_EQUAL); }
-	public static void isGreaterOrEqual(int a, int b, String msg) { isGreaterOrEqual(a, b, defaultException(msg)); }
-	public static void isGreaterOrEqual(int a, int b, RuntimeException e) { check(a >= b, e); }
-	public static void isGreaterOrEqual(byte a, byte b) { isGreaterOrEqual(a, b, SHOULD_BE_GREATER_OR_EQUAL); }
-	public static void isGreaterOrEqual(byte a, byte b, String msg) { check(a >= b, msg); }
+	public static long isGreaterOrEqual(long reference, long expected) { return isGreaterOrEqual(reference, expected, SHOULD_BE_GREATER_OR_EQUAL); }
+	public static long isGreaterOrEqual(long reference, long expected, String msg) { check(reference >= expected, msg); return reference; }
+	public static int  isGreaterOrEqual(int reference, int expected) { return isGreaterOrEqual(reference, expected, SHOULD_BE_GREATER_OR_EQUAL); }
+	public static int  isGreaterOrEqual(int reference, int expected, String msg) { return isGreaterOrEqual(reference, expected, defaultException(msg)); }
+	public static int  isGreaterOrEqual(int reference, int expected, RuntimeException e) { check(reference >= expected, e); return reference; }
+	public static byte isGreaterOrEqual(byte reference, byte expected) { return isGreaterOrEqual(reference, expected, SHOULD_BE_GREATER_OR_EQUAL); }
+	public static byte isGreaterOrEqual(byte reference, byte expected, String msg) { check(reference >= expected, msg); return reference; }
 	
 	public static void isBetween(int low, int mid, int high) { isBetween(low, mid, high, SHOULD_BE_BETWEEN(low, high)); }
 	public static void isBetween(int low, int mid, int high, String msg) { isBetween(low, mid, high, defaultException(msg)); }
