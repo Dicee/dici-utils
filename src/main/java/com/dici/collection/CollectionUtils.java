@@ -4,6 +4,7 @@ import static com.dici.check.Check.notNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -59,5 +60,7 @@ public class CollectionUtils {
 	    return union;
 	}
 
+	public static <T> List<T> copyAsList(Collection<T> collection) { return new ArrayList<>(collection); }
+	
 	public static <T> Collector<T, ?, List<T>> collectList() { return Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList); }
 }
