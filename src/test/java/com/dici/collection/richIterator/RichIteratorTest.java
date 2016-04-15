@@ -6,6 +6,7 @@ import static com.dici.collection.richIterator.RichIteratorTestUtils.observable;
 import static com.dici.collection.richIterator.RichIterators.emptyIterator;
 import static com.dici.exceptions.ExceptionUtils.ThrowingFunction.identity;
 import static java.util.stream.Collectors.toList;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -275,5 +276,38 @@ public class RichIteratorTest {
     @Test 
     public void containsNonNull2() {
         assertThat(RichIterators.of(1, 3, 0).contains(3), is(true));
+    }
+    
+    @Test
+    public void testSliding_empty() {
+        assertThat(emptyIterator().sliding(2, 3), iteratorEqualTo(emptyIterator()));
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void testSliding_negativeWindow() {
+        RichIterators.of(0, 1).sliding(-1, 3);
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void testSliding_negativeStep() {
+        RichIterators.of(0, 1).sliding(4, 0);
+    }
+    
+    @Test
+    public void testSliding_stepLargerThanWindow() {
+        List<List<Integer>> res = RichIterators.of(1, 2, 3, 4, 5).sliding(2, 4).map(RichIterator::toList).toList();
+        assertThat(res, equalTo(listOf(listOf(1, 2), listOf(5))));
+    }
+    
+    @Test
+    public void testSliding_stepEqualToWindow() {
+        List<List<Integer>> res = RichIterators.of(1, 2, 3, 4, 5, 6, 7, 8).sliding(3, 3).map(RichIterator::toList).toList();
+        assertThat(res, equalTo(listOf(listOf(1, 2, 3), listOf(4, 5, 6), listOf(7, 8))));
+    }
+    
+    @Test
+    public void testSliding_stepLowerThanWindow() {
+        List<List<Integer>> res = RichIterators.of(1, 2, 3, 4, 5, 6, 7, 8).sliding(4, 2).map(RichIterator::toList).toList();
+        assertThat(res, equalTo(listOf(listOf(1, 2, 3, 4), listOf(3, 4, 5, 6), listOf(5, 6, 7, 8), listOf(7, 8))));
     }
 }

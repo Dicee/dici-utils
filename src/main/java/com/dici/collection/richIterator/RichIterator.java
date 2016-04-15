@@ -167,9 +167,14 @@ public abstract class RichIterator<X> implements Iterator<X>, Iterable<X>, Close
 		return GroupedRichIterator.create(new GroupByComparatorRichIterator<X>(this, cmp));
 	}
 	
+	public final RichIterator<RichIterator<X>> sliding(int window, int step) {
+        ensureValidState();
+        return new SlidingRichIterator<>(this, window, step);
+    }
+	
 	public final RichIterator<X> take(int n) {
 		ensureValidState();
-		return TakeRichIterator.take(this,n);
+		return TakeRichIterator.take(this, n);
 	}
 	
 	public final RichIterator<X> takeWhile(ThrowingPredicate<X> predicate) {
