@@ -1,4 +1,4 @@
-val CONSUMERS = scala.io.Source.fromFile("consumers.txt").getLines.toSet
+lazy val CONSUMERS = scala.io.Source.fromFile("consumers.txt").getLines.toSet
 
 lazy val distribute = taskKey[Unit]("Produces (if needed) Distributes the assembly jar and distributes it to all the consumers of the library")
 
