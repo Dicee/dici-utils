@@ -2,7 +2,7 @@ function matrix(n, m, defaultValue) { return Array.from({length: n}, _ => Array(
 
 function forEntries(object, consumer) {
     if (!consumer) return;
-    for (let key of Object.keys(object)) consumer([ key, object[key] ]);
+    for (let key of Object.keys(object)) consumer(key, object[key]);
 }
 
 function Counter(keys) {
