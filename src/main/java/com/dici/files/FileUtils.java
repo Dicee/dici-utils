@@ -1,15 +1,15 @@
 package com.dici.files;
 
+import com.dici.check.Check;
+import com.dici.collection.richIterator.RichIterators;
+import com.dici.system.SystemProperties;
+
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
-
-import com.dici.collection.richIterator.RichIterators;
-import com.dici.system.SystemProperties;
 
 public final class FileUtils {
 	private FileUtils() { }
@@ -36,9 +36,11 @@ public final class FileUtils {
 	
 	public static String canonicalCurrentDirectory() { return toCanonicalPath(currentDirectory()); }
 	
-	public static void ensureExists(String dirPath) {
-		File dir = new File(dirPath);
-		if(!dir.exists()) dir.mkdirs();
+	public static void ensureExists(File directory) {
+		if (!directory.exists()) {
+			Check.isTrue(directory.mkdirs(), "Unable to create directory: " + directory);
+		}
+		Check.isTrue(directory.canWrite(), "Directory " + directory + " is not writable");
 	}
 
 	/**
@@ -73,11 +75,7 @@ public final class FileUtils {
 	    return !extension.startsWith(".") ? "." + extension : extension;
 	}
 	
-	public static String readAllFile(String path) throws IOException {
-		StringBuilder sb    = new StringBuilder();
-		File          input = new File(path);
-    	for (String line : Files.readAllLines(Paths.get(input.toURI()))) sb.append(line);
-    	String lines = sb.toString();
-		return lines;
+	public static String toString(File f) throws IOException {
+		return RichIterators.fromLines(f).mkString("\n");
     }
 }
