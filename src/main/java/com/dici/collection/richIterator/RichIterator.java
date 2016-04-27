@@ -244,7 +244,7 @@ public abstract class RichIterator<X> implements Iterator<X>, Iterable<X>, Close
 		try (BufferedWriter bw = Files.newBufferedWriter(f.toPath())) {
 			boolean first = true;
 			for (String s : map(Object::toString)) {
-				if (!first) {
+				if (first) {
 					first = false;
 					bw.write(sep);
 				}
