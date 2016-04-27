@@ -1,39 +1,24 @@
 package com.dici.collection.richIterator;
 
-import static com.dici.collection.CollectionUtils.listOf;
-import static com.dici.exceptions.ExceptionUtils.uncheckExceptions;
-import static com.dici.exceptions.ExceptionUtils.uncheckExceptionsAndGet;
-import static com.dici.exceptions.ExceptionUtils.uncheckedBinaryOperator;
-import static com.dici.exceptions.ExceptionUtils.uncheckedConsumer;
-import static com.dici.exceptions.ExceptionUtils.uncheckedUnaryOperator;
-import static java.util.stream.Collectors.joining;
+import com.dici.collection.StreamUtils;
+import com.dici.exceptions.ExceptionUtils.*;
+import com.google.common.base.Objects;
+import javafx.util.Pair;
 
 import java.io.BufferedWriter;
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javafx.util.Pair;
-
-import com.dici.collection.StreamUtils;
-import com.dici.exceptions.ExceptionUtils.ThrowingBinaryOperator;
-import com.dici.exceptions.ExceptionUtils.ThrowingConsumer;
-import com.dici.exceptions.ExceptionUtils.ThrowingFunction;
-import com.dici.exceptions.ExceptionUtils.ThrowingPredicate;
-import com.dici.exceptions.ExceptionUtils.ThrowingUnaryOperator;
-import com.google.common.base.Objects;
+import static com.dici.collection.CollectionUtils.listOf;
+import static com.dici.exceptions.ExceptionUtils.*;
+import static java.util.stream.Collectors.joining;
 /**
  * - sliding
  */
@@ -124,7 +109,7 @@ public abstract class RichIterator<X> implements Iterator<X>, Iterable<X>, Close
 	
 	public final <Y> RichIterator<Y> flatMap(ThrowingFunction<X,? extends Iterable<Y>> function) { 
 		ensureValidState();
-		return new FlatMappedRichIterator<X,Y>(this,function); 
+		return new FlatMappedRichIterator<>(this,function);
 	}
 	
 	public final RichIterator<X> filter(ThrowingPredicate<X> predicate) { 
@@ -159,12 +144,12 @@ public abstract class RichIterator<X> implements Iterator<X>, Iterable<X>, Close
 
 	public final GroupedRichIterator<X> grouped(int size) {
 		ensureValidState();
-		return GroupedRichIterator.create(new UniformBatchRichIterator<X>(this, size));
+		return GroupedRichIterator.create(new UniformBatchRichIterator<>(this, size));
 	}
 	
 	public final GroupedRichIterator<X> grouped(Comparator<X> cmp) {
 		ensureValidState();
-		return GroupedRichIterator.create(new GroupByComparatorRichIterator<X>(this, cmp));
+		return GroupedRichIterator.create(new GroupByComparatorRichIterator<>(this, cmp));
 	}
 	
 	public final RichIterator<RichIterator<X>> sliding(int window, int step) {
@@ -228,7 +213,7 @@ public abstract class RichIterator<X> implements Iterator<X>, Iterable<X>, Close
 	
 	public final RichIterator<X> buffered(int size) {
 		ensureValidState();
-		return new BufferedRichIterator<X>(this, size);
+		return new BufferedRichIterator<>(this, size);
 	}
 	
 	public final boolean contains(Object o) {
