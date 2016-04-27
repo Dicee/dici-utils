@@ -12,12 +12,12 @@ public class IOUtils {
 	
 	public static void closeQuietly(Closeable resource) {
 		if (resource != null)
-			try { resource.close(); } catch (IOException e) { }
+			try { resource.close(); } catch (IOException e) { /* do nothing */ }
 	}
 	
 	public static void closeQuietly(AutoCloseable resource) {
 		if (resource != null)
-			try { resource.close(); } catch (Exception e) { }
+			try { resource.close(); } catch (Exception e) { /* do nothing */ }
 	}
 	
 	public static void closeIfCloseable(Object o) {
