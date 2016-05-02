@@ -7,6 +7,7 @@ import org.apache.commons.logging.LogFactory;
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 
 public class IOUtils {
 	private static final Log LOG = LogFactory.getLog(IOUtils.class);
@@ -29,7 +30,7 @@ public class IOUtils {
 
 	public static void deleteQuietly(File file) {
 		try {
-			if (!file.delete()) LOG.warn("Could not delete file: " + file.getAbsolutePath());
+			Files.delete(file.toPath());
 		} catch (Exception e) {
 			LOG.warn("Could not delete file: " + file.getAbsolutePath(), e);
 		}
