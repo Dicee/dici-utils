@@ -1,5 +1,3 @@
-package codeeval;
-
 import os, sys, codecs
 
 def absolute_path(root,subfile):
@@ -14,7 +12,6 @@ def fetch_files(root):
 	return { x for y in files for x in fetch_files(absolute_path(root,y)) }
 	
 def unbom(file):
-	reencoded_content = ""
 	with codecs.open(file,"r","utf-8-sig") as fp:
 		reencoded_content = fp.read()
 	
