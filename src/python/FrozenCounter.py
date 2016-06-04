@@ -1,3 +1,5 @@
+from collections import Counter
+
 class FrozenCounter:
     def __init__(self,iterable=None,**kwds):
         self.counter     = Counter(iterable,kwds)
