@@ -12,7 +12,6 @@ def fetch_files(root):
 	return { x for y in files for x in fetch_files(absolute_path(root,y)) }
 	
 def add_package(root,file):
-	reencoded_content = ""
 	with codecs.open(file,"r","utf-8-sig") as fp:
 		reencoded_content = fp.read()
 	
@@ -27,7 +26,7 @@ def add_package(root,file):
 """Print the usage of the command to the user"""
 def print_usage():
 	print("\n--------------\n     USAGE\n--------------")
-	print("\nSyntax : unbom_utf8 <path>")
+	print("\nSyntax : add_package <path>")
 	
 """Fail and exit with a message"""
 def fail(msg):
