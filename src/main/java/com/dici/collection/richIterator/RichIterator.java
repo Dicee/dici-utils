@@ -60,7 +60,7 @@ public abstract class RichIterator<X> implements Iterator<X>, Iterable<X>, Close
 		ensureNotClosed();
 		if (!hasNext()) throw new NoSuchElementException();
 		X next = uncheckExceptionsAndGet(this::nextInternal);
-		if (!hasNext()) uncheckExceptions(this::releaseResources);
+		if (!hasNext()) uncheckedRunnable(this::releaseResources);
 		count++;
 		return next;
 	}

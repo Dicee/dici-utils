@@ -1,13 +1,9 @@
 package com.dici.exceptions;
 
-import java.io.Closeable;
-import java.util.function.BiFunction;
-import java.util.function.BinaryOperator;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Supplier;
-import java.util.function.UnaryOperator;
 import com.google.common.base.Throwables;
+
+import java.io.Closeable;
+import java.util.function.*;
 
 public class ExceptionUtils {
 	private ExceptionUtils() { }
@@ -94,14 +90,6 @@ public class ExceptionUtils {
 	public static <OUTPUT> OUTPUT uncheckExceptionsAndGet(ThrowingSupplier<OUTPUT> supplier) {
 		try {
 			return supplier.get();
-		} catch (Exception e) {
-			throw Throwables.propagate(e);
-		}
-	}
-	
-	public static void uncheckExceptions(ThrowingRunnable runnable) {
-		try {
-			runnable.run();
 		} catch (Exception e) {
 			throw Throwables.propagate(e);
 		}
