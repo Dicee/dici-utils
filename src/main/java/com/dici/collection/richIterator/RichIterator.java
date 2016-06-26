@@ -19,9 +19,7 @@ import java.util.stream.Stream;
 import static com.dici.collection.CollectionUtils.listOf;
 import static com.dici.exceptions.ExceptionUtils.*;
 import static java.util.stream.Collectors.joining;
-/**
- * - sliding
- */
+
 public abstract class RichIterator<X> implements Iterator<X>, Iterable<X>, Closeable, AutoCloseable {
 	public static <X> RichIterator<X> iterate(X seed, ThrowingUnaryOperator<X> throwingOp) {
 		UnaryOperator<X> op = uncheckedUnaryOperator(throwingOp);
