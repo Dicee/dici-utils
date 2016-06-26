@@ -1,19 +1,14 @@
 package com.dici.math;
 
+import com.dici.check.Check;
+import com.dici.collection.ArrayUtils;
+
+import java.util.*;
+
 import static com.dici.check.Check.notNull;
 import static com.dici.collection.ArrayUtils.reverse;
 import static com.dici.collection.ArrayUtils.swap;
-import static com.dici.math.Permutation.identity;
-import static com.dici.math.Permutation.reverseIdentity;
-import static com.dici.math.Permutation.unsafePermutation;
-
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-
-import com.dici.check.Check;
+import static com.dici.math.Permutation.*;
 
 public class PermutationGenerator implements Iterable<Permutation> {
 	private final Permutation start;
@@ -28,10 +23,14 @@ public class PermutationGenerator implements Iterable<Permutation> {
 		this.goal  = goal;
 		this.start = seed;
 	}
-	
+
 	@Override
 	public Iterator<Permutation> iterator() { return iterator(Optional.empty()); }
-	
+
+	public <T, C extends Collection<T>> Iterator<T[]> generatePermutations(C collection, Class<T> clazz) {
+		return generatePermutations(collection.toArray(ArrayUtils.ofDim(clazz, collection.size())));
+	}
+
 	public <T> Iterator<T[]> generatePermutations(T[] data) { 
 		Iterator<Permutation> it = iterator(Optional.of(data));
 		return new Iterator<T[]>() {
