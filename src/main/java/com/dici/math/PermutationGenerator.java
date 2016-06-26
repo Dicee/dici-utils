@@ -91,9 +91,4 @@ public class PermutationGenerator implements Iterable<Permutation> {
 			private boolean updateHasNext() { return ended = Arrays.equals(current, goal.perm); }
 		};
 	}
-	
-	public static void main(String[] args) {
-		PermutationGenerator generator = new PermutationGenerator(Permutation.fromDigits("3201"), true);
-		for (Permutation permutation : generator) System.out.println(permutation);
-	}
 }
