@@ -15,6 +15,7 @@
   </component>
   <component name="NewModuleRootManager" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/target/scala-2.11/classes" />
+    <output-test url="file://$MODULE_DIR$/target/scala-2.11/classes/test" />
     <exclude-output />
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
@@ -71,5 +72,6 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="scala-sdk-2.11.1" level="application" />
+    <orderEntry type="library" name="commons-logging-1.2 (2)" level="project" />
   </component>
 </module>
