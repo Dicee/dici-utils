@@ -17,9 +17,8 @@ package com.dici.function
  * @tparam O output of f
  */
 class Memoized[I, K, O](f: I => O)(implicit convert: I => K) extends (I => O) {
-  import scala.collection.mutable.{Map => Dict}
-  val cache = Dict.empty[K, O]
-  override def apply(x: I) = { if (cache contains x) println("cached: " + x); cache getOrElseUpdate (convert(x), f(x)) }
+  val cache = scala.collection.mutable.Map.empty[K, O]
+  override def apply(x: I) = cache getOrElseUpdate (convert(x), f(x))
 }
 
 object Memoized {
