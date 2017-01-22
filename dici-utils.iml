@@ -22,9 +22,9 @@
       <sourceFolder url="file://$MODULE_DIR$/src/main/scala" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/resources/com/dici/javafx/components/resources" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/test/scala" isTestSource="false" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="org.scala-ide.sdt.launching.SCALA_CONTAINER" level="application" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="module-library">
       <library name="hamcrest-junit-2.0.0.0.jar">
@@ -62,7 +62,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library name="guava-18.0.jar">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/guava-18.0.jar!/" />
@@ -72,6 +72,8 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="scala-sdk-2.11.1" level="application" />
-    <orderEntry type="library" name="commons-logging-1.2 (2)" level="project" />
+    <orderEntry type="library" exported="" name="commons-logging-1.2 (2)" level="project" />
+    <orderEntry type="library" name="scalatest_2.11-3.0.1" level="project" />
+    <orderEntry type="library" name="scalactic_2.11-3.0.1" level="project" />
   </component>
 </module>
