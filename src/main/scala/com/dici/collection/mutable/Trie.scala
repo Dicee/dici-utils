@@ -10,11 +10,21 @@ import scala.collection.mutable.ArrayBuffer
 class Trie[ITEM, SEQ](implicit toSeq: SEQ => Seq[ITEM]) {
   private lazy val root = new Node
 
-  def +=(seq: SEQ) = root += seq
-  def ++=(seqs: Seq[SEQ]) = { seqs.foreach(this += _); this }
+  /**
+    * Adds a sequence to the Trie
+    * @return true if the sequence was not already present in the Trie, false otherwise
+    */
+  def +=(seq: SEQ): Boolean = root += seq
+  def ++=(seqs: Seq[SEQ]): Trie[ITEM, SEQ] = { seqs.foreach(this += _); this }
 
-  def prefixedBy(seq: SEQ)(implicit canBuildFrom: CanBuildFrom[SEQ, ITEM, SEQ]) = root.prefixedBy(seq)(canBuildFrom)
+  /**
+    * Finds all the sequences in the Trie that are prefixed by <code>seq</code> in form of a lazy evaluated iterator
+    */
+  def prefixedBy(seq: SEQ)(implicit canBuildFrom: CanBuildFrom[SEQ, ITEM, SEQ]): Iterator[SEQ] = root.prefixedBy(seq)(canBuildFrom)
 
+  /**
+    * Lists all sequences added to this Trie
+    */
   def listAllSequences()(implicit canBuildFrom: CanBuildFrom[SEQ, ITEM, SEQ]): Iterator[SEQ] = root.listAllSequences(canBuildFrom().result())(canBuildFrom)
 
   private[this] class Node() {
@@ -57,7 +67,7 @@ class Trie[ITEM, SEQ](implicit toSeq: SEQ => Seq[ITEM]) {
         override def hasNext: Boolean = {
           val next = nextOption match {
             case Some(_) => true
-            case None      => nextOption = nextSeq(); nextOption.isDefined
+            case None    => nextOption = nextSeq(); nextOption.isDefined
           }
           next
         }
@@ -113,6 +123,6 @@ class Trie[ITEM, SEQ](implicit toSeq: SEQ => Seq[ITEM]) {
       override def iterator = stack.iterator
     }
 
-    override def toString = getClass.getSimpleName + (children, isTerminal)
+    override def toString: String = getClass.getSimpleName + (children, isTerminal)
   }
 }
