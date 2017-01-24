@@ -5,12 +5,7 @@ import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
 
 /**
- * Generic implementation of the trie (or prefix tree) data structure. We make the assumption that the sequences to
- * insert (typically, words) are small compared to the size of the JVM's stack. In other words, the trie is expected to
- * be potentially wide but not deep. Therefore, we don't protect ourselves from stack overflows in recursive methods
- * when that would make the implementation trickier.
- *
- * This implementation is not thread-safe.
+ * Generic implementation of the trie (or prefix tree) data structure. This implementation is not thread-safe.
  */
 class Trie[ITEM, SEQ](implicit toSeq: SEQ => Seq[ITEM]) {
   private lazy val root = new Node
@@ -47,21 +42,75 @@ class Trie[ITEM, SEQ](implicit toSeq: SEQ => Seq[ITEM]) {
       node.listAllSequences(seq)
     }
 
-    def listAllSequences(prefix: SEQ, suffix: ArrayBuffer[ITEM] = ArrayBuffer())(implicit canBuildFrom: CanBuildFrom[SEQ, ITEM, SEQ]): Iterator[SEQ] = {
-      def buildSeq() = (canBuildFrom(prefix) ++= prefix ++= suffix).result()
+    // fully lazy implementation
+    def listAllSequences(prefix: SEQ)(implicit canBuildFrom: CanBuildFrom[SEQ, ITEM, SEQ]): Iterator[SEQ] = {
+      val initialNode = this
+      new Iterator[SEQ] {
+        private val childrenStack   = new ReversedIteratorStack[Iterator[(ITEM, Node)]](initialNode.children.iterator)
+        private var currentSequence = new ReversedIteratorStack[ITEM](prefix: _*)
 
-      var res = if (isTerminal) Iterator(buildSeq()) else Iterator[SEQ]()
-      for ((item, node) <- children) {
-        suffix += item
-        // Iterator.++= lazily evaluates the right member of the expression, so need to make this call. However, doing
-        // this we break all the desirable lazy evaluation (for an auto-completer for example, would be better to
-        // return a few suggestions quickly than all suggestions - that can fit on the screen - slowly). This is my
-        // first go at it, need to fix it.
-        val sequences = node.listAllSequences(prefix, suffix)
-        res ++= sequences
-        suffix.remove(suffix.length - 1)
+        private var currentNode : Node = initialNode
+        private var lastTerminal: Node = _
+
+        private var nextOption  : Option[SEQ] = None
+
+        override def hasNext: Boolean = {
+          val next = nextOption match {
+            case Some(_) => true
+            case None      => nextOption = nextSeq(); nextOption.isDefined
+          }
+          next
+        }
+
+        override def next(): SEQ = {
+          if (!hasNext) throw new NoSuchElementException
+          val res    = nextOption.get
+          nextOption = None
+          res
+        }
+
+        private def nextSeq(): Option[SEQ] = {
+          if (childrenStack.isEmpty) return None
+
+          // DFS: go as deep as possible while collecting lazy iterators of siblings of the current node as well as the
+          // current sequence
+          do {
+            if (isConsumableTerminalNode(currentNode)) {
+              lastTerminal = currentNode
+              return Some(buildSeq())
+            }
+
+            val (nextItem, nextNode) = childrenStack.top.next()
+            currentNode = nextNode
+            currentSequence.push(nextItem)
+            childrenStack.push(currentNode.children.iterator)
+          } while (childrenStack.top.nonEmpty)
+
+          val res = Some(buildSeq())
+
+          // find the next currentNode by exploring siblings first, and then siblings of the parent etc
+          while (childrenStack.nonEmpty && childrenStack.top.isEmpty) {
+            childrenStack.pop()
+            if (childrenStack.nonEmpty) currentSequence.pop()
+          }
+
+          res
+        }
+
+        private def isConsumableTerminalNode(node: Node) = node.isTerminal && node != lastTerminal && node.children.nonEmpty
+        private def buildSeq(): SEQ = (canBuildFrom(prefix) ++= currentSequence).result()
       }
-      res
+    }
+
+    private class ReversedIteratorStack[T](args: T*) extends Iterable[T] {
+      private var stack = ArrayBuffer[T](args: _*)
+
+      def push(t: T)        = stack += t
+      def pop ()            = stack.remove(stack.length - 1)
+      def top               = stack(stack.length - 1)
+      override def isEmpty  = stack.isEmpty
+      override def nonEmpty = stack.nonEmpty
+      override def iterator = stack.iterator
     }
 
     override def toString = getClass.getSimpleName + (children, isTerminal)
