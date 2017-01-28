@@ -1,13 +1,12 @@
 package com.dici.collection.mutable
 
 import scala.collection.generic.CanBuildFrom
-import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
 
 /**
  * Generic implementation of the trie (or prefix tree) data structure. This implementation is not thread-safe.
  */
-class Trie[ITEM, SEQ](implicit toSeq: SEQ => Seq[ITEM]) {
+abstract class Trie[ITEM, SEQ](implicit asSeq: SEQ => Seq[ITEM]) {
   private lazy val root = new Node
 
   /**
@@ -27,15 +26,37 @@ class Trie[ITEM, SEQ](implicit toSeq: SEQ => Seq[ITEM]) {
     */
   def listAllSequences()(implicit canBuildFrom: CanBuildFrom[SEQ, ITEM, SEQ]): Iterator[SEQ] = root.listAllSequences(canBuildFrom().result())(canBuildFrom)
 
-  private[this] class Node() {
-    private lazy val children = mutable.HashMap[ITEM, Node]()
-    private var isTerminal = false
+  protected def makeChildren(): Children
 
+  protected trait Children extends Iterable[(ITEM, Node)] {
+    /**
+      * Whether or not the <code>item</code> branch exists
+      * @return <code>true</code> if the branch exists, <code>false</code> otherwise
+      */
+    def contains(item: ITEM): Boolean
+
+    /**
+      * Gets the node located in the <code>item</code> branch
+      * @return <code>Some(node)</code> if the branch exists, <code>None</code> otherwise
+      */
+    def get(item: ITEM): Option[Node]
+
+    /**
+      * Get the node located in the <code>item</code> branch if it exists, or create it otherwise.
+      * @return itself, for allowing chaining
+      */
+    def getOrCreate(item: ITEM): Node
+  }
+
+  protected[this] final class Node() {
+    private lazy val children = makeChildren()
+
+    private var isTerminal = false
     def +=(seq: SEQ): Boolean = {
       var (node, added) = (this, false)
       for (item <- seq) {
         added = added || !node.children.contains(item)
-        node  = node.children.getOrElseUpdate(item, new Node)
+        node  = node.children.getOrCreate(item)
       }
 
       added = added || !node.isTerminal
@@ -57,7 +78,7 @@ class Trie[ITEM, SEQ](implicit toSeq: SEQ => Seq[ITEM]) {
       val initialNode = this
       new Iterator[SEQ] {
         private val childrenStack   = new ReversedIteratorStack[Iterator[(ITEM, Node)]](initialNode.children.iterator)
-        private var currentSequence = new ReversedIteratorStack[ITEM](prefix: _*)
+        private var currentSequence = new ReversedIteratorStack[ITEM](asSeq(prefix): _*)
 
         private var currentNode : Node = initialNode
         private var lastTerminal: Node = _
