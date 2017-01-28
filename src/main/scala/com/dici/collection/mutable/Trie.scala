@@ -50,8 +50,8 @@ abstract class Trie[ITEM, SEQ](implicit asSeq: SEQ => Seq[ITEM]) {
 
   protected[this] final class Node() {
     private lazy val children = makeChildren()
+    private var isTerminal    = false
 
-    private var isTerminal = false
     def +=(seq: SEQ): Boolean = {
       var (node, added) = (this, false)
       for (item <- seq) {
