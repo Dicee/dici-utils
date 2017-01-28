@@ -4,7 +4,7 @@ lazy val distribute = taskKey[Unit]("Produces (if needed) Distributes the assemb
 
 lazy val commonSettings = Seq(
     version := "1.0",
-    scalaVersion := "2.11.7",
+    scalaVersion := "2.12.1",
     initialize := {
 	  val _ = initialize.value
 	  if (sys.props("java.specification.version") != "1.8")
