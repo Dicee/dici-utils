@@ -85,12 +85,9 @@ abstract class Trie[ITEM, SEQ](implicit asSeq: SEQ => Seq[ITEM]) {
 
         private var nextOption  : Option[SEQ] = None
 
-        override def hasNext: Boolean = {
-          val next = nextOption match {
-            case Some(_) => true
-            case None    => nextOption = nextSeq(); nextOption.isDefined
-          }
-          next
+        override def hasNext: Boolean = nextOption match {
+          case Some(_) => true
+          case None    => nextOption = nextSeq(); nextOption.isDefined
         }
 
         override def next(): SEQ = {
