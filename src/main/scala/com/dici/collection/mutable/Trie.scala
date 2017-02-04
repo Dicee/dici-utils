@@ -98,7 +98,7 @@ abstract class Trie[ITEM, SEQ](implicit asSeq: SEQ => Seq[ITEM]) {
         }
 
         private def nextSeq(): Option[SEQ] = {
-          if (childrenStack.isEmpty) return None
+          if (childrenStack.isEmpty || childrenStack.top.isEmpty) return None
 
           // DFS: go as deep as possible while collecting lazy iterators of siblings of the current node as well as the
           // current sequence
@@ -142,5 +142,14 @@ abstract class Trie[ITEM, SEQ](implicit asSeq: SEQ => Seq[ITEM]) {
     }
 
     override def toString: String = getClass.getSimpleName + (children, isTerminal)
+  }
+
+
+}
+
+object Main {
+  def main(args: Array[String]): Unit = {
+    val x = new HashMapTrie[Char, String]()
+    println(x.prefixedBy("").toList)
   }
 }

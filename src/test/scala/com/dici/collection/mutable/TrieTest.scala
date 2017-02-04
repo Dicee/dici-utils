@@ -23,6 +23,11 @@ class TrieTest extends FlatSpec with Matchers {
     trie.prefixedBy("Hell").toList should contain theSameElementsAs List("Hell", "Hello")
   }
 
+  "An empty Trie" should " not fail when queried" in {
+    val trie = new HashMapTrie[Char, String]
+    trie.prefixedBy("").toList should contain theSameElementsAs List()
+  }
+
   "A Trie" should " detect when an element was already present in the Trie" in {
     val trie = new HashMapTrie[Char, String]
     (trie += "Hello") should be (true )
