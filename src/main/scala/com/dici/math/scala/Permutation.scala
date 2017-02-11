@@ -1,6 +1,8 @@
-package com.dici.math
+package com.dici.math.scala
 
-class ScalaPermutation(private val perm: Permutation) extends Iterable[Int] {
+import com.dici.math.{ Permutation => JavaPermutation }
+
+class Permutation(private val perm: JavaPermutation) extends Iterable[Int] {
 	def apply(index: Int) = perm.get(index)
 
 	def iterator = new Iterator[Int] {

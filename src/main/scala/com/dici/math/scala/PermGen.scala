@@ -1,13 +1,15 @@
-package com.dici.math
+package com.dici.math.scala
+
+import com.dici.math.{Permutation, PermutationGenerator}
 
 import scala.collection.Iterator
 
-class PermGen(var perm: Permutation, var reverse : Boolean = false) extends Iterable[ScalaPermutation] {
+class PermGen(var perm: Permutation, var reverse : Boolean = false) extends Iterable[Permutation] {
 	private var generator : PermutationGenerator = new PermutationGenerator(perm, reverse)
 	
-	def iterator = new Iterator[ScalaPermutation] {
+	def iterator = new Iterator[Permutation] {
 		private val it = generator.iterator
-		def next    = new ScalaPermutation(it.next)
+		def next    = new Permutation(it.next)
 		def hasNext = it.hasNext
 	}
 }
