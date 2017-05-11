@@ -1,0 +1,3 @@
+#!/bin/bash
+echo "git rebase --continue"
+git rebase --continue
