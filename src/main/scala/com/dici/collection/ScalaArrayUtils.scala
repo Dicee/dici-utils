@@ -8,9 +8,9 @@ object ScalaArrayUtils {
     }
 
     def printMatrix[T](matrix: Array[Array[T]], paddingChar: Char = ' ', spacingChar: Char = ' ')(formatter: (Int, Int, T) => String) = {
-        val maxLength = (for (i <- 0 until matrix.length ; j <- 0 until matrix(0).length) yield formatter(i, j, matrix(i)(j))).map(_.length).max
-        for (i <- 0 until matrix.length) {
-            for (j <- 0 until matrix(0).length) {
+        val maxLength = (for (i <- matrix.indices; j <- matrix(0).indices) yield formatter(i, j, matrix(i)(j))).map(_.length).max
+        for (i <- matrix.indices) {
+            for (j <- matrix(0).indices) {
                 print(spacingChar + formatter(i, j, matrix(i)(j)).padTo(maxLength, paddingChar))
             }
             println()

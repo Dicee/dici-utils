@@ -143,13 +143,4 @@ abstract class Trie[ITEM, SEQ](implicit asSeq: SEQ => Seq[ITEM]) {
 
     override def toString: String = getClass.getSimpleName + (children, isTerminal)
   }
-
-
-}
-
-object Main {
-  def main(args: Array[String]): Unit = {
-    val x = new HashMapTrie[Char, String]()
-    println(x.prefixedBy("").toList)
-  }
 }

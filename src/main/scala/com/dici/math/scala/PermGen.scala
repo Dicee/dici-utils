@@ -1,11 +1,11 @@
 package com.dici.math.scala
 
-import com.dici.math.{Permutation, PermutationGenerator}
+import com.dici.math.{Permutation => JavaPermutation, PermutationGenerator}
 
 import scala.collection.Iterator
 
-class PermGen(var perm: Permutation, var reverse : Boolean = false) extends Iterable[Permutation] {
-	private var generator : PermutationGenerator = new PermutationGenerator(perm, reverse)
+class PermGen(var perm: JavaPermutation, var reverse : Boolean = false) extends Iterable[Permutation] {
+	private val generator : PermutationGenerator = new PermutationGenerator(perm, reverse)
 	
 	def iterator = new Iterator[Permutation] {
 		private val it = generator.iterator
@@ -15,5 +15,5 @@ class PermGen(var perm: Permutation, var reverse : Boolean = false) extends Iter
 }
 
 object PermGen {
-	def apply(seed : String) = new PermGen(Permutation.fromDigits(seed), false)
+	def apply(seed : String) = new PermGen(JavaPermutation.fromDigits(seed), false)
 }
