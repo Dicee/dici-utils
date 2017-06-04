@@ -2,3 +2,4 @@
 target/
 .cache*
 consumers.txt
+**/*.jar

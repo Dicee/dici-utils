@@ -72,8 +72,6 @@
       </library>
     </orderEntry>
     <orderEntry type="library" exported="" name="commons-logging-1.2 (2)" level="project" />
-    <orderEntry type="library" name="scalatest_2.11-3.0.1" level="project" />
-    <orderEntry type="library" name="scalactic_2.11-3.0.1" level="project" />
     <orderEntry type="module-library">
       <library name="JUnit4">
         <CLASSES>
@@ -85,5 +83,27 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="scala-sdk-2.12.1" level="application" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/scalatest_2.12-3.0.3.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$MODULE_DIR$/lib/scalatest_2.12-3.0.3-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/scalactic_2.12-3.0.3.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$MODULE_DIR$/lib/scalactic_2.12-3.0.3-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
   </component>
 </module>
