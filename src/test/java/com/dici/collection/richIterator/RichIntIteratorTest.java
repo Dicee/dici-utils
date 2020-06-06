@@ -1,27 +1,26 @@
 package com.dici.collection.richIterator;
 
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import java.util.Arrays;
+import java.util.List;
 
-import com.dici.collection.richIterator.RichIntIterator;
+import org.junit.jupiter.api.Test;
 
-import org.hamcrest.Matchers;
-import org.junit.Test;
+class RichIntIteratorTest {
+    @Test
+    void testRange() {
+        assertThat(RichIntIterator.range(0, 3).toList(), equalTo(List.of(0, 1, 2)));
+    }
 
-public class RichIntIteratorTest {
-	@Test
-	public void testRange() {
-		assertThat(RichIntIterator.range(0,3).toList(), Matchers.equalTo(Arrays.asList(0,1,2)));
-	}
-	
-	@Test(expected = IllegalArgumentException.class)
-	public void testRangeFailsIfEmptyRange() {
-		assertThat(RichIntIterator.range(0,0).toList(), Matchers.equalTo(Arrays.asList(0,1,2)));
-	}
-	
-	@Test
-	public void testClosedRange() {
-		assertThat(RichIntIterator.closedRange(0,3).toList(), Matchers.equalTo(Arrays.asList(0,1,2,3)));
-	}
+    @Test
+    void testRangeFailsIfEmptyRange() {
+        assertThrows(IllegalArgumentException.class, () -> RichIntIterator.range(0, 0).toList());
+    }
+
+    @Test
+    void testClosedRange() {
+        assertThat(RichIntIterator.closedRange(0, 3).toList(), equalTo(List.of(0, 1, 2, 3)));
+    }
 }

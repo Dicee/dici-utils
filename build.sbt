@@ -21,5 +21,7 @@ libraryDependencies ++= Seq(
 
 libraryDependencies ++= Seq(
 	"org.hamcrest" % "hamcrest" % "2.2",
-	"org.junit.jupiter" % "junit-jupiter-engine" % "5.0.0" % Test
+	"org.junit.jupiter" % "junit-jupiter-engine" % "5.0.0" % Test,
+	"org.scalactic" %% "scalactic" % "3.1.2",
+	"org.scalatest" %% "scalatest" % "3.1.2" % Test
 )

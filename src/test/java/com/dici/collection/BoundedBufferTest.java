@@ -3,17 +3,15 @@ package com.dici.collection;
 import static java.util.Arrays.asList;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.util.NoSuchElementException;
 
-import com.dici.collection.ArrayUtils;
-import com.dici.collection.BoundedBuffer;
 import com.dici.collection.BoundedBuffer.SizeExceededException;
 import com.dici.collection.BoundedBuffer.SizeExceededPolicy;
 
 import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class BoundedBufferTest {
 	private static final int MAX_SIZE = 3;
@@ -51,12 +49,12 @@ public class BoundedBufferTest {
 	
 	@Test(expected = SizeExceededException.class)
 	public void constructorFromCollectionIsBounded() {
-		new BoundedBuffer<>(MAX_SIZE, asList(ArrayUtils.ofDim(Integer.class, MAX_SIZE + 3)), SizeExceededPolicy.ERROR);
+		new BoundedBuffer<>(MAX_SIZE, asList(Arrays.ofDim(Integer.class, MAX_SIZE + 3)), SizeExceededPolicy.ERROR);
 	}
 	
 	@Test
 	public void constructorFromCollectionIgnoresSizeExceededIfPolicySet() {
-		BoundedBuffer<Integer> buffer = new BoundedBuffer<>(MAX_SIZE, asList(ArrayUtils.ofDim(Integer.class, MAX_SIZE + 3)), SizeExceededPolicy.IGNORE);
+		BoundedBuffer<Integer> buffer = new BoundedBuffer<>(MAX_SIZE, asList(Arrays.ofDim(Integer.class, MAX_SIZE + 3)), SizeExceededPolicy.IGNORE);
 		assertThat(buffer.isFull(), is(true));
 	}
 	

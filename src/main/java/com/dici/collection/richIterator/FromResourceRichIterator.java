@@ -1,17 +1,16 @@
 package com.dici.collection.richIterator;
 
-import static com.dici.check.Check.notNull;
-
 import java.io.Closeable;
 import java.io.EOFException;
 import java.io.IOException;
+import java.util.List;
 
 import com.dici.io.IOUtils;
 
 public abstract class FromResourceRichIterator<X> extends NullableRichIterator<X> {
-	private final Closeable[] resources;
+	private final List<Closeable> resources;
 
-	public FromResourceRichIterator(Closeable... resources) { this.resources = notNull(resources); }
+	public FromResourceRichIterator(Closeable... resources) { this.resources = List.of(resources); }
 	
 	/**
 	 * Reads the next element of the iterator.
@@ -33,5 +32,5 @@ public abstract class FromResourceRichIterator<X> extends NullableRichIterator<X
 	}
 
 	@Override 
-	protected final void closeInternal() throws IOException { IOUtils.closeQuietly(resources); }
+	protected final void closeInternal() throws IOException { IOUtils.closeAllQuietly(resources); }
 }

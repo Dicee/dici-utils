@@ -1,18 +1,18 @@
 package com.dici.collection.richIterator;
 
 import static com.dici.check.Check.notNull;
-import static com.dici.collection.CollectionUtils.listOf;
 
 import java.util.Collection;
 import java.util.Deque;
 import java.util.LinkedList;
+import java.util.List;
 
 class ConcatenatedRichIterators<X> extends RichIterator<X> {
 	private final Deque<RichIterator<X>> iterators;
 
 	@SafeVarargs
 	public ConcatenatedRichIterators(RichIterator<X>... iterators) {
-		this(listOf(notNull(iterators)));
+		this(List.of(iterators));
 	}
 	
 	public ConcatenatedRichIterators(Collection<RichIterator<X>> iterators) {

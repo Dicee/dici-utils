@@ -1,24 +1,37 @@
 package com.dici.collection.richIterator;
 
-import com.dici.collection.StreamUtils;
-import com.dici.exceptions.ExceptionUtils.*;
-import com.google.common.base.Objects;
-import javafx.util.Pair;
+import static com.dici.exceptions.ExceptionUtils.uncheckExceptionsAndGet;
+import static com.dici.exceptions.ExceptionUtils.uncheckedBinaryOperator;
+import static com.dici.exceptions.ExceptionUtils.uncheckedConsumer;
+import static com.dici.exceptions.ExceptionUtils.uncheckedRunnable;
+import static com.dici.exceptions.ExceptionUtils.uncheckedUnaryOperator;
+import static java.util.stream.Collectors.joining;
 
 import java.io.BufferedWriter;
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.*;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.dici.collection.CollectionUtils.listOf;
-import static com.dici.exceptions.ExceptionUtils.*;
-import static java.util.stream.Collectors.joining;
+import com.dici.exceptions.ExceptionUtils.ThrowingBinaryOperator;
+import com.dici.exceptions.ExceptionUtils.ThrowingConsumer;
+import com.dici.exceptions.ExceptionUtils.ThrowingFunction;
+import com.dici.exceptions.ExceptionUtils.ThrowingPredicate;
+import com.dici.exceptions.ExceptionUtils.ThrowingUnaryOperator;
+import com.google.common.base.Objects;
+import com.google.common.collect.Streams;
+import javafx.util.Pair;
 
 public abstract class RichIterator<X> implements Iterator<X>, Iterable<X>, Closeable, AutoCloseable {
 	public static <X> RichIterator<X> iterate(X seed, ThrowingUnaryOperator<X> throwingOp) {
@@ -132,7 +145,7 @@ public abstract class RichIterator<X> implements Iterator<X>, Iterable<X>, Close
 	
 	public final <Y extends X> RichIterator<X> concat(RichIterator<Y> that) {
 		ensureValidState();
-		return that.hasNext() ? new ConcatenatedRichIterators<>(listOf(this, that.map(y -> (X) y))) : this;
+		return that.hasNext() ? new ConcatenatedRichIterators<>(List.of(this, that.map(y -> (X) y))) : this;
 	}
 	
 	public final <K> PairRichIterator<K,List<X>> groupBy(ThrowingFunction<X,K> classifier) {
@@ -312,7 +325,7 @@ public abstract class RichIterator<X> implements Iterator<X>, Iterable<X>, Close
 	public Stream<X> stream() { 
 		ensureValidState();
 		setUsed();
-		return StreamUtils.iteratorToStream(this);
+		return Streams.stream((Iterator<X>) this);
 	}
 
 	private void ensureValidState() {

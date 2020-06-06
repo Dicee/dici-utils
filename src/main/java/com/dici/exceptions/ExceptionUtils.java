@@ -1,42 +1,47 @@
 package com.dici.exceptions;
 
-import com.google.common.base.Throwables;
-
 import java.io.Closeable;
-import java.util.function.*;
+import java.util.function.BiFunction;
+import java.util.function.BinaryOperator;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.function.UnaryOperator;
 
+import com.google.common.base.Throwables;
+import lombok.experimental.UtilityClass;
+
+@UtilityClass
 public class ExceptionUtils {
-	private ExceptionUtils() { }
-	
-	public static interface ThrowingSupplier<OUTPUT> {
-		public OUTPUT get() throws Exception;
+	public interface ThrowingSupplier<OUTPUT> {
+		OUTPUT get() throws Exception;
 	}
 	
-	public static interface ThrowingFunction<INPUT,OUTPUT> {
-		public OUTPUT apply(INPUT input) throws Exception;
+	public interface ThrowingFunction<INPUT,OUTPUT> {
+		OUTPUT apply(INPUT input) throws Exception;
 		
-		public static <X> ThrowingFunction<X,X> identity() { return x -> x; }
+		static <X> ThrowingFunction<X,X> identity() { return x -> x; }
 	}
 	
-	public static interface ThrowingBiFunction<INPUT1,INPUT2,OUTPUT> {
-		public OUTPUT apply(INPUT1 input1, INPUT2 input2) throws Exception;
+	public interface ThrowingBiFunction<INPUT1,INPUT2,OUTPUT> {
+		OUTPUT apply(INPUT1 input1, INPUT2 input2) throws Exception;
 	}
 	
-	public static interface ThrowingBinaryOperator<X> extends ThrowingBiFunction<X,X,X> { }
+	public interface ThrowingBinaryOperator<X> extends ThrowingBiFunction<X,X,X> { }
 	
-	public static interface ThrowingUnaryOperator<X> extends ThrowingFunction<X,X> { }
+	public interface ThrowingUnaryOperator<X> extends ThrowingFunction<X,X> { }
 
-	public static interface ThrowingConsumer<INPUT> {
-		public void accept(INPUT input) throws Exception;
+	public interface ThrowingConsumer<INPUT> {
+		void accept(INPUT input) throws Exception;
 	}
 	
-	public static interface ThrowingRunnable {
-		public void run() throws Exception;
+	public interface ThrowingRunnable {
+		void run() throws Exception;
 	}
 	
-	public static interface ThrowingPredicate<INPUT> {
-		public boolean test(INPUT input) throws Exception;
-		public default ThrowingPredicate<INPUT> negate() { return input -> !test(input); }
+	public interface ThrowingPredicate<INPUT> {
+		boolean test(INPUT input) throws Exception;
+		default ThrowingPredicate<INPUT> negate() { return input -> !test(input); }
 	}
 	
 	public static <RESOURCE extends Closeable,OUTPUT> OUTPUT withCloseableResource(ThrowingSupplier<RESOURCE> resourceSupplier, //

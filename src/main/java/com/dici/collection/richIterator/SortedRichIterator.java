@@ -5,8 +5,8 @@ import java.util.Iterator;
 import java.util.stream.Collectors;
 
 class SortedRichIterator<T> extends ClassicRichIteratorDecorator<T,T> {
-	private Iterator<T>				elts;
-	private Comparator<? super T>	cmp;
+	private Iterator<T>	elts;
+	private Comparator<? super T> cmp;
 	
 	public SortedRichIterator(RichIterator<T> it) { this(it, null); }
 	public SortedRichIterator(RichIterator<T> it, Comparator<? super T> cmp) { 
@@ -15,10 +15,10 @@ class SortedRichIterator<T> extends ClassicRichIteratorDecorator<T,T> {
 	}
 
 	@Override
-	protected boolean hasNextInternal() throws Exception { return (elts != null && elts.hasNext()) || it.hasNext(); }
+	protected boolean hasNextInternal() { return (elts != null && elts.hasNext()) || it.hasNext(); }
 
 	@Override
-	protected T nextInternal() throws Exception {
+	protected T nextInternal() {
 		if (elts == null) initElts();
 		return elts.next();
 	}

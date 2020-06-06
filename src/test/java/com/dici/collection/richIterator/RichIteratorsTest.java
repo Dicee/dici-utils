@@ -4,8 +4,8 @@ import static com.dici.collection.richIterator.RichIteratorMatcher.iteratorEqual
 import static com.dici.collection.richIterator.RichIterators.concatIterators;
 import static com.dici.collection.richIterator.RichIterators.emptyIterator;
 import static com.dici.collection.richIterator.RichIterators.prepend;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -15,13 +15,13 @@ import java.io.ObjectOutputStream;
 import java.nio.file.Files;
 import java.util.Iterator;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.dici.util.TestUtils;
 
-public class RichIteratorsTest {
+class RichIteratorsTest {
 	@Test
-	public void testDeserializerIterator() throws IOException {
+	void testDeserializerIterator() throws IOException {
 		File tmp = File.createTempFile("ser",null);
 		try (FileOutputStream fos = new FileOutputStream(tmp) ; ObjectOutputStream oos = new ObjectOutputStream(fos)) {
 			oos.writeObject("hey");
@@ -38,7 +38,7 @@ public class RichIteratorsTest {
 	}
 	
 	@Test
-	public void testReadLinesIterator() throws IOException {
+	void testReadLinesIterator() throws IOException {
 		File tmp = File.createTempFile("ser",null);
 		try (BufferedWriter bw = Files.newBufferedWriter(tmp.toPath())) {
 			bw.write("hey\n");
@@ -53,40 +53,40 @@ public class RichIteratorsTest {
 	}
 	
 	@Test
-	public void testArray2DIterator() {
+	void testArray2DIterator() {
 		Integer[][] arr = { { 1,2 },{ 3,4 } };
 		assertThat(RichIterators.from2DArray(arr).flatMap(RichIterator::toList), iteratorEqualTo(RichIterators.of(1,2,3,4)));
 	}
 	
 	@Test 
-	public void testConcatenation_emptyIterator() {
+	void testConcatenation_emptyIterator() {
 		assertThat(
 			concatIterators(RichIterators.of(1, 2, 3), emptyIterator(), RichIterators.of(4, 5)),
 			iteratorEqualTo(RichIterators.of(1, 2, 3, 4, 5)));
 	}
 	
 	@Test 
-	public void testConcatenation_emptyIterators() {
+	void testConcatenation_emptyIterators() {
 		assertThat(concatIterators(emptyIterator(), emptyIterator()), iteratorEqualTo(emptyIterator()));
 	}
 
 	@Test 
-	public void testConcatenation_prepend() {
+	void testConcatenation_prepend() {
 		assertThat(prepend(4, RichIterators.of(5)), iteratorEqualTo(RichIterators.of(4, 5)));
 	}
 	
 	@Test 
-	public void testConcatenation_prependEmptyIterator() {
+	void testConcatenation_prependEmptyIterator() {
 		assertThat(prepend(4, RichIterators.of(5)), iteratorEqualTo(RichIterators.of(4, 5)));
 	}
 	
 	@Test
-	public void testStringRichIterator() {
+	void testStringRichIterator() {
 		assertThat(RichIterators.characters("hello"), iteratorEqualTo(RichIterators.of('h', 'e', 'l', 'l', 'o')));
 	}
 	
 	@Test
-    public void testTokenIterator() throws IOException {
+    void testTokenIterator() throws IOException {
 	    File tmp = TestUtils.tempFileWithContent("hello;;my;;dear;;friends;how;;are;;you;;?");
         assertThat(RichIterators.tokens(tmp, ";;"), iteratorEqualTo(RichIterators.of("hello", "my", "dear", "friends;how", "are", "you")));
     }

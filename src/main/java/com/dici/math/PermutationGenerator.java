@@ -1,14 +1,20 @@
 package com.dici.math;
 
-import com.dici.check.Check;
-import com.dici.collection.ArrayUtils;
-
-import java.util.*;
-
 import static com.dici.check.Check.notNull;
-import static com.dici.collection.ArrayUtils.reverse;
-import static com.dici.collection.ArrayUtils.swap;
-import static com.dici.math.Permutation.*;
+import static com.dici.collection.Arrays.reverse;
+import static com.dici.collection.Arrays.swap;
+import static com.dici.math.Permutation.identity;
+import static com.dici.math.Permutation.reverseIdentity;
+import static com.dici.math.Permutation.unsafePermutation;
+
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+
+import com.dici.check.Check;
+import com.dici.collection.Arrays;
 
 public class PermutationGenerator implements Iterable<Permutation> {
 	private final Permutation start;
@@ -28,7 +34,7 @@ public class PermutationGenerator implements Iterable<Permutation> {
 	public Iterator<Permutation> iterator() { return iterator(Optional.empty()); }
 
 	public <T, C extends Collection<T>> Iterator<T[]> generatePermutations(C collection, Class<T> clazz) {
-		return generatePermutations(collection.toArray(ArrayUtils.ofDim(clazz, collection.size())));
+		return generatePermutations(collection.toArray(Arrays.ofDim(clazz, collection.size())));
 	}
 
 	public <T> Iterator<T[]> generatePermutations(T[] data) { 
@@ -41,7 +47,7 @@ public class PermutationGenerator implements Iterable<Permutation> {
 	
 	private <T> Iterator<Permutation> iterator(Optional<T[]> data) {
 		return new Iterator<Permutation>() {
-			private Integer[]	current = Arrays.copyOf(start.perm, start.perm.length);
+			private Integer[]	current = java.util.Arrays.copyOf(start.perm, start.perm.length);
 			private boolean		init	= true;
 			private int			index	= 0;
 			private boolean		ended   = updateHasNext();
@@ -88,7 +94,7 @@ public class PermutationGenerator implements Iterable<Permutation> {
 				return true;
 			}
 			
-			private boolean updateHasNext() { return ended = Arrays.equals(current, goal.perm); }
+			private boolean updateHasNext() { return ended = java.util.Arrays.equals(current, goal.perm); }
 		};
 	}
 }

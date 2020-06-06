@@ -23,7 +23,7 @@ import com.google.common.base.Objects;
  * @param <T> type of the data
  */
 public class DoublyLinkedList<T> implements List<T> {
-    public static enum Way { 
+    public enum Way {
         FORWARD, BACKWARD;
     
         public Way opposite() {

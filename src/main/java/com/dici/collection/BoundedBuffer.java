@@ -11,7 +11,7 @@ import java.util.LinkedList;
 import com.dici.check.Check;
 
 public class BoundedBuffer<T> implements Deque<T> {
-	public static enum SizeExceededPolicy { ERROR, IGNORE }
+	public enum SizeExceededPolicy { ERROR, IGNORE }
 	
 	private final int					maxSize;
 	private final Deque<T>				buffer;

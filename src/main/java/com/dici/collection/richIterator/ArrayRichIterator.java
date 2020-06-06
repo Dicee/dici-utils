@@ -1,16 +1,18 @@
 package com.dici.collection.richIterator;
 
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 class ArrayRichIterator<T> extends RichIterator<T> {
-	private T[] arr;
+	@NonNull private T[] arr;
 	private int i = 0;
 
-	public ArrayRichIterator(T[] arr) { this.arr = arr; }
-	
 	@Override
-	protected boolean hasNextInternal() throws Exception { return i < arr.length; }
+	protected boolean hasNextInternal() { return i < arr.length; }
 
 	@Override
-	protected T nextInternal() throws Exception { return arr[i++]; }
+	protected T nextInternal() { return arr[i++]; }
 	
 	@Override
 	protected void closeInternal() { arr = null; }

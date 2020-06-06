@@ -8,11 +8,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Optional;
 
-import com.dici.collection.ArrayUtils;
+import com.dici.collection.Arrays;
 import com.dici.collection.richIterator.RichIterator;
 import com.dici.collection.richIterator.RichIterators;
 
@@ -25,7 +24,7 @@ public class BoundMemorySort<T extends Comparable<T> & Serializable> {
 	private File			merged;
 
 	public BoundMemorySort(Class<T> clazz, int bufferSize) {
-		this.buffer = ArrayUtils.ofDim(clazz,bufferSize);
+		this.buffer = Arrays.ofDim(clazz,bufferSize);
 		this.clazz  = clazz;
 		this.merged = tempMergeFile();
 	}
@@ -40,8 +39,8 @@ public class BoundMemorySort<T extends Comparable<T> & Serializable> {
 	}
 
 	private T[] sortBuffer() {
-		T[] toSort = filledTo < buffer.length ? Arrays.copyOfRange(buffer,0,filledTo) : buffer;
-		Arrays.sort(toSort);
+		T[] toSort = filledTo < buffer.length ? java.util.Arrays.copyOfRange(buffer,0,filledTo) : buffer;
+		java.util.Arrays.sort(toSort);
 		return toSort;
 	}
 
@@ -49,7 +48,7 @@ public class BoundMemorySort<T extends Comparable<T> & Serializable> {
 		File newMerged = tempMergeFile();
 		try (FileOutputStream fos = new FileOutputStream(newMerged) ; ObjectOutputStream oos = new ObjectOutputStream(fos)) {
 			Iterator<T> it0 = RichIterators.fromSerializedRecords(merged,clazz);
-			Iterator<T> it1 = Arrays.asList(toSort).iterator();
+			Iterator<T> it1 = java.util.Arrays.asList(toSort).iterator();
 			Optional<T> next0 = Optional.empty(), next1 = Optional.empty();
 			
 			while (hasNext(it0,next0) && hasNext(it1,next1)) {

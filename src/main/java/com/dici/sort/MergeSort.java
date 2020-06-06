@@ -33,7 +33,7 @@ public class MergeSort<T extends Comparable<T>> implements SortAlgorithm<T> {
 	}
 	
 	public static void main(String[] args) {
-		Integer[] arr = { 1,3,5,99,6,3,2,1,7,8 };
+		Integer[] arr = {1, 3, 5, 99, 6, 3, 2, 1, 7, 8};
 		(new MergeSort<Integer>()).sort(arr);
 		System.out.println(Arrays.toString(arr));
 	}

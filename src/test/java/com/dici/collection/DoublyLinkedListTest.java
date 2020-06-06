@@ -1,21 +1,20 @@
 package com.dici.collection;
 
-import static com.dici.collection.CollectionUtils.listOf;
-import static com.dici.collection.CollectionUtils.setOf;
 import static java.util.Collections.emptyList;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.dici.collection.DoublyLinkedList.Cursor;
 
@@ -24,7 +23,7 @@ public class DoublyLinkedListTest {
 
     @Before
     public void setUp() {
-        list = new DoublyLinkedList<>(listOf(1, 2, 3));
+        list = new DoublyLinkedList<>(List.of(new Integer[]{1, 2, 3}));
     }
     
     @Test
@@ -34,12 +33,12 @@ public class DoublyLinkedListTest {
     
     @Test
     public void fromCollectionConstructor_singleton() {
-        isEqualToList(new DoublyLinkedList<>(listOf(1)), listOf(1));
+        isEqualToList(new DoublyLinkedList<>(List.of(new Integer[]{1})), List.of(new Integer[]{1}));
     }
 
     @Test
     public void fromCollectionConstructor_multipleElements() {
-        isEqualToList(new DoublyLinkedList<>(listOf(1, 2, 3)), listOf(1, 2, 3));
+        isEqualToList(new DoublyLinkedList<>(List.of(new Integer[]{1, 2, 3})), List.of(new Integer[]{1, 2, 3}));
     }
     
     @Test 
@@ -50,60 +49,60 @@ public class DoublyLinkedListTest {
     @Test 
     public void addAll_atTheEnd_emptyCollection() {
         list.addAll(emptyList());
-        isEqualToList(list, listOf(1, 2, 3));
+        isEqualToList(list, List.of(new Integer[]{1, 2, 3}));
     }
     
     @Test 
     public void addAll_atTheEnd_nonEmptyCollection() {
-        list.addAll(listOf(4, 5));
-        isEqualToList(list, listOf(1, 2, 3, 4, 5));
+        list.addAll(List.of(new Integer[]{4, 5}));
+        isEqualToList(list, List.of(new Integer[]{1, 2, 3, 4, 5}));
     }
     
     @Test 
     public void addAll_atTheEndWithIndex_nonEmptyCollection() {
-        list.addAll(3, listOf(4, 5));
-        isEqualToList(list, listOf(1, 2, 3, 4, 5));
+        list.addAll(3, List.of(new Integer[]{4, 5}));
+        isEqualToList(list, List.of(new Integer[]{1, 2, 3, 4, 5}));
     }
     
     @Test 
     public void addAll_atTheHead_emptyCollection() {
         list.addAll(0, emptyList());
-        isEqualToList(list, listOf(1, 2, 3));
+        isEqualToList(list, List.of(new Integer[]{1, 2, 3}));
     }
     
     @Test 
     public void addAll_atTheHead_nonEmptyCollection() {
-        list.addAll(0, listOf(-1, 0));
-        isEqualToList(list, listOf(-1, 0, 1, 2, 3));
+        list.addAll(0, List.of(new Integer[]{-1, 0}));
+        isEqualToList(list, List.of(new Integer[]{-1, 0, 1, 2, 3}));
     }
     
     @Test 
     public void addAll_atTheMiddle_nonEmptyCollection() {
-        list.addAll(1, listOf(3, 2));
-        isEqualToList(list, listOf(1, 3, 2, 2, 3));
+        list.addAll(1, List.of(new Integer[]{3, 2}));
+        isEqualToList(list, List.of(new Integer[]{1, 3, 2, 2, 3}));
     }
     
     @Test(expected = IndexOutOfBoundsException.class) 
     public void addAll_outOfBounds() {
-        list.addAll(4, listOf(4, 5));
+        list.addAll(4, List.of(new Integer[]{4, 5}));
     }
     
     @Test
     public void addWithIndex_atTheHead() {
         list.add(0, 4);
-        isEqualToList(list, listOf(4, 1, 2, 3));
+        isEqualToList(list, List.of(new Integer[]{4, 1, 2, 3}));
     }
     
     @Test
     public void addWithIndex_atTheEnd() {
         list.add(3, 4);
-        isEqualToList(list, listOf(1, 2, 3, 4));
+        isEqualToList(list, List.of(new Integer[]{1, 2, 3, 4}));
     }
     
     @Test
     public void addWith_inTheMiddle() {
         list.add(2, 4);
-        isEqualToList(list, listOf(1, 2, 4, 3));
+        isEqualToList(list, List.of(new Integer[]{1, 2, 4, 3}));
     }
     
     @Test(expected = IndexOutOfBoundsException.class)
@@ -114,19 +113,19 @@ public class DoublyLinkedListTest {
     @Test
     public void add() {
         list.add(4);
-        isEqualToList(list, listOf(1, 2, 3, 4));
+        isEqualToList(list, List.of(new Integer[]{1, 2, 3, 4}));
     }
     
     @Test
     public void reverse() {
-        isEqualToList(list.reverse(), listOf(3, 2, 1));
-        isEqualToList(list.reverse(), listOf(1, 2, 3));
+        isEqualToList(list.reverse(), List.of(new Integer[]{3, 2, 1}));
+        isEqualToList(list.reverse(), List.of(new Integer[]{1, 2, 3}));
     }
     
     @Test
     public void isEmpty() {
         assertThat(new DoublyLinkedList<>().isEmpty(), is(true));
-        assertThat(new DoublyLinkedList<>(listOf(1, 2)).isEmpty(), is(false));
+        assertThat(new DoublyLinkedList<>(List.of(new Integer[]{1, 2})).isEmpty(), is(false));
     }
     
     @Test 
@@ -173,8 +172,8 @@ public class DoublyLinkedListTest {
     
     @Test
     public void contains_general() {
-        assertThat(list.containsAll(listOf(3, 1)), is(true));
-        assertThat(list.containsAll(listOf(1, 3, 4)), is(false));
+        assertThat(list.containsAll(List.of(new Integer[]{3, 1})), is(true));
+        assertThat(list.containsAll(List.of(new Integer[]{1, 3, 4})), is(false));
     }
     
     @Test
@@ -190,28 +189,28 @@ public class DoublyLinkedListTest {
     // TODO: fix it
     @Ignore @Test
     public void subList_reflectsRemoval() {
-        DoublyLinkedList<Integer> list = new DoublyLinkedList<>(listOf(1, 2, 3, 4, 5));
+        DoublyLinkedList<Integer> list = new DoublyLinkedList<>(List.of(new Integer[]{1, 2, 3, 4, 5}));
         DoublyLinkedList<Integer> subList = list.subList(1, 4);
         subList.remove(0);
-        isEqualToList(list, listOf(1, 3, 4, 5));
-        isEqualToList(subList, listOf(3, 4));
+        isEqualToList(list, List.of(new Integer[]{1, 3, 4, 5}));
+        isEqualToList(subList, List.of(new Integer[]{3, 4}));
     }
     
     // TODO: fix it
     @Ignore @Test 
     public void subList_reflectsInsertion() {
-        DoublyLinkedList<Integer> list = new DoublyLinkedList<>(listOf(1, 2, 3, 4, 5));
+        DoublyLinkedList<Integer> list = new DoublyLinkedList<>(List.of(new Integer[]{1, 2, 3, 4, 5}));
         DoublyLinkedList<Integer> subList = list.subList(1, 4);
         subList.add(0, -2);
         subList.add(-2);
-        isEqualToList(list, listOf(1, -2, 2, 3, 4, -2, 5));
-        isEqualToList(subList, listOf(-2, 2, 3, 4, -2));
+        isEqualToList(list, List.of(new Integer[]{1, -2, 2, 3, 4, -2, 5}));
+        isEqualToList(subList, List.of(new Integer[]{-2, 2, 3, 4, -2}));
     }
     
     @Test
     public void retainAll() {
-        list.retainAll(setOf(1, 3, 5));
-        isEqualToList(list, listOf(1, 3));
+        list.retainAll(Set.of(new Integer[]{1, 3, 5}));
+        isEqualToList(list, List.of(new Integer[]{1, 3}));
     }
     
     @Test(expected = IllegalStateException.class)
@@ -271,12 +270,12 @@ public class DoublyLinkedListTest {
         assertThat(it.next(), is(3));
         it.remove();
         assertIteratorState(it, 2, true, false);
-        isEqualToList(list, listOf(1, 3));
+        isEqualToList(list, List.of(new Integer[]{1, 3}));
     }
     
     @Test
     public void lastIndexOf() {
-        List<Integer> originalList = listOf(1, 2, 3, 4, 1, 2, 1, 0);
+        List<Integer> originalList = List.of(new Integer[]{1, 2, 3, 4, 1, 2, 1, 0});
         
         DoublyLinkedList<Integer> list = new DoublyLinkedList<>(originalList);
         assertThat(list.lastIndexOf(1), is(6));
@@ -291,7 +290,7 @@ public class DoublyLinkedListTest {
     public void removeFirst() {
         assertThat(list.size(), is(3));
         assertThat(list.remove(0), is(1));
-        isEqualToList(list, listOf(2, 3));
+        isEqualToList(list, List.of(new Integer[]{2, 3}));
         assertThat(list.first.data, is(2));
         assertThat(list.size(), is(2));
     }
@@ -299,7 +298,7 @@ public class DoublyLinkedListTest {
     @Test
     public void removeLast() {
         assertThat(list.remove(2), is(3));
-        isEqualToList(list, listOf(1, 2));
+        isEqualToList(list, List.of(new Integer[]{1, 2}));
         assertThat(list.last.data, is(2));
         assertThat(list.size(), is(2));
     }
@@ -349,7 +348,7 @@ public class DoublyLinkedListTest {
     
     @Test
     public void listIterator_remove_reflectsRemoval() {
-        ListIterator<Integer> it = new ArrayList<>(listOf(1,2,3)).listIterator();
+        ListIterator<Integer> it = new ArrayList<>(List.of(new Integer[]{1, 2, 3})).listIterator();
         
         assertThat(it.next(), is(1));
         assertIteratorState(it, 1, true, true);
@@ -362,8 +361,8 @@ public class DoublyLinkedListTest {
         
         assertThat(it.next(), is(3));
         assertIteratorState(it, 2, true, false);
-        
-        isEqualToList(list, listOf(2, 3));
+
+        isEqualToList(list, List.of(new Integer[]{2, 3}));
     }
     
     @Test

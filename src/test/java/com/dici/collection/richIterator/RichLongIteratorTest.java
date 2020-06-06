@@ -1,27 +1,26 @@
 package com.dici.collection.richIterator;
 
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Arrays;
 
-import com.dici.collection.richIterator.RichLongIterator;
-
 import org.hamcrest.Matchers;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class RichLongIteratorTest {
+class RichLongIteratorTest {
 	@Test
-	public void testRange() {
+	void testRange() {
 		assertThat(RichLongIterator.range(0,3).toList(), Matchers.equalTo(Arrays.asList(0L,1L,2L)));
 	}
 	
-	@Test(expected = IllegalArgumentException.class)
-	public void testRangeFailsIfEmptyRange() {
-		RichLongIterator.range(0,0);
+	@Test
+	void testRangeFailsIfEmptyRange() {
+		assertThrows(IllegalArgumentException.class, () -> RichLongIterator.range(0, 0));
 	}
 	
 	@Test
-	public void testClosedRange() {
+	void testClosedRange() {
 		assertThat(RichLongIterator.closedRange(0,3).toList(), Matchers.equalTo(Arrays.asList(0L,1L,2L,3L)));
 	}
 }

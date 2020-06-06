@@ -1,16 +1,16 @@
 package com.dici.collection.toolbox;
 
 import static com.dici.check.Check.notNull;
-import static com.dici.collection.CollectionUtils.collectList;
 import static com.dici.collection.toolbox.DiffReport.NO_LIMIT;
+import static com.google.common.collect.ImmutableList.toImmutableList;
 
 import java.util.List;
 
-import com.dici.check.Check;
-import com.dici.collection.richIterator.RichIterator;
-
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeMatcher;
+
+import com.dici.check.Check;
+import com.dici.collection.richIterator.RichIterator;
 
 public class SortedIteratorEqualMatcher<T> extends TypeSafeMatcher<RichIterator<T>> {
 	public static <T> SortedIteratorEqualMatcher<T> sortedIteratorEqual(RichIterator<T> expected, CompareSortedIterators<T> compareSortedIterators) {
@@ -48,9 +48,9 @@ public class SortedIteratorEqualMatcher<T> extends TypeSafeMatcher<RichIterator<
 
 	@Override
 	protected boolean matchesSafely(RichIterator<T> actual) {
-		List<Diff<T>> diffs = limit == NO_LIMIT ? 
+        List<Diff<T>> diffs = limit == NO_LIMIT ?
 				compareSortedIterators.compareFully(actual, expected, report): 
-				compareSortedIterators.compareIterators(actual, expected, report).stream().limit(limit).collect(collectList());
+				compareSortedIterators.compareIterators(actual, expected, report).stream().limit(limit).collect(toImmutableList());
 		return diffs.isEmpty();
 	}
 }

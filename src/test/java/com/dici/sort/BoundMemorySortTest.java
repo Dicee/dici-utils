@@ -1,7 +1,7 @@
 package com.dici.sort;
 
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 import com.dici.sort.BoundMemorySort;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class BoundMemorySortTest {
 	@Test

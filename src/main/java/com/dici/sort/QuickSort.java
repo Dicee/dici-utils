@@ -1,6 +1,6 @@
 package com.dici.sort;
 
-import static com.dici.collection.ArrayUtils.swap;
+import static com.dici.collection.Arrays.swap;
 import static com.dici.math.MathUtils.lowerThan;
 
 import java.util.Random;

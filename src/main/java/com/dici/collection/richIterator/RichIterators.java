@@ -11,10 +11,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Reader;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.stream.Stream;
 
 import com.dici.files.TokenParser;
@@ -28,7 +30,7 @@ public class RichIterators {
 	public static <T> RichIterator<T> of(T... elts)                            { return new ArrayRichIterator<>(elts); }
 	public static <T> RichIterator<T> fromCollection(Collection<T> collection) { return wrap(collection.iterator())  ; }
 	public static <T> GroupedRichIterator<T> from2DArray(T[][] arr) { 
-		return GroupedRichIterator.create(new ArrayRichIterator<>(arr).map(col -> new ArrayRichIterator<>(col))); 
+		return GroupedRichIterator.create(new ArrayRichIterator<>(arr).map(ArrayRichIterator::new));
 	}
 	
 	public static RichIterator<Character> characters(String s) { return wrap(s.chars().mapToObj(i -> (char) i).iterator()); }
@@ -38,8 +40,8 @@ public class RichIterators {
 		try {
 			br = Files.newBufferedReader(f.toPath());
 			final BufferedReader source = br;
-			return new FromResourceRichIterator<String>(source) {
-				@Override protected String tryReadNext() throws EOFException, IOException { return source.readLine(); }
+			return new FromResourceRichIterator<>(source) {
+				@Override protected String tryReadNext() throws IOException { return source.readLine(); }
 			};
 		} catch (IOException e) {
 			IOUtils.closeQuietly(br);
@@ -54,7 +56,7 @@ public class RichIterators {
 	    try {
 	        reader = new FileReader(file);
 	        final Reader source = reader;
-    	    return new RichIterator<Character>() {
+    	    return new RichIterator<>() {
                 private char[] chars    = new char[2048];
                 private int    index    = 0;
                 private int    readUpTo = 0;
@@ -67,12 +69,12 @@ public class RichIterators {
                     return readUpTo != -1;
                 }
                 
-                @Override protected Character nextInternal () throws Exception   { return chars[index++]; }
+                @Override protected Character nextInternal ()                    { return chars[index++]; }
                 @Override protected void      closeInternal() throws IOException { source.close()       ; }
             };
 	    } catch (IOException e) {
-	        IOUtils.closeQuietly(reader);
-            throw Throwables.propagate(e);
+			IOUtils.closeQuietly(reader);
+			throw Throwables.propagate(e);
         }
 	}
 	
@@ -86,7 +88,7 @@ public class RichIterators {
 			final ObjectInputStream source = ois;
 			return new LookAheadRichIterator<T>(new FromResourceRichIterator<T>(fis, ois) {
 				@Override
-				public T tryReadNext() throws EOFException, IOException { 
+				public T tryReadNext() throws IOException {
 					try {
 					    T cast = clazz.cast(source.readObject());
 						return cast;
@@ -98,8 +100,8 @@ public class RichIterators {
 		} catch (EOFException e) { 
 			return emptyIterator();  
 		} catch (IOException e) {
-			IOUtils.closeQuietly(fis, ois);
-			throw Throwables.propagate(e);
+			IOUtils.closeAllQuietly(List.of(fis, ois));
+			throw new UncheckedIOException(e);
 		}
 	}
 
@@ -108,9 +110,9 @@ public class RichIterators {
 	public static <T> RichIterator<T> wrap(Iterator<T> it) {
 		if (it instanceof RichIterator) return (RichIterator<T>) it;
 		return new RichIterator<T>() {
-			@Override protected boolean hasNextInternal()                    { return it.hasNext()         ; }
-			@Override protected T       nextInternal   ()                    { return it.next()            ; }
-			@Override protected void    closeInternal  () throws IOException { IOUtils.closeIfCloseable(it); }
+			@Override protected boolean hasNextInternal() { return it.hasNext()         ; }
+			@Override protected T       nextInternal   () { return it.next()            ; }
+			@Override protected void    closeInternal  () { IOUtils.closeIfCloseable(it); }
 		};
 	}
 	

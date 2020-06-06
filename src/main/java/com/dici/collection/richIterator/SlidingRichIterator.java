@@ -1,7 +1,6 @@
 package com.dici.collection.richIterator;
 
 import static com.dici.check.Check.isPositive;
-import static com.dici.collection.CollectionUtils.copyAsList;
 
 import java.util.Deque;
 import java.util.LinkedList;
@@ -18,15 +17,15 @@ public class SlidingRichIterator<X> extends ClassicRichIteratorDecorator<X, Rich
     }
 
     @Override
-    protected boolean hasNextInternal() throws Exception {  return it.hasNext() || !slide.isEmpty(); }
+    protected boolean hasNextInternal() {  return it.hasNext() || !slide.isEmpty(); }
 
     @Override
-    protected RichIterator<X> nextInternal() throws Exception {
+    protected RichIterator<X> nextInternal() {
         // first iteration
         if (slide.isEmpty()) 
             for (int i = 0; i < window && it.hasNext(); i++) slide.addLast(it.next());
         
-        RichIterator<X> res = RichIterators.fromCollection(copyAsList(slide));
+        RichIterator<X> res = RichIterators.fromCollection(slide);
         if (slide.size() < window) slide.clear();
         else {
             for (int i = 0; i < step && it.hasNext()    ; i++) slide.addLast(it.next());

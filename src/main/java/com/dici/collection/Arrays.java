@@ -12,10 +12,10 @@ import java.util.stream.Stream;
 import com.dici.check.Check;
 import com.dici.collection.richIterator.RichIterator;
 import com.dici.collection.richIterator.RichIterators;
+import lombok.experimental.UtilityClass;
 
-public class ArrayUtils {
-	private ArrayUtils() { }
-	
+@UtilityClass
+public class Arrays {
 	@SafeVarargs
 	public static <T> T[] of(T... ts) {
 		Check.notNull(ts);
@@ -31,7 +31,7 @@ public class ArrayUtils {
 		return arr;
 	}
 	
-	public static <T> T[] reversed(T[] arr) {
+	public static <T> T[] reverse(T[] arr) {
 		reverse(arr,0,arr.length);
 		return arr;
 	}

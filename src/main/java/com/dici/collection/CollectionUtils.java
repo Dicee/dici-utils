@@ -1,66 +1,26 @@
 package com.dici.collection;
 
-import static com.dici.check.Check.notNull;
+import static com.google.common.collect.ImmutableList.toImmutableList;
+import static com.google.common.collect.ImmutableSet.toImmutableSet;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.function.Function;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import com.dici.check.Check;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Streams;
+import lombok.experimental.UtilityClass;
 
+@UtilityClass
 public class CollectionUtils {
-	private CollectionUtils() { }
+	private static final int UNKNOWN_CHARACTERISTICS = 0;
 
-	public static <K,V,N> Map<K,N> mapValues(Map<K,V> map, Function<V,N> mapper) {
-		return map.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey,mapper.compose(Map.Entry::getValue)));
-	}
-	
-	public static <K,V,N> Map<N,V> mapKeys(Map<K,V> map, Function<K,N> mapper) {
-		return map.entrySet().stream().collect(Collectors.toMap(mapper.compose(Map.Entry::getKey),Map.Entry::getValue));
-	}
-	
-	public static <T> List<T> reverse(List<T> list) {
-		Collections.reverse(list);
-		return list;
-	}
-	
 	@SafeVarargs
-	public static <T> Set<T> setOf(T... elts) { 
-		Check.notNull(elts,"This array should contain at least one element");
-		HashSet<T> res = new HashSet<>(elts.length);
-		for (T elt : elts) res.add(elt);
-		return Collections.unmodifiableSet(res);
+	public static <T> ImmutableSet<T> concatToSet(Iterable<T>... iterables) {
+		return Stream.of(iterables).flatMap(Streams::stream).collect(toImmutableSet());
 	}
 
 	@SafeVarargs
-	public static <T> List<T> listOf(T... elts) {
-		notNull(elts,"This array should contain at least one element");
-		return Collections.unmodifiableList(Arrays.asList(elts));
+	public static <T> ImmutableList<T> concat(Iterable<? extends T>... iterables) {
+		return Stream.of(iterables).flatMap(Streams::stream).collect(toImmutableList());
 	}
-	
-	@SafeVarargs
-	public static <T> Set<T> union(Set<? extends T>... sets) {
-	    Set<T> union = new HashSet<>();
-	    for (Set<? extends T> set : sets) union.addAll(set);
-	    return union;
-	}
-	
-	@SafeVarargs
-	public static <T> List<T> unionList(List<? extends T>... lists) {
-	    List<T> union = new ArrayList<>();
-	    for (List<? extends T> list : lists) union.addAll(list);
-	    return union;
-	}
-
-	public static <T> List<T> copyAsList(Collection<T> collection) { return new ArrayList<>(collection); }
-	
-	public static <T> Collector<T, ?, List<T>> collectList() { return Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList); }
 }

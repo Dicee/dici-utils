@@ -20,10 +20,11 @@ class TakeRichIterator<X> extends NullableRichIterator<X> {
         return new TakeRichIterator<X>(it, dontTake.negate(), true);
     }
     
-    private final RichIterator<X>      it;
+    private final RichIterator<X> it;
     private final ThrowingPredicate<X> take;
-    private boolean                    takeNext = true;
-    private boolean                    takeLast;
+
+    private boolean takeNext = true;
+    private boolean takeLast;
 
     private TakeRichIterator(Iterator<X> it, ThrowingPredicate<X> take, boolean takeLast) { 
         this.it       = notNull(RichIterators.wrap(it));

@@ -7,17 +7,17 @@ import com.dici.check.Check;
 public class RichIntIterator extends RichIteratorDecorator<Integer, Integer, RichIterator<Integer>> {
     public static RichIntIterator counter() { return counter(0); }
 	public static RichIntIterator counter(int init) {
-		return new RichIntIterator(new RichIterator<Integer>() {
+		return new RichIntIterator(new RichIterator<>() {
 			private Integer count = init;
 			
 			@Override
-			protected Integer nextInternal() throws Exception {
+			protected Integer nextInternal() {
 				if (count.equals(Integer.MAX_VALUE)) throw new IllegalStateException("Integer capacity exceeded");
 				return count++;
 			}
 			
 			@Override
-			protected boolean hasNextInternal() throws Exception { return !count.equals(Integer.MAX_VALUE); }
+			protected boolean hasNextInternal() { return !count.equals(Integer.MAX_VALUE); }
 		});
 	}
 	

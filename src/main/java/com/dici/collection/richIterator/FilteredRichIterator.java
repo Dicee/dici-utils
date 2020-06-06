@@ -20,5 +20,5 @@ final class FilteredRichIterator<X> extends RichIteratorDecorator<X, X, LookAhea
 	}
 
 	@Override
-	protected X nextInternal() throws Exception { return it.next(); }
+	protected X nextInternal() { return it.next(); }
 }

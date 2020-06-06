@@ -1,7 +1,7 @@
 package com.dici.collection.toolbox;
 
-import static java.util.Collections.unmodifiableList;
 import static com.dici.exceptions.ExceptionUtils.uncheckedConsumer;
+import static java.util.Collections.unmodifiableList;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,11 +10,11 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 
-import javafx.util.Pair;
 import com.dici.check.Check;
 import com.dici.collection.BoundedBuffer;
 import com.dici.collection.BoundedBuffer.SizeExceededPolicy;
-import com.dici.strings.StringUtils;
+import com.google.common.base.Joiner;
+import javafx.util.Pair;
 
 public final class DiffReport<T> {
 	public static final int					NO_LIMIT	= -1;
@@ -97,7 +97,7 @@ public final class DiffReport<T> {
 	@Override
 	public String toString() {
 	    return "DiffReport [" +
-	            "\n\tdiffs=" + (diffs.isEmpty() ? "[]," : "\n\t\t" + StringUtils.join("\n\t\t", diffs)) +
+	            "\n\tdiffs=" + (diffs.isEmpty() ? "[]," : "\n\t\t" + Joiner.on("\n\t\t").join(diffs)) +
 	            "\n\teventsCount=" + eventsCount + "," +
 	            "\n\tdiffCount=" + diffCount + "," +
 	            "\n\tmissingCount=" + missingCount + "," +

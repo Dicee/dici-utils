@@ -15,12 +15,12 @@ public class UniformBatchRichIterator<X> extends ClassicRichIteratorDecorator<X,
 	}
 
 	@Override
-	protected RichIterator<X> nextInternal() throws Exception {
+	protected RichIterator<X> nextInternal() {
 		Deque<X> buffer = new LinkedList<>();
-		for (int i=0 ; i<batchSize && it.hasNext() ; i++) buffer.add(it.next());
+		for (int i = 0 ; i < batchSize && it.hasNext() ; i++) buffer.add(it.next());
 		return RichIterators.fromCollection(buffer);
 	}
 	
 	@Override
-	protected boolean hasNextInternal() throws Exception { return it.hasNext(); }
+	protected boolean hasNextInternal() { return it.hasNext(); }
 }

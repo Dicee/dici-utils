@@ -1,6 +1,6 @@
 package com.dici.sort;
 
-import static com.dici.collection.ArrayUtils.swap;
+import static com.dici.collection.Arrays.swap;
 
 public class SelectionSort<T extends Comparable<T>> implements SortAlgorithm<T> {
 	@Override
