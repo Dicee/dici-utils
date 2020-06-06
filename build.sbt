@@ -1,43 +1,25 @@
-lazy val CONSUMERS = scala.io.Source.fromFile("consumers.txt").getLines.toSet
+name := "dici-utils"
 
-lazy val distribute = taskKey[Unit]("Produces (if needed) Distributes the assembly jar and distributes it to all the consumers of the library")
+version := "0.1"
 
-lazy val commonSettings = Seq(
-    version := "1.0",
-    scalaVersion := "2.12.1",
-    initialize := {
-	  val _ = initialize.value
-	  if (sys.props("java.specification.version") != "1.8")
-	    sys.error("Java 8 is required for this project.")
-	},
-	exportJars := true,
-	javacOptions ++= Seq("-source", "1.8", "-target", "1.8"),
-	scalacOptions += "-target:jvm-1.8",
-	distribute := { 
-		import java.io.File
-		import java.nio.file.Files
-		import java.nio.file.Paths
-		import java.nio.file.StandardCopyOption.REPLACE_EXISTING
-		
-		def copyFileToConsumer(file: File, consumerPath: String) = Files.copy(file.toPath, Paths.get(consumerPath + "/lib/" + file.getName), REPLACE_EXISTING)
-
-		val assemblyFile = assembly.value
-		val sourcesFile  = (Keys.packageSrc in Compile).value
-		
-		for (consumer <- CONSUMERS) {
-			println(s"Distribute to ${consumer}") 
-			copyFileToConsumer(assemblyFile, consumer)
-			copyFileToConsumer(sourcesFile , consumer)
-		}
-
-
-	},
-	assemblyExcludedJars in assembly := (fullClasspath in assembly).value.filter(_.data.getName.toLowerCase.contains("scala")),
-	libraryDependencies += "junit" % "junit" % "4.11" % "test"
+scalaVersion := "2.12.7"
+libraryDependencies ++= Seq(
+	"org.projectlombok" % "lombok" % "1.18.12",
+	"com.google.guava" % "guava" % "29.0-jre"
 )
 
-lazy val root = 
-	(project in file("."))
-		.settings(commonSettings: _*)
-		.settings(name := "dici-utils")
+val javaFXModules = Seq("base", "controls", "graphics", "web", "swing")
+libraryDependencies ++= javaFXModules.map(m =>
+	"org.openjfx" % s"javafx-$m" % "15-ea+5" classifier "mac"
+)
+libraryDependencies += "org.controlsfx" % "controlsfx" % "8.0.6_20"
 
+libraryDependencies ++= Seq(
+	"org.apache.logging.log4j" % "log4j-api" % "2.13.3",
+	"org.apache.logging.log4j" % "log4j-core" % "2.13.3"
+)
+
+libraryDependencies ++= Seq(
+	"org.hamcrest" % "hamcrest" % "2.2",
+	"org.junit.jupiter" % "junit-jupiter-engine" % "5.0.0" % Test
+)

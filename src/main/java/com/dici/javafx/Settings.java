@@ -3,7 +3,6 @@ package com.dici.javafx;
 import static javafx.application.Application.STYLESHEET_CASPIAN;
 import static javafx.application.Application.STYLESHEET_MODENA;
 import static javafx.application.Application.setUserAgentStylesheet;
-import impl.org.controlsfx.i18n.Localization;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -16,7 +15,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 import java.util.function.Consumer;
@@ -24,6 +22,7 @@ import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.dici.javafx.components.CodeEditor;
 import javafx.beans.property.Property;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -31,7 +30,6 @@ import javafx.scene.Node;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.ImageView;
-import com.dici.javafx.components.CodeEditor;
 
 public class Settings {
 	public static final Properties				properties		= new Properties();
@@ -177,7 +175,6 @@ public class Settings {
 		return (ActionEvent ev) -> {
 			if (menu != preferences.get(PREF_LANGUAGE)) {
 				loadLocalizedTexts(properties.getProperty(propertyName));
-				Localization.setLocale(new Locale(lang,country));
 				changePreference(menu,PREF_LANGUAGE,propertyName,checkedIcon);
 			}
 		};

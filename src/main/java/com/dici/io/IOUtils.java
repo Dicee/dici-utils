@@ -1,20 +1,17 @@
 package com.dici.io;
 
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
-public class IOUtils {
-	private static final Log LOG = LogFactory.getLog(IOUtils.class);
+import lombok.experimental.UtilityClass;
+import lombok.extern.log4j.Log4j2;
 
-	private IOUtils() { }
-	
-	public static void closeQuietly(Closeable... resources) { 
+@Log4j2
+@UtilityClass
+public class IOUtils {
+	public static void closeQuietly(Closeable... resources) {
 		for (Closeable resource : resources) closeQuietly(resource);
 	}
 	
@@ -32,7 +29,7 @@ public class IOUtils {
 		try {
 			Files.delete(file.toPath());
 		} catch (Exception e) {
-			LOG.warn("Could not delete file: " + file.getAbsolutePath(), e);
+			log.warn("Could not delete file: " + file.getAbsolutePath(), e);
 		}
 	}
 	
