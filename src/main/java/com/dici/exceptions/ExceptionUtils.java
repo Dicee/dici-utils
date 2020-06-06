@@ -8,7 +8,6 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 
-import com.google.common.base.Throwables;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
@@ -49,7 +48,7 @@ public class ExceptionUtils {
 		try (RESOURCE resource = resourceSupplier.get()) {
 			return function.apply(resource);
 		} catch (Exception e) {
-			throw Throwables.propagate(e);
+			throw new RuntimeException(e);
 		}
 	}
 	
@@ -58,7 +57,7 @@ public class ExceptionUtils {
 		try (RESOURCE resource = resourceSupplier.get()) {
 			return function.apply(resource);
 		} catch (Exception e) {
-			throw Throwables.propagate(e);
+			throw new RuntimeException(e);
 		}
 	}
 	
@@ -67,7 +66,7 @@ public class ExceptionUtils {
 			try {
 				consumer.accept(input);
 			} catch (Exception e) {
-				throw Throwables.propagate(e);
+				throw new RuntimeException(e);
 			}
 		};
 	}
@@ -77,7 +76,7 @@ public class ExceptionUtils {
 			try {
 				return supplier.get();
 			} catch (Exception e) {
-				throw Throwables.propagate(e);
+				throw new RuntimeException(e);
 			}
 		};
 	}
@@ -87,7 +86,7 @@ public class ExceptionUtils {
 			try {
 				return function.apply(input);
 			} catch (Exception e) {
-				throw Throwables.propagate(e);
+				throw new RuntimeException(e);
 			}
 		};
 	}
@@ -96,7 +95,7 @@ public class ExceptionUtils {
 		try {
 			return supplier.get();
 		} catch (Exception e) {
-			throw Throwables.propagate(e);
+			throw new RuntimeException(e);
 		}
 	}
 	
@@ -105,7 +104,7 @@ public class ExceptionUtils {
 			try {
 				runnable.run();
 			} catch (Exception e) {
-				throw Throwables.propagate(e);
+				throw new RuntimeException(e);
 			}
 		};
 	}
@@ -115,7 +114,7 @@ public class ExceptionUtils {
 			try {
 				return biFunction.apply(a,b);
 			} catch (Exception e) {
-				throw Throwables.propagate(e);
+				throw new RuntimeException(e);
 			}
 		};
 	}
@@ -125,7 +124,7 @@ public class ExceptionUtils {
 			try {
 				return binaryOp.apply(a,b);
 			} catch (Exception e) {
-				throw Throwables.propagate(e);
+				throw new RuntimeException(e);
 			}
 		};
 	}
@@ -135,7 +134,7 @@ public class ExceptionUtils {
 			try {
 				return unaryOp.apply(a);
 			} catch (Exception e) {
-				throw Throwables.propagate(e);
+				throw new RuntimeException(e);
 			}
 		};
 	}
