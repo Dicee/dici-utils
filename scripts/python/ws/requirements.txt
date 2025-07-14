@@ -1,0 +1,7 @@
+git
+python3
+pip3
+arghandler
+sty
+pytimeparse
+graphviz

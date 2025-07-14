@@ -1,0 +1,19 @@
+#!/bin/zsh
+
+source ~/.zshrc
+
+# update every 2 days
+UPDATE_FREQUENCY=$((2 * 24 * 3600))
+
+installation_dir="$(dirname "$0")"
+source "$installation_dir/install.sh"
+
+install_marker="$installation_dir/.install"
+update_marker="$installation_dir/.last_update"
+requirements="$installation_dir/requirements.txt"
+
+update_user_path $installation_dir
+update $installation_dir $update_marker $UPDATE_FREQUENCY
+install_dependencies $requirements $install_marker
+
+python3 "$installation_dir/ws.py" "$@"
