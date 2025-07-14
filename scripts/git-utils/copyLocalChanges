@@ -1,0 +1,4 @@
+#!/bin/bash
+
+git status | grep -E 'modified|new file' | cut -d \  -f3-  | sed 's/^[ ]*//;s/[ ]*$//' | sort | uniq | xargs -I % copyChanged %
+

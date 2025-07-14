@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if [[ $# == "0" ]]; then
+  commit_id=''
+else
+  commit_id="~$1"
+fi
+
+git diff-tree --no-commit-id --name-status -r HEAD"$commit_id" | grep -v -E "^D.*" | cut -d$'\t' -f2 | xargs -I % copyChanged %

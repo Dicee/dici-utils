@@ -1,0 +1,10 @@
+#!/bin/bash
+
+file=$1
+
+src_path=$(dirname `pwd`)
+workspace_path=$(dirname "$src_path")
+workspace=${workspace_path##*/}
+pkg="${PWD##*/}"
+
+scp $1 `devdesk`:/workplace/courtino/$workspace/src/$pkg/$1
