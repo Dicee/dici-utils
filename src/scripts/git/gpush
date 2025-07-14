@@ -1,0 +1,4 @@
+#!/bin/bash
+gpull
+echo "git push" && git push
+exit

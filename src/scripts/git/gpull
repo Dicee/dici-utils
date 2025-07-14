@@ -1,0 +1,19 @@
+#!/bin/bash
+echo "git stash"
+old_stash=$(git rev-parse -q --verify refs/stash)
+git stash
+new_stash=$(git rev-parse -q --verify refs/stash)
+echo "git pull --rebase"
+git pull --rebase
+
+if [ -d "$(git rev-parse --git-path rebase-merge)" ] || [ -d "$(git rev-parse --git-path rebase-apply)" ]; then
+   # rebase is still in progress, so it did not merge cleanly. Exit with error to correct report the pull as failed
+   # in parallel commands.
+   exit 1
+fi
+
+if [ "$old_stash" != "$new_stash" ]; then 
+    echo "git stash pop" && git stash pop
+fi
+
+exit
