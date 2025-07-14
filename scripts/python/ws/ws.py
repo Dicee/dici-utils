@@ -20,7 +20,7 @@ def create(parser, context, args):
     parsed_args = ArgParser.parse_and_normalize_args(parser, args)
 
     vs_option = '' if parsed_args.versionSet is None else '-vs {}'.format(parsed_args.versionSet)
-    task_result = execution_utils.exec_cmd('brazil ws --create --name {} {}'.format(parsed_args.name, vs_option))
+    task_result = execution_utils.exec_cmd('TODOl ws --create --name {} {}'.format(parsed_args.name, vs_option))
     if task_result.is_failure():
         exit_with_error('ERROR: Failed to create new workspace using {}'.format(task_result.describe_command()))
     else:
@@ -28,7 +28,7 @@ def create(parser, context, args):
         _do_clone(parser, args)
     
 
-@subcmd(help='Clones multiple Brazil repositories in parallel')
+@subcmd(help='Clones multiple  repositories in parallel')
 def clone(parser, context, args):
     ArgParser.configure_run_all_parser(parser, default_num_threads=DEFAULT_NUM_THREADS_FOR_CLONING)
     _do_clone(parser, args)
@@ -36,22 +36,22 @@ def clone(parser, context, args):
 
 def _do_clone(parser, args):
     args = ArgParser.parse_and_normalize_args(parser, args, is_template_command=True, working_dir=Context.ws.root())
-    args.command = 'brazil ws --use -p {}'
+    args.command = 'TODO ws --use -p {}'
     execution_utils.exec(args)
     Context.ws.sync_package_info() # the workspaceInfo file might be modified concurrently by all threads, so we repair it at the end
 
 
-@subcmd(help='Removes a list of Brazil packages')
+@subcmd(help='Removes a list of packages')
 def remove(parser, context, args):
     parser.add_argument('--packages', '-p', nargs='+', type=str, help="Space-separated list of packages to remove from the workspace", required=True)
     args = parser.parse_args(args)
-    cmd = 'brazil ws --remove {}'.format(' '.join(['-p ' + package for package in args.packages]))
+    cmd = 'TODO ws --remove {}'.format(' '.join(['-p ' + package for package in args.packages]))
     execution_utils.exec_cmd(cmd, raise_on_failure=True)
 
 
 @subcmd(help="Syncs the version set's metadata and pulls all checked packages in parallel")
 def sync(parser, context, args):
-    task_result = execution_utils.exec_cmd('brazil workspace sync --metadata')
+    task_result = execution_utils.exec_cmd('TODO workspace sync --metadata')
     exit_if_task_failed(task_result, additional_message="Failed to sync version set's metadata")
     pull(parser, context, args)
 
