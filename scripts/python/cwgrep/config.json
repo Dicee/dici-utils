@@ -1,0 +1,333 @@
+{
+  "services": [
+    {
+      "name": "dummy-account",
+      "alias": "hp"
+    },
+    {
+      "name": "dummy-account",
+      "alias": "ps"
+    },
+    {
+      "name": "dummy-account",
+      "alias": "po"
+    },
+    {
+      "name": "dummy-account",
+      "alias": "conf",
+      "defaultLogGroup": "service"
+    }
+  ],
+  "accounts": [
+    {
+      "name": "dummy-account",
+      "accessRole": "obfuscated",
+      "accountType":"conduit",
+      "hostedServices": [
+        "hp-alpha-iad"
+      ]
+    },
+    {
+      "name": "dummy-account",
+      "accessRole": "obfuscated",
+      "accountType": "conduit",
+      "hostedServices": [
+        "hp-beta-dub"
+      ]
+    },
+    {
+      "name": "dummy-account",
+      "accessRole": "obfuscated",
+      "accountType": "conduit",
+      "hostedServices": [
+        "hp-beta-iad"
+      ]
+    },
+    {
+      "name": "dummy-account",
+      "accessRole": "obfuscated",
+      "accountType": "conduit",
+      "hostedServices": [
+        "hp-prod-dub"
+      ]
+    },
+    {
+      "name": "dummy-account",
+      "accessRole": "obfuscated",
+      "accountType": "conduit",
+      "hostedServices": [
+        "hp-prod-iad"
+      ]
+    },
+    {
+      "name": "dummy-account",
+      "accessRole": "obfuscated",
+      "accountType": "conduit",
+      "hostedServices": [
+        "ps-alpha-iad"
+      ]
+    },
+    {
+      "name": "dummy-account",
+      "accessRole": "obfuscated",
+      "accountType": "conduit",
+      "hostedServices": [
+        "ps-alpha-dub"
+      ]
+    },
+    {
+      "name": "dummy-account",
+      "accessRole": "ReadOnly",
+      "accountType": "conduit",
+      "hostedServices": [
+        "ps-beta-iad"
+      ]
+    },
+    {
+      "name": "dummy-account",
+      "accessRole": "ReadOnly",
+      "accountType": "conduit",
+      "hostedServices": [
+        "ps-beta-dub"
+      ]
+    },
+    {
+      "name": "dummy-account",
+      "accessRole": "ReadOnly",
+      "accountType": "conduit",
+      "hostedServices": [
+        "ps-prod-iad"
+      ]
+    },
+    {
+      "name": "dummy-account",
+      "accessRole": "ReadOnly",
+      "accountType": "conduit",
+      "hostedServices": [
+        "ps-prod-dub"
+      ]
+    },
+    {
+      "name": "dummy-account",
+      "accessRole": "ReadOnly",
+      "accountType": "conduit",
+      "hostedServices": [
+        "po-alpha-iad"
+      ]
+    },
+    {
+      "name": "dummy-account",
+      "accessRole": "ReadOnly",
+      "accountType": "conduit",
+      "hostedServices": [
+        "po-alpha-dub"
+      ]
+    },
+    {
+      "name": "dummy-account",
+      "accessRole": "ReadOnly",
+      "accountType": "conduit",
+      "hostedServices": [
+        "po-beta-iad"
+      ]
+    },
+    {
+      "name": "dummy-account",
+      "accessRole": "ReadOnly",
+      "accountType": "conduit",
+      "hostedServices": [
+        "po-beta-dub"
+      ]
+    },
+    {
+      "name": "dummy-account",
+      "accessRole": "ReadOnly",
+      "accountType": "conduit",
+      "hostedServices": [
+        "po-gamma-dub"
+      ]
+    },
+    {
+      "name": "dummy-account",
+      "accessRole": "ReadOnly",
+      "accountType": "conduit",
+      "hostedServices": [
+        "po-prod-dub"
+      ]
+    },
+    {
+      "name": "dummy-account",
+      "accessRole": "obfuscated",
+      "hostedServices": [
+        "conf-alpha-iad",
+        "conf-alpha-dub"
+      ]
+    },
+    {
+      "name": "dummy-account",
+      "accessRole": "obfuscated",
+      "hostedServices": [
+        "conf-beta-iad",
+        "conf-beta-dub"
+      ]
+    },
+    {
+      "name": "dummy-account",
+      "accessRole": "obfuscated",
+      "hostedServices": [
+        "conf-gamma-iad",
+        "conf-gamma-dub"
+      ]
+    },
+    {
+      "name": "dummy-account",
+      "accessRole": "obfuscated",
+      "hostedServices": [
+        "conf-prod-dub"
+      ]
+    },
+    {
+      "name": "dummy-account",
+      "accessRole": "obfuscated",
+      "hostedServices": [
+        "conf-prod-iad"
+      ]
+    },
+    {
+      "name": "dummy-account",
+      "accessRole": "obfuscated",
+      "accountType":"conduit",
+      "hostedServices": [
+        "ps-devo-iad"
+      ]
+    }
+  ],
+  "logGroups": [
+    {
+      "name": "dummy-account",
+      "mappings": {
+        "hp-appsync-alpha-iad": "/aws/appsync/apis/obfuscated",
+        "hp-appsync-beta-iad": "/aws/appsync/apis/obfuscated",
+        "hp-appsync-beta-dub": "/aws/appsync/apis/obfuscated",
+        "hp-appsync-prod-iad": "/aws/appsync/apis/obfuscated",
+        "hp-appsync-prod-dub": "/aws/appsync/apis/obfuscated"
+      }
+    },
+    {
+      "name": "dummy-account",
+      "mappings": {
+        "hp-test-notif-alpha-iad": "/aws/lambda/obfuscated",
+        "hp-test-notif-beta-iad": "/aws/lambda/obfuscated",
+        "hp-test-notif-beta-dub": "/aws/lambda/obfuscated",
+        "hp-test-notif-prod-iad": "/aws/lambda/obfuscated",
+        "hp-test-notif-prod-dub": "/aws/lambda/obfuscated"
+      }
+    },
+    {
+      "name": "dummy-account",
+      "mappings": {
+        "hp-test-notif-audit-alpha-iad": "/aws/lambda/obfuscated/audit",
+        "hp-test-notif-audit-beta-iad": "/aws/lambda/obfuscated/audit",
+        "hp-test-notif-audit-beta-dub": "/aws/lambda/obfuscated/audit",
+        "hp-test-notif-audit-prod-iad": "/aws/lambda/obfuscated/audit",
+        "hp-test-notif-audit-prod-dub": "/aws/lambda/obfuscated/audit"
+      }
+    },
+    {
+      "name": "dummy-account",
+      "mappings": {
+        "hp-otp-alpha-iad": "sns/eu-west-1/1111111111/obfuscated",
+        "hp-otp-beta-iad": "sns/eu-west-1/1111111111/obfuscated",
+        "hp-otp-beta-dub": "sns/eu-west-1/1111111111/obfuscated",
+        "hp-otp-prod-iad": "sns/eu-west-1/1111111111/obfuscated",
+        "hp-otp-prod-dub": "sns/eu-west-1/1111111111/obfuscated"
+      }
+    },
+    {
+      "name": "dummy-account",
+      "mappings": {
+        "hp-otp-failures-alpha-iad": "sns/eu-west-1/1111111111/obfuscated/Failure",
+        "hp-otp-failures-beta-iad": "sns/eu-west-1/1111111111/obfuscated/Failure",
+        "hp-otp-failures-beta-dub": "sns/eu-west-1/1111111111/obfuscated/Failure",
+        "hp-otp-failures-prod-iad": "sns/eu-west-1/1111111111/obfuscated/Failure",
+        "hp-otp-failures-prod-dub": "sns/eu-west-1/1111111111/obfuscated/Failure"
+      }
+    },
+    {
+      "name": "dummy-account",
+      "mappings": {
+        "hp-gen-captcha-alpha-iad": "/aws/lambda/obfuscated",
+        "hp-gen-captcha-beta-iad": "/aws/lambda/obfuscated",
+        "hp-gen-captcha-beta-dub": "/aws/lambda/obfuscated",
+        "hp-gen-captcha-prod-iad": "/aws/lambda/obfuscated",
+        "hp-gen-captcha-prod-dub": "/aws/lambda/obfuscated"
+      }
+    },
+    {
+      "name": "dummy-account",
+      "mappings": {
+        "hp-pre-sign-up-alpha-iad": "/aws/lambda/obfuscated",
+        "hp-pre-sign-up-beta-iad": "/aws/lambda/obfuscated",
+        "hp-pre-sign-up-beta-dub": "/aws/lambda/obfuscated",
+        "hp-pre-sign-up-prod-iad": "/aws/lambda/obfuscated",
+        "hp-pre-sign-up-prod-dub": "/aws/lambda/obfuscated"
+      }
+    },
+    {
+      "name": "dummy-account",
+      "mappings": {
+        "hp-create-profile-alpha-iad": "/aws/lambda/obfuscated",
+        "hp-create-profile-beta-iad": "/aws/lambda/obfuscated",
+        "hp-create-profile-beta-dub": "/aws/lambda/obfuscated",
+        "hp-create-profile-prod-iad": "/aws/lambda/obfuscated",
+        "hp-create-profile-prod-dub": "/aws/lambda/obfuscated",
+
+        "ps-create-profile-devo-iad": "/aws/lambda/obfuscated",
+        "ps-create-profile-alpha-iad": "/aws/lambda/obfuscated",
+        "ps-create-profile-alpha-dub": "/aws/lambda/obfuscated",
+        "ps-create-profile-beta-iad": "/aws/lambda/obfuscated",
+        "ps-create-profile-beta-dub": "/aws/lambda/obfuscated",
+        "ps-create-profile-prod-iad": "/aws/lambda/obfuscated",
+        "ps-create-profile-prod-dub": "/aws/lambda/obfuscated"
+      }
+    },
+    {
+      "name": "dummy-account",
+      "mappings": {
+        "ps-profile-history-devo-iad": "/aws/lambda/HistoryTrigger",
+        "ps-profile-history-alpha-iad": "/aws/lambda/HistoryTrigger",
+        "ps-profile-history-alpha-dub": "/aws/lambda/HistoryTrigger",
+        "ps-profile-history-beta-iad": "/aws/lambda/HistoryTrigger",
+        "ps-profile-history-beta-dub": "/aws/lambda/HistoryTrigger",
+        "ps-profile-history-prod-iad": "/aws/lambda/HistoryTrigger",
+        "ps-profile-history-prod-dub": "/aws/lambda/HistoryTrigger"
+      }
+    },    {
+      "name": "dummy-account",
+      "mappings": {
+        "hp-hydra-alpha-iad": "obfuscated",
+        "hp-hydra-beta-iad": "obfuscated",
+        "hp-hydra-beta-dub": "obfuscated",
+
+        "conf-hydra-alpha-iad": "obfuscated_0826901780",
+        "conf-hydra-alpha-dub": "obfuscated_1032739380",
+        "conf-hydra-beta-iad": "obfuscated_0922290465",
+        "conf-hydra-beta-dub": "obfuscated_1128128065",
+
+        "ps-hydra-alpha-iad": "obfuscated_1685946776",
+        "ps-hydra-alpha-dub": "obfuscated_1705719480",
+        "ps-hydra-beta-iad": "obfuscated_0467839141",
+        "ps-hydra-beta-dub": "obfuscated_0487611845"
+      }
+    },
+    {
+      "name": "dummy-account",
+      "mappings": {
+        "ps-canary-beta-iad": "obfuscated",
+        "ps-canary-beta-dub": "obfuscated",
+        "ps-canary-prod-iad": "obfuscated",
+        "ps-canary-prod-dub": "obfuscated"
+      }
+    }
+  ]
+}
