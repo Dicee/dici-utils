@@ -1,0 +1,38 @@
+#!/bin/bash
+
+# pull personal repos
+#mkdir -p repos/personal
+#cd repos/personal
+
+#git clone https://github.com/Dicee/algorithmicProblems.git
+#git clone https://github.com/Dicee/dici-utils.git
+
+# configure git
+git config --global user.name "David Courtinot"
+git config --global user.email "Dicee@users.noreply.github.com"
+git config --global "color.ui" auto
+git config --global "core.pager" "less -FMRiX"
+git config --global "alias.dag" "log --graph --format='format:%C(yellow)%h%C(reset) %C(blue)"%an" <%ae>%C(reset) %C(magenta)%cr%C(reset)%C(auto)%d%C(reset)%n%s' --date-order"
+
+# install Java, Scala and Kotlin
+sudo apt install default-jre
+sudo apt install default-jdk
+sudo apt install scala
+# TODO Kotlin
+
+# install various tools
+sudo apt install xclip
+sudo apt install jq
+sudo apt install meld
+
+# install python3 packages
+sudo apt install python3-pip
+python3 -m pip install pandas jupyter "ipython[all]" spylon-kernel
+python3 -m pip install arghandler pytimeparser
+python3 -m spylon-kernel install
+
+# setup oh-my-zsh
+cd
+git clone https://github.com/robbyrussell/oh-my-zsh.git
+mv oh-my-zsh .oh-my-zsh
+cp ~/repos/personal/dici-utils/scripts/devEnv/myzsh.zsh-theme .oh-my-zsh/themes
