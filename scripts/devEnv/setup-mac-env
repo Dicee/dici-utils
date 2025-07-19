@@ -1,0 +1,79 @@
+#!/bin/bash
+
+# after installing iTerm2
+defaults write com.googlecode.iterm2 AlternateMouseScroll -bool true # https://stackoverflow.com/questions/14437979/iterm2-scroll-less-output-with-mouse
+
+# install Brew (https://brew.sh/)
+/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+# configure git 
+cd
+git config --global user.email Dicee@no-reply.github.com 
+git config --global user.name "David Courtinot"
+~/repos/S9GitSvnTools/bin/git-s9-config
+git config --global "color.ui" "auto"
+git config --global "core.pager" "less -FMRiX"
+git config --global "alias.dag" "log --graph --format='format:%C(yellow)%h%C(reset) %C(blue)"%an" <%ae>%C(reset) %C(magenta)%cr%C(reset)%C(auto)%d%C(reset)%n%s' --date-order"
+
+# install password generator
+brew tap jzaleski/homebrew-jzaleski
+brew install apg
+
+# install Python and Python-related things
+brew install python3
+
+# tuning/performance analysis 
+sudo pip3 install glances 
+
+# install some dependencies of my Brazil worskpace toolbox 
+sudo pip3 install sty 
+sudo pip3 install arghandler 
+sudo pip3 install pytimeparse
+
+# install Scala and SBT
+brew install scala
+brew install sbt
+
+# compensate for Finder's extremely poor design: https://www.cnet.com/tech/computing/how-to-find-your-macs-home-folder-and-add-it-to-finder/
+# install ShiftIt from here: https://github.com/fikovnik/ShiftIt/releases
+# install SublimeText here: https://www.sublimetext.com/3
+# install the AWS CLI here: https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2-mac.html
+
+# install some cool tools
+brew install jq
+brew install graphviz
+brew install tree
+brew install harelba/q/q # http://harelba.github.io/q/
+
+# get personal repos
+cd
+mkdir -p repos/personal
+cd repos/personal
+git clone https://github.com/Dicee/dici-utils.git
+git clone https://github.com/Dicee/algorithmicProblems.git
+
+# setup oh-my-zsh (need to set the login shell to /bin./zsh ins Users & groups afterwards)
+cd 
+git clone https://github.com/robbyrussell/oh-my-zsh.git 
+mv oh-my-zsh .oh-my-zsh
+
+# setup my personal config saved in Courtino-devEnv 
+cd 
+cp repos/personal/dici-utils/scripts/dev/env/.zshrc . 
+cp repos/personal/dici-utils/devEnv/myzsh.zsh-theme .oh-my-zsh/themes
+
+# fix annoying shortcut clash
+# https://intellij-support.jetbrains.com/hc/en-us/articles/360005137400-Cmd-Shift-A-hotkey-opens-Terminal-with-apropos-search-instead-of-the-Find-Action-dialog
+
+# Install Sublime plugins
+# https://packagecontrol.io/packages/ANSIescape
+
+# Setup IntelliJ for Smithy
+# https://www.jetbrains.com/help/idea/textmate.html#71b68
+# https://github.com/awslabs/smithy-vscode/blob/master/syntaxes/smithy.tmLanguage
+
+# Install Jupyter for Scala + Spark use case
+# https://medium.com/@bogdan.cojocar/how-to-run-scala-and-spark-in-the-jupyter-notebook-328a80090b3b
+brew install jupyter
+pip3 install spylon-kernel
+python3 -m spylon-kernel install
