@@ -36,3 +36,6 @@ cd
 git clone https://github.com/robbyrussell/oh-my-zsh.git
 mv oh-my-zsh .oh-my-zsh
 cp ~/repos/personal/dici-utils/scripts/devEnv/myzsh.zsh-theme .oh-my-zsh/themes
+
+sudo apt install zsh
+echo zsh >> ~/.bashrc
