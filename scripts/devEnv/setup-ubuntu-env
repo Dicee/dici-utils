@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # pull personal repos
-#mkdir -p repos/personal
-#cd repos/personal
+mkdir -p repos/personal
+cd repos/personal
 
-#git clone https://github.com/Dicee/algorithmicProblems.git
-#git clone https://github.com/Dicee/dici-utils.git
+git clone https://github.com/Dicee/algorithmicProblems.git
+git clone https://github.com/Dicee/dici-utils.git
 
 # configure git
 git config --global user.name "David Courtinot"
