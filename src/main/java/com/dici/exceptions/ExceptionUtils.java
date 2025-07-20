@@ -1,6 +1,7 @@
 package com.dici.exceptions;
 
 import java.io.Closeable;
+import java.io.IOException;
 import java.util.function.BiFunction;
 import java.util.function.BinaryOperator;
 import java.util.function.Consumer;
@@ -12,8 +13,8 @@ import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class ExceptionUtils {
-	public interface ThrowingSupplier<OUTPUT> {
-		OUTPUT get() throws Exception;
+	public interface ThrowingSupplier<OUTPUT, E extends Exception> {
+		OUTPUT get() throws E;
 	}
 	
 	public interface ThrowingFunction<INPUT,OUTPUT> {
@@ -43,8 +44,8 @@ public class ExceptionUtils {
 		default ThrowingPredicate<INPUT> negate() { return input -> !test(input); }
 	}
 	
-	public static <RESOURCE extends Closeable,OUTPUT> OUTPUT withCloseableResource(ThrowingSupplier<RESOURCE> resourceSupplier, //
-			ThrowingFunction<RESOURCE,OUTPUT> function) {
+	public static <RESOURCE extends Closeable,OUTPUT> OUTPUT withCloseableResource(ThrowingSupplier<RESOURCE, IOException> resourceSupplier, //
+																				   ThrowingFunction<RESOURCE,OUTPUT> function) {
 		try (RESOURCE resource = resourceSupplier.get()) {
 			return function.apply(resource);
 		} catch (Exception e) {
@@ -52,7 +53,7 @@ public class ExceptionUtils {
 		}
 	}
 	
-	public static <RESOURCE extends AutoCloseable,OUTPUT> OUTPUT withAutoCloseableResource(ThrowingSupplier<RESOURCE> resourceSupplier, //
+	public static <RESOURCE extends AutoCloseable,OUTPUT> OUTPUT withAutoCloseableResource(ThrowingSupplier<RESOURCE, IOException> resourceSupplier, //
 			ThrowingFunction<RESOURCE,OUTPUT> function) {
 		try (RESOURCE resource = resourceSupplier.get()) {
 			return function.apply(resource);
@@ -71,7 +72,7 @@ public class ExceptionUtils {
 		};
 	}
 	
-	public static <OUTPUT> Supplier<OUTPUT> uncheckedSupplier(ThrowingSupplier<OUTPUT> supplier) {
+	public static <OUTPUT> Supplier<OUTPUT> uncheckedSupplier(ThrowingSupplier<OUTPUT, ?> supplier) {
 		return () -> {
 			try {
 				return supplier.get();
@@ -91,7 +92,7 @@ public class ExceptionUtils {
 		};
 	}
 	
-	public static <OUTPUT> OUTPUT uncheckExceptionsAndGet(ThrowingSupplier<OUTPUT> supplier) {
+	public static <OUTPUT> OUTPUT uncheckExceptionsAndGet(ThrowingSupplier<OUTPUT, ?> supplier) {
 		try {
 			return supplier.get();
 		} catch (Exception e) {

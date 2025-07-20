@@ -18,6 +18,12 @@ val javafxClassifier = "linux"
 dependencies {
     implementation("org.scala-lang:scala-library:2.12.20")
     
+    implementation("com.fasterxml.jackson.core:jackson-core:2.19.2")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.19.2")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.19.2")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-guava:2.19.2")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.19.2")
+
     implementation("com.google.guava:guava:33.4.8-jre")
     compileOnly("org.projectlombok:lombok:1.18.38")
     annotationProcessor("org.projectlombok:lombok:1.18.38")
