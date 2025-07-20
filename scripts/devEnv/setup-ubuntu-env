@@ -36,7 +36,7 @@ python3 -m pip install pandas jupyter "ipython[all]" spylon-kernel
 python3 -m pip install arghandler pytimeparser
 python3 -m spylon-kernel install
 
-# setup oh-my-zsh
+# setup oh-my-zsh and terminator
 cd
 git clone https://github.com/robbyrussell/oh-my-zsh.git
 mv oh-my-zsh .oh-my-zsh
@@ -44,3 +44,14 @@ cp ~/repos/personal/dici-utils/scripts/devEnv/myzsh.zsh-theme .oh-my-zsh/themes
 
 sudo apt install zsh
 echo zsh >> ~/.bashrc
+
+sudo apt update
+sudo apt install terminator
+
+# setup nvm, npm and gemini-cli (following https://nodejs.org/en/download/current
+export PROFILE=~/.zshrc
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+
+\. "$HOME/.nvm/nvm.sh"
+node install 24
+npm install -g @google/gemini-cli
