@@ -139,4 +139,8 @@ public class ExceptionUtils {
 			}
 		};
 	}
+
+	public static RuntimeException toRuntimeException(Throwable t) {
+		return t instanceof RuntimeException ? (RuntimeException) t : new RuntimeException(t);
+	}
 }
