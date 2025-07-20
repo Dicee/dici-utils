@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# Function to convert Windows path to WSL path
+convert_path() {
+  local win_path="$1"
+
+  # Replace backslashes with slashes
+  local unix_path="${win_path//\\//}"
+
+  # Extract drive letter and lowercase it
+  local raw_drive="$(echo "$unix_path" | cut -d '/' -f 1)"
+  local drive_letter="$(echo "${raw_drive%:}" | tr '[:upper:]' '[:lower:]')"
+
+  # Remove drive letter from the rest of the path
+  local partial_path="${unix_path#*/}"
+
+  # Construct WSL path
+  echo "/mnt/$drive_letter/$partial_path"
+}
+
+if [ -z "$1" ]; then
+  echo "Usage: wslp <Windows path>"
+  exit 1
+fi
+
+convert_path "$1"

@@ -20,6 +20,11 @@ sudo apt install default-jdk
 sudo apt install scala
 # TODO Kotlin
 
+# install Gradle
+wget 'https://gradle.org/next-steps/?version=8.14.3&format=all' 
+sudo mkdir /opt/gradle
+sudo unzip -d /opt/gradle gradle-8.14.3-all.zip
+
 # install various tools
 sudo apt install xclip
 sudo apt install jq
