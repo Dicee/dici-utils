@@ -23,9 +23,12 @@ HIST_STAMPS="dd.mm.yyyy"
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 export PATH=$HOME/repos/personal/dici-utils/scripts:$PATH
 export PATH=$HOME/repos/personal/dici-utils/scripts/devEnv:$PATH
+export PATH=$HOME/repos/personal/dici-utils/scripts/git-utils:$PATH
 export PATH=$HOME/repos/personal/dici-utils/scripts/python/ws:$PATH
 export PATH=$HOME/repos/personal/dici-utils/scripts/python/cwgrep:$PATH
 export PATH=$HOME/Documents/eclipse-workspace/algorithmicProblems/bin/:$PATH
 
 export EDITOR='vim'
 
+# Some useful aliases
+alias copy='xclip -selection clipboard'
