@@ -1,23 +1,23 @@
 package com.dici.collection;
 
-import static java.util.Arrays.asList;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
+import com.dici.collection.BoundedBuffer.SizeExceededException;
+import com.dici.collection.BoundedBuffer.SizeExceededPolicy;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.NoSuchElementException;
 
-import com.dici.collection.BoundedBuffer.SizeExceededException;
-import com.dici.collection.BoundedBuffer.SizeExceededPolicy;
-
-import org.junit.Before;
-import org.junit.jupiter.api.Test;
+import static java.util.Arrays.asList;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 
 public class BoundedBufferTest {
 	private static final int MAX_SIZE = 3;
 	private BoundedBuffer<Integer>	buffer;
 	
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.buffer = new BoundedBuffer<>(MAX_SIZE, SizeExceededPolicy.ERROR);
 		this.buffer.push(3);
@@ -34,22 +34,24 @@ public class BoundedBufferTest {
 		assertThat(buffer.pollFirst(), equalTo(null));
 	}
 	
-	@Test(expected = NoSuchElementException.class)
+	@Test
 	public void behavesLikeANormalDeque_2() {
 		buffer.pop();
 		buffer.pop();
-		buffer.removeLast();
+		assertThatThrownBy(buffer::removeLast).isExactlyInstanceOf(NoSuchElementException.class);
 	}
 	
-	@Test(expected = BoundedBuffer.SizeExceededException.class)
+	@Test
 	public void isBounded() {
 		buffer.add(5);
-		buffer.add(5);
+		assertThatThrownBy(() -> buffer.add(5))
+				.isExactlyInstanceOf(BoundedBuffer.SizeExceededException.class);
 	}
 	
-	@Test(expected = SizeExceededException.class)
+	@Test
 	public void constructorFromCollectionIsBounded() {
-		new BoundedBuffer<>(MAX_SIZE, asList(Arrays.ofDim(Integer.class, MAX_SIZE + 3)), SizeExceededPolicy.ERROR);
+		assertThatThrownBy(() -> new BoundedBuffer<>(MAX_SIZE, asList(Arrays.ofDim(Integer.class, MAX_SIZE + 3)), SizeExceededPolicy.ERROR))
+				.isExactlyInstanceOf(SizeExceededException.class);
 	}
 	
 	@Test

@@ -1,35 +1,36 @@
 package com.dici.collection.toolbox;
 
-import static com.dici.strings.StringUtils.lastChar;
-import static java.util.Arrays.asList;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
+import com.dici.collection.richIterator.RichIterators;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Iterator;
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.jupiter.api.Test;
-
-import com.dici.collection.richIterator.RichIterators;
+import static com.dici.strings.StringUtils.lastChar;
+import static java.util.Arrays.asList;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 
 public class CompareSortedIteratorsTest {
 	private Iterator<String>	expected;
 	private TextComparison		compareSorted;
 	private DiffReport<String> 	report;
 	
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.compareSorted = new TextComparison();
 		this.expected      = RichIterators.of("z", "a", "us", "xhtml");
 		this.report        = new DiffReport<>();
 	}
 	
-	@Test(expected = IllegalStateException.class)
+	@Test
 	public void failsIfNotSorted() {
 		Iterator<String> actual = RichIterators.of("z", "a", "xhtml", "us");
-		compareSorted.compareFully(actual, expected, report);
+		assertThatThrownBy(() -> compareSorted.compareFully(actual, expected, report))
+				.isExactlyInstanceOf(IllegalStateException.class);
 	}
 	
 	@Test
@@ -78,7 +79,7 @@ public class CompareSortedIteratorsTest {
 		public TextComparison() { super((s0, s1) -> Integer.compare(s0.length(), s1.length()), TextComparison::deepCheckValidity); }
 	
 		private static boolean deepCheckValidity(String actual, String expected, DiffReport<String> report) { 
-			boolean isValid = false;
+			boolean isValid;
 			if      (isValid = actual.equalsIgnoreCase(expected))      report.reportEvent(EQUALS_IGNORE_CASE);
 			else if (isValid = lastChar(actual) == lastChar(expected)) report.reportEvent(LAST_CHAR_EQUAL);
 			return isValid;
