@@ -4,3 +4,5 @@ target/
 consumers.txt
 **/*.jar
 .idea/
+build/
+.gradle/

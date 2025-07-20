@@ -3,6 +3,9 @@ package com.dici.collection;
 import static com.google.common.collect.ImmutableList.toImmutableList;
 import static com.google.common.collect.ImmutableSet.toImmutableSet;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 import com.google.common.collect.ImmutableList;
@@ -12,7 +15,9 @@ import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class CollectionUtils {
-	private static final int UNKNOWN_CHARACTERISTICS = 0;
+	public static <T, R> List<R> map(Collection<T> collection, Function<T, R> function) {
+		return collection.stream().map(function).toList();
+	}
 
 	@SafeVarargs
 	public static <T> ImmutableSet<T> concatToSet(Iterable<T>... iterables) {
