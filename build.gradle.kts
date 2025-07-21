@@ -44,6 +44,8 @@ dependencies {
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.3")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.0.0")
+    testImplementation("org.mockito:mockito-core:5.18.0")
+    testImplementation("org.mockito:mockito-junit-jupiter:5.18.0")
     testImplementation("org.scalactic:scalactic_2.12:3.1.2")
     testImplementation("org.scalatest:scalatest_2.12:3.1.2")
 }

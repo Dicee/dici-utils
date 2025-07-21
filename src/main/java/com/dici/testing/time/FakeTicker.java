@@ -13,13 +13,13 @@ import java.util.concurrent.atomic.AtomicLong;
 
 /// A controllable [Ticker] for testing which can also be converted to a clock
 @RequiredArgsConstructor
-public class FakeClock extends Ticker {
+public class FakeTicker extends Ticker {
     @NonNull private final Instant initialTime;
     private final AtomicLong nanos = new AtomicLong();
     private final Clock clock = new Clock() {
         @Override
         public Instant instant() {
-            return getInstant(FakeClock.this.nanos.get());
+            return getInstant(FakeTicker.this.nanos.get());
         }
 
         @Override
@@ -33,7 +33,7 @@ public class FakeClock extends Ticker {
         }
     };
 
-    public FakeClock() {
+    public FakeTicker() {
         this(Instant.EPOCH);
     }
 
