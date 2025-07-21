@@ -1,6 +1,6 @@
 package com.dici.insights.reporting;
 
-import com.dici.exception.MultiException;
+import com.dici.exceptions.MultiException;
 
 import java.util.List;
 import java.util.function.BiConsumer;

@@ -1,10 +1,8 @@
 package com.dici.function;
 
-import static com.dici.check.Check.isGreaterOrEqual;
-import static com.dici.check.Check.notNegative;
-
-import com.dici.check.Check;
 import com.dici.exceptions.ExceptionUtils.ThrowingPredicate;
+
+import static com.dici.check.Check.notNegative;
 
 public class Predicates {
     public static <X> ThrowingPredicate<X> countdownPredicate(int n) {
