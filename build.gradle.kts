@@ -37,10 +37,11 @@ dependencies {
     implementation("org.apache.logging.log4j:log4j-api:2.13.3")
     implementation("org.apache.logging.log4j:log4j-core:2.13.3")
 
-    // we also need it to compile test utils. Ideally we should instead split the repos in two (or even more, to have more themes) or use Java modules (could be the better idea),
+    // we also need Hamcrest and AssertJ to compile test utils. Ideally we should instead split the repos in two (or even more, to have more themes) or use Java modules (could be the better idea),
     // but my main goal is to save useful code somewhere, not making the package easy to consume
-    implementation("org.hamcrest:hamcrest:2.2") 
-    testImplementation("org.assertj:assertj-core:3.27.3")
+    implementation("org.hamcrest:hamcrest:2.2")
+    implementation("org.assertj:assertj-core:3.27.3")
+
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.3")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.0.0")
     testImplementation("org.scalactic:scalactic_2.12:3.1.2")
