@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="warn">
+    <Appenders>
+        <RollingRandomAccessFile name="APPLICATION" filePattern="application.log.%d{yyyy-MM-dd-HH]">
+            <PatternLayout>
+                <!--
+                Notes:
+                - we remove whitespaces from the standard display of %X with multiple variables to maintain a fixed number
+                of spaces in our format to allow easy text processing (e.g. with command-line tools)
+                - we add a dummy key "does_not_exist_to_force_key_value_key_format" in the thread context to force the key=value format
+                (see %X doc: https://logging.apache.org/2.x/manual/mayouts.html)
+                - we include important (in this case, just an example) ids in the front of the message to be easily picked up by the eye,
+                why secondary thread context variables stay in the end to allow easy filtering without adding a lot of visual clutter
+                - we try to limit the number of characters before the first useful bit of information (generally, the message) to the keep
+                the logs readable
+                -->
+                <pattern>%d{DEFAULT} [%p] %replace{%X{TracingId,does_not_exist_to_force_key_value_key_format}}{\s}{} %c{1}: %m - context: %replace{%X{SomeVariable1,SomeVariable2,does_not_exist_to_force_key_value_key_format}}{\s}{}%n</pattern>
+            </PatternLayout>
+        </RollingRandomAccessFile>
+    </Appenders>
+    <Loggers>
+        <Root level="INFO">
+        <AppenderRef ref="APPLICATION"/>
+        </Root>
+    </Loggers>
+</Configuration>
