@@ -15,6 +15,9 @@ repositories {
 val javafxVersion = "15-ea+5"
 val javafxClassifier = "linux"
 
+val mockitoAgent = configurations.create("mockitoAgent")
+val mockitoLib = "org.mockito:mockito-core:5.18.0"
+
 dependencies {
     implementation("org.scala-lang:scala-library:2.12.20")
     
@@ -25,6 +28,8 @@ dependencies {
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.19.2")
 
     implementation("com.google.guava:guava:33.4.8-jre")
+    implementation("org.apache.commons:commons-lang3:3.18.0")
+    implementation("io.github.resilience4j:resilience4j-all:2.3.0")
     compileOnly("org.projectlombok:lombok:1.18.38")
     annotationProcessor("org.projectlombok:lombok:1.18.38")
 
@@ -44,13 +49,18 @@ dependencies {
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.3")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.0.0")
-    testImplementation("org.mockito:mockito-core:5.18.0")
-    testImplementation("org.mockito:mockito-junit-jupiter:5.18.0")
     testImplementation("org.scalactic:scalactic_2.12:3.1.2")
     testImplementation("org.scalatest:scalatest_2.12:3.1.2")
+
+    testImplementation(mockitoLib)
+    mockitoAgent(mockitoLib) { isTransitive = false }
+    testImplementation("org.mockito:mockito-junit-jupiter:5.18.0")
 }
 
 tasks.test {
+    systemProperty("log4j.configurationFile", "$projectDir/src/test/resources/log4j2-test.xml")
+    jvmArgs!!.add("-javaagent:${mockitoAgent.asPath}")
+
     useJUnitPlatform()
 }
 
