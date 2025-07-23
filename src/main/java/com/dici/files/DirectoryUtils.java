@@ -15,11 +15,9 @@ public class DirectoryUtils {
         return dir;
     }
 
-    /// Ensures a non-blank string representing a path ends in a slash, or adds one if it doesn't.
-    /// @param path a non-blank path
+    /// Ensures a string representing a path ends in a slash, or adds one if it doesn't.
     /// @return the path, guaranteed to end in a slash
-    /// @throws IllegalArgumentException if the string is blank (null, empty, or composed only of blank characters)
     public static String ensureTrailingSlash(String path) {
-        return Validate.notBlank(path).charAt(path.length() - 1) != '/' ? path + '/' : path;
+        return path.charAt(path.length() - 1) != '/' ? path + '/' : path;
     }
 }

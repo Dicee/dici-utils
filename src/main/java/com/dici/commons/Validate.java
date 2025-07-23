@@ -11,8 +11,14 @@ public class Validate {
         return n;
     }
 
-    public static String notBlank(String s) {
-        Validate.that(s != null && !s.isBlank(), "Expected a non-blank string but was: %s", s);
+    // only keeping this signature because simpler notBlank signatures are available in Apache Commons
+    public static <E extends RuntimeException> String notBlank(
+            String s,
+            Function<String, E> exceptionFactory,
+            String errorMessageTemplate,
+            Object... errorMessageArgs
+    ) {
+        Validate.that(s != null && !s.isBlank(), exceptionFactory, errorMessageTemplate, errorMessageArgs);
         return s;
     }
 

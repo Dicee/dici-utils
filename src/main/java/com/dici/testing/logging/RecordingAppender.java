@@ -1,6 +1,5 @@
 package com.dici.testing.logging;
 
-import com.dici.collection.CollectionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.LogEvent;
 import org.apache.logging.log4j.core.Logger;
@@ -15,7 +14,6 @@ import static java.util.Collections.unmodifiableList;
 
 /// An appender which stores all the events appended to it so that they can be compared to expectations in tests.
 public class RecordingAppender extends AbstractAppender {
-
     public static final Logger ROOT_LOGGER = getRootLogger();
 
     public static RecordingAppender attachedToLogger(Logger logger) {
