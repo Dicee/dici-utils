@@ -5,6 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TimeUtils {
+    /// Combines raw milliseconds formatting with [TimeUtils#humanReadableDuration(Duration)], the goal being to allow
+    /// treating the raw milliseconds number with log processing tools easily, while keeping the format readable for humans.
+    public static String logFriendlyDuration(Duration duration) {
+        return "%d ms (or %s)".formatted(duration.toMillis(), humanReadableDuration(duration));
+    }
+
     /**
      * Formats a {@link Duration} into a human-readable string like "2 days, 1 hour and 5 milliseconds".
      *
@@ -15,7 +21,7 @@ public class TimeUtils {
      * @return A human-readable string representation of the duration.
      */
     public static String humanReadableDuration(Duration duration) {
-        if (duration == null || duration.isZero()) {
+        if (duration.isZero()) {
             return "0 milliseconds";
         }
 
