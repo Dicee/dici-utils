@@ -33,6 +33,10 @@ dependencies {
     compileOnly("org.projectlombok:lombok:1.18.38")
     annotationProcessor("org.projectlombok:lombok:1.18.38")
 
+    // AWS SDK
+    implementation("software.amazon.awssdk:s3:2.32.6")
+    implementation("software.amazon.awssdk:core:2.32.6")
+
     // JavaFX modules
     listOf("base", "controls", "graphics", "web", "swing").forEach {
         implementation("org.openjfx:javafx-$it:$javafxVersion:$javafxClassifier")

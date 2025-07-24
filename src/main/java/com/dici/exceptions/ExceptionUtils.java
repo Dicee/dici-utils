@@ -35,8 +35,8 @@ public class ExceptionUtils {
 		void accept(INPUT input) throws Exception;
 	}
 	
-	public interface ThrowingRunnable {
-		void run() throws Exception;
+	public interface ThrowingRunnable<E extends Exception> {
+		void run() throws E;
 	}
 	
 	public interface ThrowingPredicate<INPUT> {
