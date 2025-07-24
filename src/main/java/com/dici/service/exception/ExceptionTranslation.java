@@ -23,6 +23,9 @@ public class ExceptionTranslation {
     public static final ExceptionTranslation PROPAGATE_AS_RUNTIME_EXCEPTION =
             rethrowAs(RuntimeException.class, (__, t) -> toRuntimeException(t), Level.ERROR);
 
+    public static final ExceptionTranslation PROPAGATE_MODELED_RUNTIME_EXCEPTION =
+            rethrowAs(RuntimeException.class, (__, t) -> (RuntimeException) t, Level.WARN);
+
     public static ExceptionTranslation rethrowAs(
             Class<? extends Throwable> matchedSuperclass, BiFunction<String, Throwable, RuntimeException> translate, Level logLevel) {
 
