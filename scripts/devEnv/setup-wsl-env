@@ -1,0 +1,34 @@
+#!/bin/bash
+
+./setup-ubuntu-env
+
+# setup ssh from Windows to WSL
+sudo apt update
+sudo apt install openssh-server
+
+sudo vim /etc/ssh/sshd_config
+# copy the below in the file
+# Port <PORT>
+# ListenAddress 0.0.0.0
+# PasswordAuthentication yes
+
+# look for something like inet 172.x.x.x
+ip addr | grep eth0
+
+# in Powershell, run netsh interface portproxy add v4tov4 listenaddress=127.0.0.1 listenport=<PORT> connectaddress=<WSL_IP> connectport=<PORT>
+# in Powershell, run netsh advfirewall firewall add rule name="WSL2 SSH" dir=in action=allow protocol=TCP localport=<PORT>
+
+# might have to run the below
+# sudo systemctl stop ssh.socket
+# sudo systemctl disable ssh.socket
+# sudo systemctl restart ssh
+
+# in Powershell again:
+# New-Item -Path $PROFILE -ItemType File -Force
+# notepad $PROFILE
+
+# paste this in the file:
+# function sshwsl {
+#    ssh <WSL_USER>@localhost -p <PORT>
+#}
+
