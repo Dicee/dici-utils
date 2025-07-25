@@ -117,6 +117,9 @@ def execute_on_dependency_graph(command, graph, threads):
     to_build = nodes.copy()
     leaves = {workspace.Package(n.name) for n in nodes if len(n.dependencies.intersection(to_build)) == 0}
 
+    checked_packages = workspace.Context.ws.checked_packages()
+    to_actually_build = {workspace.Package(n.name) for n in to_build}.intersection(checked_packages)
+
     # for some reason I don't understand, I'm getting race conditions if the root is not created before any parallel
     # tasks are started. To be honest, I find the whole threading vs multiprocessing thing a big mess.
     workspace.Context.logs_root()
@@ -124,9 +127,6 @@ def execute_on_dependency_graph(command, graph, threads):
     execution_context = ParallelGraphExecutionContext(threads)
     for leaf in leaves:
         _build_async(execution_context, command, leaf, graph, to_build, unbuilt_dependencies)
-
-    checked_packages = workspace.Context.ws.checked_packages()
-    to_actually_build = {workspace.Package(n.name) for n in to_build}.intersection(checked_packages)
 
     for i in range(len(to_actually_build)):
         execution_context.semaphore.acquire()
