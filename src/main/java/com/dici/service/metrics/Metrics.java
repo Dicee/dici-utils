@@ -11,6 +11,8 @@ public interface Metrics extends Closeable {
 
     Metrics addCount(String metricName, int count);
 
+    Metrics addMetric(String metricName, double value);
+
     Metrics addDuration(String metricName, Duration duration);
 
     interface Factory {

@@ -4,7 +4,10 @@ import com.dici.exceptions.ExceptionUtils.ThrowingRunnable;
 import com.dici.exceptions.ExceptionUtils.ThrowingSupplier;
 import software.amazon.awssdk.core.exception.SdkException;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
+
+import static com.dici.exceptions.ExceptionUtils.toRuntimeException;
 
 /// This class contains utilities to handle AWS exceptions in a consistent way
 public class AwsErrorHandling {
@@ -24,5 +27,12 @@ public class AwsErrorHandling {
         } catch (SdkException e) {
             throw new AwsDependencyException(messageSupplier.get(), e);
         }
+    }
+
+    public static <T> CompletableFuture<T> wrap(Supplier<String> messageSupplier, CompletableFuture<T> future) {
+        return future.exceptionally(t -> {
+            if (t instanceof SdkException cause) throw new AwsDependencyException(messageSupplier.get(), cause);
+            throw toRuntimeException(t);
+        });
     }
 }

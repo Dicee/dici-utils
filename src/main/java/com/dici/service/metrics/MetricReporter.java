@@ -10,6 +10,8 @@ public interface MetricReporter {
 
     void addCount(String metricName, int count);
 
+    void addMetric(String metricName, double value);
+
     void addDuration(String metricName, Duration duration);
 
     void endReport();

@@ -1,5 +1,6 @@
 package com.dici.commons;
 
+import java.util.Collection;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -37,6 +38,24 @@ public class Validate {
             Object... errorMessageArgs
     ) {
         that(condition, IllegalArgumentException::new, errorMessageTemplate, errorMessageArgs);
+    }
+
+    public static <T> T singleton(Collection<T> collection) {
+        return singleton(collection, "Expected a singleton but collection has %s elements", collection.size());
+    }
+
+    public static <T> T singleton(Collection<T> collection, String errorMessageTemplate, Object... errorMessageArgs) {
+        return singleton(collection, IllegalArgumentException::new, errorMessageTemplate, errorMessageArgs);
+    }
+
+    public static <T, E extends RuntimeException> T singleton(
+            Collection<T> collection,
+            Function<String, E> exceptionFactory,
+            String errorMessageTemplate,
+            Object... errorMessageArgs
+    ) {
+        Validate.that(collection.size() == 1, exceptionFactory, errorMessageTemplate, errorMessageArgs);
+        return collection.iterator().next();
     }
 
     public static <E extends RuntimeException> void that(

@@ -31,11 +31,14 @@ dependencies {
     implementation("org.apache.commons:commons-lang3:3.18.0")
     implementation("io.github.resilience4j:resilience4j-all:2.3.0")
     compileOnly("org.projectlombok:lombok:1.18.38")
+    testCompileOnly("org.projectlombok:lombok:1.18.38")
     annotationProcessor("org.projectlombok:lombok:1.18.38")
+    testAnnotationProcessor("org.projectlombok:lombok:1.18.38")
 
     // AWS SDK
-    implementation("software.amazon.awssdk:s3:2.32.6")
     implementation("software.amazon.awssdk:core:2.32.6")
+    implementation("software.amazon.awssdk:s3:2.32.6")
+    implementation("software.amazon.awssdk:firehose:2.32.6")
 
     // JavaFX modules
     listOf("base", "controls", "graphics", "web", "swing").forEach {
@@ -52,6 +55,7 @@ dependencies {
     implementation("org.assertj:assertj-core:3.27.3")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.3")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:5.9.3")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.0.0")
     testImplementation("org.scalactic:scalactic_2.12:3.1.2")
     testImplementation("org.scalatest:scalatest_2.12:3.1.2")
