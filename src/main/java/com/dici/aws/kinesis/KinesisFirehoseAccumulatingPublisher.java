@@ -2,7 +2,6 @@ package com.dici.aws.kinesis;
 
 import com.dici.aws.exception.AwsErrorHandling;
 import com.dici.service.metrics.MetricPublisher;
-import com.dici.time.TimeUtils;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import io.github.resilience4j.core.lang.Nullable;
