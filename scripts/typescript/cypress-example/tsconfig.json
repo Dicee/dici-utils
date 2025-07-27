@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": ["dom", "es5", "es2017.string", "es2016", "es2017.string"],
+    "types": ["cypress"],
+    "outDir": "dist",
+    "skipLibCheck": true,
+    "esModuleInterop": true
+  },
+  "include": ["cypress"],
+  "exclude": ["node_modules", "dist", "build"]
+}

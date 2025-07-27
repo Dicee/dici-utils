@@ -1,0 +1,18 @@
+{
+  "devo": {
+    "stage": "devo",
+    "region": "us-east-1"
+  },
+  "beta": {
+    "stage": "beta",
+    "region": "us-east-1"
+  },
+  "prod-eu": {
+    "stage": "prod",
+    "region": "eu-west-1"
+  },
+  "prod-us": {
+    "stage": "prod",
+    "region": "us-east-1"
+  }
+}

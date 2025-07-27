@@ -1,0 +1,23 @@
+{
+  "reporter": "mocha-multi-reporters",
+  "reporterOptions": {
+    "reporterEnabled": "mocha-junit-reporter, mochawesome",
+    "mochaJunitReporterOptions": {
+      "mochaFile": "output/results/test_results_[hash].xml"
+    },
+    "mochawesomeReporterOptions": {
+      "reportDir": "output/results",
+      "overwrite": false,
+      "html": false,
+      "json": true
+    },
+    "screenshotsFolder": "output/screenshots",
+    "videosFolder": "output/videos",
+    "trashAssetsBeforeRuns": true,
+    "requestTimeout": 10000,
+    "defaultCommandTimeout": 25000,
+    "chromeWebSecurity": false,
+    "videoCompression": false,
+    "ignoreTestFiles": ["**/__image_snapshots__/**"]
+  }
+}
