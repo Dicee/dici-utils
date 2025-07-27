@@ -1,6 +1,7 @@
 package com.dici.commons;
 
 import java.util.Collection;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -10,6 +11,14 @@ public class Validate {
     public static int isPositive(int n) {
         Validate.that(n > 0, "Expected a positive value but was: %s", n);
         return n;
+    }
+
+    public static <T> void isNull(T t) {
+        isNull(t, "Expected value to be null but was %s", t);
+    }
+
+    public static <T> void isNull(T t, String errorMessageFormat, Object... errorMessageArgs) {
+        Validate.that(t == null, IllegalArgumentException::new, errorMessageFormat, errorMessageArgs);
     }
 
     // only keeping this signature because simpler notBlank signatures are available in Apache Commons
@@ -32,12 +41,15 @@ public class Validate {
         return optional.get();
     }
 
-    public static void that(
-            boolean condition,
+    public static <T, E extends RuntimeException> T equalTo(
+            T actual,
+            T expected,
+            Function<String, E> exceptionFactory,
             String errorMessageTemplate,
             Object... errorMessageArgs
     ) {
-        that(condition, IllegalArgumentException::new, errorMessageTemplate, errorMessageArgs);
+        Validate.that(Objects.equals(actual, expected), exceptionFactory, errorMessageTemplate, errorMessageArgs);
+        return actual;
     }
 
     public static <T> T singleton(Collection<T> collection) {
@@ -56,6 +68,14 @@ public class Validate {
     ) {
         Validate.that(collection.size() == 1, exceptionFactory, errorMessageTemplate, errorMessageArgs);
         return collection.iterator().next();
+    }
+
+    public static void that(
+            boolean condition,
+            String errorMessageTemplate,
+            Object... errorMessageArgs
+    ) {
+        that(condition, IllegalArgumentException::new, errorMessageTemplate, errorMessageArgs);
     }
 
     public static <E extends RuntimeException> void that(

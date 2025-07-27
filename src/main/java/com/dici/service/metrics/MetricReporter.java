@@ -8,7 +8,7 @@ import java.time.Duration;
 public interface MetricReporter {
     void beginReport();
 
-    void addCount(String metricName, int count);
+    void addCount(String metricName, long count);
 
     void addMetric(String metricName, double value);
 

@@ -9,7 +9,7 @@ import java.time.Duration;
 public interface Metrics extends Closeable {
     Metrics setOperation(String operation);
 
-    Metrics addCount(String metricName, int count);
+    Metrics addCount(String metricName, long count);
 
     Metrics addMetric(String metricName, double value);
 
