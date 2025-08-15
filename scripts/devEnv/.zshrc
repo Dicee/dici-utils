@@ -27,6 +27,7 @@ export PATH=$HOME/repos/personal/dici-utils/scripts/git-utils:$PATH
 export PATH=$HOME/repos/personal/dici-utils/scripts/python/ws:$PATH
 export PATH=$HOME/repos/personal/dici-utils/scripts/python/cwgrep:$PATH
 export PATH=$HOME/Documents/eclipse-workspace/algorithmicProblems/bin/:$PATH
+export PATH=/opt/gradle/gradle-8.14.3/bin:$PATH
 
 export EDITOR='vim'
 

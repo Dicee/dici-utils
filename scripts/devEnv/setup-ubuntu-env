@@ -55,3 +55,11 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
 \. "$HOME/.nvm/nvm.sh"
 node install 24
 npm install -g @google/gemini-cli
+
+# install dev tools 
+
+# from https://gradle.org/install/ + need to update path
+mkdir /opt/gradle
+unzip -d /opt/gradle gradle-8.14.3-bin.zip
+
+npm install -g aws-cdk
