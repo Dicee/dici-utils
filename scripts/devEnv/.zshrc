@@ -29,6 +29,11 @@ export PATH=$HOME/repos/personal/dici-utils/scripts/python/cwgrep:$PATH
 export PATH=$HOME/Documents/eclipse-workspace/algorithmicProblems/bin/:$PATH
 export PATH=/opt/gradle/gradle-8.14.3/bin:$PATH
 
+# set AWS account id and default profile from scripts that won't be shared publicly, allowing to reference those environment variables in code that 
+# will be published publicly
+export AWS_DEFAULT_PROFILE="`awsrole`"
+export AWS_ACCOUNT_ID="`awsaccount`"
+
 export EDITOR='vim'
 
 # Some useful aliases
