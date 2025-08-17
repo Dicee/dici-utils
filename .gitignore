@@ -6,3 +6,5 @@ consumers.txt
 .idea/
 build/
 .gradle/
+scripts/awsrole
+scripts/awsaccount

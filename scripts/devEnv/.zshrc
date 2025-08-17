@@ -33,11 +33,13 @@ export PATH=/opt/gradle/gradle-8.14.3/bin:$PATH
 # will be published publicly
 export AWS_DEFAULT_PROFILE="`awsrole`"
 export AWS_ACCOUNT_ID="`awsaccount`"
+alias awslogin="aws sso login --profile $AWS_DEFAULT_PROFILE"
 
 export EDITOR='vim'
 
 # Some useful aliases
 alias copy='xclip -selection clipboard'
+alias py3='~/.py3/bin/python3'  
 
 # Node setup
 export NVM_DIR="$HOME/.nvm"

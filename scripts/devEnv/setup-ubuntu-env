@@ -1,65 +1,110 @@
 #!/bin/bash
 
-# pull personal repos
-mkdir -p repos/personal
-cd repos/personal
+setup_git()
+install_core_tools_and_languages()
+install_zsh()
+install_node_and_gemini()
+install_docker()
 
-git clone https://github.com/Dicee/algorithmicProblems.git
-git clone https://github.com/Dicee/dici-utils.git
+setup_git() {
+    # pull personal repos
+    mkdir -p repos/personal
+    cd repos/personal
+    
+    git clone https://github.com/Dicee/algorithmicProblems.git
+    git clone https://github.com/Dicee/dici-utils.git
+    
+    # configure git
+    git config --global user.name "David Courtinot"
+    git config --global user.email "Dicee@users.noreply.github.com"
+    git config --global "color.ui" auto
+    git config --global "core.pager" "less -FMRiX"
+    git config --global "alias.dag" "log --graph --format='format:%C(yellow)%h%C(reset) %C(blue)"%an" <%ae>%C(reset) %C(magenta)%cr%C(reset)%C(auto)%d%C(reset)%n%s' --date-order"
+}
 
-# configure git
-git config --global user.name "David Courtinot"
-git config --global user.email "Dicee@users.noreply.github.com"
-git config --global "color.ui" auto
-git config --global "core.pager" "less -FMRiX"
-git config --global "alias.dag" "log --graph --format='format:%C(yellow)%h%C(reset) %C(blue)"%an" <%ae>%C(reset) %C(magenta)%cr%C(reset)%C(auto)%d%C(reset)%n%s' --date-order"
+install_core_tools_and_languages() {
+    # install Java, Scala and Kotlin
+    sudo apt install default-jre
+    sudo apt install default-jdk
+    sudo apt install scala
+    # TODO Kotlin
+    
+    # install Gradle from https://gradle.org/install/ + need to update path
+    wget 'https://gradle.org/next-steps/?version=8.14.3&format=all' 
+    sudo mkdir /opt/gradle
+    sudo unzip -d /opt/gradle gradle-8.14.3-all.zip
 
-# install Java, Scala and Kotlin
-sudo apt install default-jre
-sudo apt install default-jdk
-sudo apt install scala
-# TODO Kotlin
+    # install various tools
+    sudo apt install xclip
+    sudo apt install jq
+    sudo apt install meld
+    
+    # install python3 packages
+    sudo apt install python3-pip
+    sudo apt install pipx
+    
+    python3 -m venv ~/.py3
 
-# install Gradle
-wget 'https://gradle.org/next-steps/?version=8.14.3&format=all' 
-sudo mkdir /opt/gradle
-sudo unzip -d /opt/gradle gradle-8.14.3-all.zip
+    py3 -m pip install pandas jupyter "ipython[all]" spylon-kernel
+    py3 -m pip install arghandler pytimeparser
+    py3 -m spylon-kernel install
+    py3 -m pip install valkey-glide
 
-# install various tools
-sudo apt install xclip
-sudo apt install jq
-sudo apt install meld
+    # install AWS CLIs
+    sudo apt install aws-cli
+    sudo apt install -y unzip curl
+    curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+    unzip awscliv2.zip
 
-# install python3 packages
-sudo apt install python3-pip
-python3 -m pip install pandas jupyter "ipython[all]" spylon-kernel
-python3 -m pip install arghandler pytimeparser
-python3 -m spylon-kernel install
+    npm install -g aws-cdk
+}
 
-# setup oh-my-zsh and terminator
-cd
-git clone https://github.com/robbyrussell/oh-my-zsh.git
-mv oh-my-zsh .oh-my-zsh
-cp ~/repos/personal/dici-utils/scripts/devEnv/myzsh.zsh-theme .oh-my-zsh/themes
+install_zsh() {
+    # setup oh-my-zsh and terminator
+    cd
+    git clone https://github.com/robbyrussell/oh-my-zsh.git
+    mv oh-my-zsh .oh-my-zsh
+    cp ~/repos/personal/dici-utils/scripts/devEnv/myzsh.zsh-theme .oh-my-zsh/themes
+    
+    sudo apt install zsh
+    echo zsh >> ~/.bashrc
+    
+    sudo apt update
+    sudo apt install terminator
+}
 
-sudo apt install zsh
-echo zsh >> ~/.bashrc
+install_node_and_gemini() {
+    # setup nvm, npm and gemini-cli (following https://nodejs.org/en/download/current
+    export PROFILE=~/.zshrc
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+    
+    \. "$HOME/.nvm/nvm.sh"
+    node install 24
+    npm install -g @google/gemini-cli
+}
 
-sudo apt update
-sudo apt install terminator
+install_docker() {
+    # Add Docker's official GPG key:
+    sudo apt-get update
+    sudo apt-get install ca-certificates curl
+    sudo install -m 0755 -d /etc/apt/keyrings
+    sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+    sudo chmod a+r /etc/apt/keyrings/docker.asc
+    
+    # Add the repository to Apt sources:
+    echo \
+      "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+      $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}") stable" | \
+      sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+    sudo apt-get update
+    
+    sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+    
+    sudo usermod -aG docker $USER
+}
 
-# setup nvm, npm and gemini-cli (following https://nodejs.org/en/download/current
-export PROFILE=~/.zshrc
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
-
-\. "$HOME/.nvm/nvm.sh"
-node install 24
-npm install -g @google/gemini-cli
-
-# install dev tools 
-
-# from https://gradle.org/install/ + need to update path
-mkdir /opt/gradle
-unzip -d /opt/gradle gradle-8.14.3-bin.zip
-
-npm install -g aws-cdk
+# https://valkey.io/topics/installation/
+install_valkey() {
+    sudo apt update
+    sudo apt install valkey
+}
