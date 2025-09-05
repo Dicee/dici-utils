@@ -19,6 +19,10 @@ source $ZSH/oh-my-zsh.sh
 COMPLETION_WAITING_DOTS="true"
 HIST_STAMPS="dd.mm.yyyy"
 
+export AIRFLOW_HOME=~/airflow
+export AIRFLOW_VENV_HOME=~/repos/personal/dici-utils/scripts/devEnv/.venv/lib/python3.12/site-packages/airflow
+
+
 # Additional path 
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 export PATH=$HOME/repos/personal/dici-utils/scripts:$PATH
@@ -40,6 +44,7 @@ export EDITOR='vim'
 # Some useful aliases
 alias copy='xclip -selection clipboard'
 alias py3='~/.py3/bin/python3'  
+alias airflow='/home/courtino/repos/personal/dici-utils/scripts/devEnv/.venv/bin/airflow'
 
 # Node setup
 export NVM_DIR="$HOME/.nvm"

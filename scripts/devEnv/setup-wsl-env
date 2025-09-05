@@ -32,3 +32,5 @@ ip addr | grep eth0
 #    ssh <WSL_USER>@localhost -p <PORT>
 #}
 
+# allows viewing images from WSL into the Windows viewer
+sudo apt install wslu

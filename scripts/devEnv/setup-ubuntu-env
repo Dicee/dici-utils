@@ -6,6 +6,8 @@ install_zsh()
 install_node_and_gemini()
 install_docker()
 
+sudo apt install pwgen
+
 setup_git() {
     # pull personal repos
     mkdir -p repos/personal
@@ -49,7 +51,7 @@ install_core_tools_and_languages() {
     py3 -m pip install arghandler pytimeparser
     py3 -m spylon-kernel install
     py3 -m pip install valkey-glide
-
+    
     # install AWS CLIs
     sudo apt install aws-cli
     sudo apt install -y unzip curl
@@ -103,8 +105,12 @@ install_docker() {
     sudo usermod -aG docker $USER
 }
 
-# https://valkey.io/topics/installation/
 install_valkey() {
+    wget "https://repo.percona.com/apt/percona-release_latest.$(lsb_release -sc)_all.deb"
+    sudo "dpkg -i percona-release_latest.$(lsb_release -sc)_all.deb"
+    sudo percona-release enable valkey
+
+    # https://valkey.io/topics/installation/
     sudo apt update
     sudo apt install valkey
 }
@@ -123,4 +129,10 @@ install_airflow() {
     source .venv/bin/activate
 
     uv pip install "apache-airflow==${AIRFLOW_VERSION}" --constraint "${CONSTRAINT_URL}"
+}
+
+install_tesseract() {
+    sudo apt install tesseract-ocr
+    sudo apt install libtesseract-dev
+    py3 -m pip install pytesseract
 }
