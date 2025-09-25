@@ -50,7 +50,6 @@ install_core_tools_and_languages() {
     py3 -m pip install pandas jupyter "ipython[all]" spylon-kernel
     py3 -m pip install arghandler pytimeparser
     py3 -m spylon-kernel install
-    py3 -m pip install valkey-glide
     
     # install AWS CLIs
     sudo apt install aws-cli
@@ -81,7 +80,7 @@ install_node_and_gemini() {
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
     
     \. "$HOME/.nvm/nvm.sh"
-    node install 24
+    nvm install 24
     npm install -g @google/gemini-cli
 }
 
@@ -103,6 +102,8 @@ install_docker() {
     sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
     
     sudo usermod -aG docker $USER
+
+    sudo apt install docker-compose
 }
 
 install_valkey() {
@@ -113,6 +114,9 @@ install_valkey() {
     # https://valkey.io/topics/installation/
     sudo apt update
     sudo apt install valkey
+    
+    py3 -m pip install valkey-glide
+    py3 -m pip install valkey-glide-sync
 }
 
 # https://airflow.apache.org/docs/apache-airflow/stable/start.html
@@ -135,4 +139,19 @@ install_tesseract() {
     sudo apt install tesseract-ocr
     sudo apt install libtesseract-dev
     py3 -m pip install pytesseract
+}
+
+install_mcp() {
+    py3 -m pip install "mcp[cli]"
+}
+
+install_sqlite() {
+    sudo apt-get install sqlite3
+}
+
+install_rust() {
+   # https://harsimranmaan.medium.com/install-and-setup-rust-development-environment-on-wsl2-dccb4bf63700	
+   sudo apt install build-essential
+   curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+   source $HOME/.cargo/env
 }

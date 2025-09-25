@@ -13,11 +13,10 @@ old_stash=$(git rev-parse -q --verify refs/stash || echo '')
 git stash
 new_stash=$(git rev-parse -q --verify refs/stash || echo '')
 
-echo "git rebase -i remotes/origin/$branch"
-git rebase -i remotes/origin/$branch
+set +x
+git rebase -i remotes/$branch
 if [ "$old_stash" != "$new_stash" ] 
 then 
-    echo "git stash pop"
     git stash pop
 fi
 

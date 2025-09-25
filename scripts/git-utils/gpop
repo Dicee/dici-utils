@@ -1,0 +1,10 @@
+#!/bin/bash
+if [ $# -eq 0 ] 
+then
+    pop_id=0
+else
+    pop_id=$1	
+fi
+
+set +x
+git stash pop stash@{$pop_id}
