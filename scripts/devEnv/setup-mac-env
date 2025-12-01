@@ -59,8 +59,8 @@ mv oh-my-zsh .oh-my-zsh
 
 # setup my personal config saved in Courtino-devEnv 
 cd 
-cp repos/personal/dici-utils/scripts/dev/env/.zshrc . 
-cp repos/personal/dici-utils/devEnv/myzsh.zsh-theme .oh-my-zsh/themes
+cp repos/personal/dici-utils/scripts/devEnv/.zshrc . 
+cp repos/personal/dici-utils/scripts/devEnv/myzsh.zsh-theme .oh-my-zsh/themes
 
 # fix annoying shortcut clash
 # https://intellij-support.jetbrains.com/hc/en-us/articles/360005137400-Cmd-Shift-A-hotkey-opens-Terminal-with-apropos-search-instead-of-the-Find-Action-dialog
