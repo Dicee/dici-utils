@@ -62,6 +62,9 @@ cd
 cp repos/personal/dici-utils/scripts/devEnv/.zshrc . 
 cp repos/personal/dici-utils/scripts/devEnv/myzsh.zsh-theme .oh-my-zsh/themes
 
+# improve iTerm2 UX
+# https://gist.github.com/seachai/948ed1eeafa32ce03db6685edb879f71
+
 # fix annoying shortcut clash
 # https://intellij-support.jetbrains.com/hc/en-us/articles/360005137400-Cmd-Shift-A-hotkey-opens-Terminal-with-apropos-search-instead-of-the-Find-Action-dialog
 
