@@ -2,6 +2,9 @@
 
 # after installing iTerm2
 defaults write com.googlecode.iterm2 AlternateMouseScroll -bool true # https://stackoverflow.com/questions/14437979/iterm2-scroll-less-output-with-mouse
+# improve iTerm2 UX
+# https://gist.github.com/seachai/948ed1eeafa32ce03db6685edb879f71
+# https://apple.stackexchange.com/questions/148508/how-to-open-a-new-tab-in-iterm-in-the-same-folder-as-the-one-that-is-open
 
 # install Brew (https://brew.sh/)
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
@@ -21,6 +24,12 @@ brew install apg
 
 # install Python and Python-related things
 brew install python3
+brew install pyenv pyenv-virtualenv
+
+echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.zshrc
+echo 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.zshrc
+echo 'eval "$(pyenv init -)"' >> ~/.zshrc
+echo 'eval "$(pyenv virtualenv-init -)"' >> ~/.zshrc
 
 # tuning/performance analysis 
 sudo pip3 install glances 
@@ -61,9 +70,6 @@ mv oh-my-zsh .oh-my-zsh
 cd 
 cp repos/personal/dici-utils/scripts/devEnv/.zshrc . 
 cp repos/personal/dici-utils/scripts/devEnv/myzsh.zsh-theme .oh-my-zsh/themes
-
-# improve iTerm2 UX
-# https://gist.github.com/seachai/948ed1eeafa32ce03db6685edb879f71
 
 # fix annoying shortcut clash
 # https://intellij-support.jetbrains.com/hc/en-us/articles/360005137400-Cmd-Shift-A-hotkey-opens-Terminal-with-apropos-search-instead-of-the-Find-Action-dialog
