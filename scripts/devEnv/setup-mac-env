@@ -2,6 +2,8 @@
 
 # after installing iTerm2
 defaults write com.googlecode.iterm2 AlternateMouseScroll -bool true # https://stackoverflow.com/questions/14437979/iterm2-scroll-less-output-with-mouse
+defaults write -g ApplePressAndHoldEnabled -bool false # Mac defaults are so often bad: https://www.iphonetricks.org/keyboard-repeat-not-working-macos-ventura-fix/
+
 # improve iTerm2 UX
 # https://gist.github.com/seachai/948ed1eeafa32ce03db6685edb879f71
 # https://apple.stackexchange.com/questions/148508/how-to-open-a-new-tab-in-iterm-in-the-same-folder-as-the-one-that-is-open
